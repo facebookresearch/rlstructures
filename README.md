@@ -7,6 +7,7 @@
   - [Algorithms (as examples)](#algorithms-as-examples)
 - [USing RLStructures](#using-rlstructures)
 - [FAQ](#faq)
+  - [License](#license)
 
 ## Overview
 
@@ -90,3 +91,8 @@ Please use this bibtex if you want to cite this repository in your publications:
 # FAQ
 
 [Here](https://github.com/facebookresearch/rlstructures/blob/master/FAQ.md)
+
+## License
+
+`rlstructures` is released under the MIT license. See [LICENSE](LICENSE) for additional details about it.
+See also our [Terms of Use](https://opensource.facebook.com/legal/terms) and [Privacy Policy](https://opensource.facebook.com/legal/privacy).
