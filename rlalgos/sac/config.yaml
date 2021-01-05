@@ -1,0 +1,25 @@
+environment:
+  env_name: CartPole-v0
+
+n_envs: 4
+n_threads: 4
+n_starting_transitions: 1600
+batch_timesteps: 1
+n_batches_per_epochs: 1       
+size_batches: 1024    
+max_episode_steps: 100
+tau: 0.005
+discount_factor: 0.95
+logdir: ./log  
+replay_buffer_size: 1000000      
+lr: 0.0003
+lambda_entropy: 0.01
+        
+n_evaluation_threads: 4        
+n_evaluation_rollouts: 64
+time_limit: 600        
+env_seed: 42
+clip_grad: 40
+learner_device: "cpu"
+evaluation_mode: "stochastic"
+verbose: True

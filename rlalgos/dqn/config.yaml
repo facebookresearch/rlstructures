@@ -1,0 +1,24 @@
+environment:
+  env_name: CartPole-v0
+
+n_envs: 4 
+max_episode_steps: 100
+discount_factor: 0.9
+logdir: ./log        
+epsilon_greedy: 0.1
+replay_buffer_size: 10000
+n_batches: 1
+tau: 0.005
+initial_buffer_epochs: 100
+qvalue_epochs: 100
+batch_timesteps: 10
+use_duelling: True
+lr: 0.01
+n_threads: 4
+n_evaluation_threads: 4
+verbose: True
+n_evaluation_rollouts: 64
+time_limit: 180
+env_seed: 42
+clip_grad: 40.0
+learner_device: "cpu"
