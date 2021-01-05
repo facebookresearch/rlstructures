@@ -89,4 +89,4 @@ Please use this bibtex if you want to cite this repository in your publications:
 
 # FAQ
 
-[Here](https://github.com/fairinternal/rlstructures/blob/master/FAQ.md)
+[Here](https://github.com/facebookresearch/rlstructures/blob/master/FAQ.md)
