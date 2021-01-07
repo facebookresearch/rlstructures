@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>&lt;no title&gt; &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DataStructures.html">Data Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Agent.html">Agents/Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlstructures.html">rlstructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>&lt;no title&gt;</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gettingstarted/MultiProcessTrajectoryBatcher.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p># Advanced Topics - Trajectory Batcher</p>
+<p>A trajectory batcher will just acquire N timesteps (and not full episodes)</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+if __name__ == “__main__”:</p>
+<blockquote>
+<div><p>import torch.multiprocessing as mp
+mp.set_start_method(“spawn”)</p>
+</div></blockquote>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<p>The <strong>EpisodeBatcher</strong> will sample full episodes (until the environment returns done==True)
+* If one consider a rlstructures.VecEnv env, and n_threads (or processes), then the batcher will sample n_episodes = N * env.n_envs()*n_threads episodes at each execution (where N is chosen by the user)
+* <em>seeds</em> is a list of environment seeds, one seed per process
+* The batcher has to be configured ‘at the right size’ since all the processes are sharing a common <em>Buffer</em> to store trajectories
+* The simplest case is:
+* * <em>n_slots = env.n_envs() x n_threads *
+* * *n_timeteps</em> is the number of timesteps that will be acquired at each call</p>
+<dl>
+<dt><a href="#id7"><span class="problematic" id="id8">``</span></a><a href="#id9"><span class="problematic" id="id10">`</span></a></dt><dd><dl class="simple">
+<dt>batcher=Batcher(</dt><dd><p>n_timesteps=100,
+n_slots=16,
+n_threads=4,
+seeds=[1,2,3,4],
+create_agent=create_agent,
+agent_args={“n_actions”:2},
+create_env=create_env,
+env_args={“max_episode_steps”:100}</p>
+</dd>
+</dl>
+<p>)</p>
+</dd>
+</dl>
+<p><a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a></p>
+<p>A trajectory batcher has to be <em>reset</em>. Then calling <em>execute</em> will acquire the next T steps. The <em>execute</em> method will return <em>None</em> if all environments have stopped
+<a href="#id15"><span class="problematic" id="id16">``</span></a><a href="#id17"><span class="problematic" id="id18">`</span></a></p>
+<blockquote>
+<div><p>batcher.reset(agent_info=DictTensor({“agent_id”:torch.arange(16)}),env_info=DictTensor({“env_id”:torch.arange(16)}))
+import time</p>
+<p>batcher.execute()
+t=batcher.get()</p>
+<dl class="simple">
+<dt>while not t is None:</dt><dd><p>batcher.execute()
+t=batcher.get()</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><a href="#id19"><span class="problematic" id="id20">``</span></a><a href="#id21"><span class="problematic" id="id22">`</span></a></p>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

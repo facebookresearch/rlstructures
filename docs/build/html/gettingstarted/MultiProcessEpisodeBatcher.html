@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>&lt;no title&gt; &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DataStructures.html">Data Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Agent.html">Agents/Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlstructures.html">rlstructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>&lt;no title&gt;</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gettingstarted/MultiProcessEpisodeBatcher.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p># Advanced Topics - Multiprocess Episode Batcher</p>
+<p>Let us consider that we define multiple environments identified by an <em>environment_id</em>, such that two environments with two different <em>ids</em> does not behave exactly the same. This can be easily implemented by using the env_info* argumennt in the reset function</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+from rlstructures import Agent,DictTensor
+import torch
+import os
+import sys
+import gym
+from gym.wrappers import TimeLimit
+from rlstructures.env_wrappers import GymEnv
+from rlstructures.batchers import EpisodeBatcher,Batcher
+import gym
+from gym.utils import seeding</p>
+<dl>
+<dt>class MyEnv(gym.Env):</dt><dd><dl>
+<dt>def __init__(self):</dt><dd><p>super().__init__()</p>
+</dd>
+<dt>def seed(self,seed=None):</dt><dd><p>self.np_random,seed=seeding.np_random(seed)</p>
+</dd>
+<dt>def reset(self,env_info={“env_id”:0}):</dt><dd><p>assert “env_id” in env_info
+self.env_id=env_info[“env_id”]
+self.x=self.np_random.rand()*2.0-1.0
+self.identifier=self.np_random.rand()
+obs={“x”:self.x,”identifier”:self.identifier,”env_id”:self.env_id}
+return obs</p>
+</dd>
+<dt>def step(self,action):</dt><dd><dl class="simple">
+<dt>if action==0:</dt><dd><p>self.x-=0.3</p>
+</dd>
+<dt>else:</dt><dd><p>self.x+=0.3</p>
+</dd>
+</dl>
+<p>done = self.x&lt;-1 or self.x&gt;1</p>
+<p>obs={“x”:self.x,”identifier”:self.identifier,”env_id”:self.env_id},self.x,done,{}
+return obs</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<p>As you can see, the env_info can be used as an input parameter for the environment allowing to model multiple environments through a single class.</p>
+<p>We can do the same with agents, and implement an <em>Agent</em> that is parametrized by an <em>agent_info</em>. In our case, the agent is just an agent outputting its agent_id as an action. Advanced examples are shown in the <em>rlaglos</em> directory (e.g stochastic/deterministic polices, epsilon-greedy policies, …)</p>
+<p><a href="#id7"><span class="problematic" id="id8">``</span></a>`
+class UniformAgent(Agent):</p>
+<blockquote>
+<div><dl>
+<dt>def __init__(self,buffer,n_actions):</dt><dd><p>super().__init__(buffer=buffer)
+self.n_actions=n_actions</p>
+</dd>
+<dt>def __call__(self,state,observation,agent_info, slots,position_in_slots):</dt><dd><p>B=observation.n_elems()
+agent_state=None
+if state is None:</p>
+<blockquote>
+<div><p>agent_state=DictTensor({“timestep”:torch.zeros(B).long()})</p>
+</div></blockquote>
+<dl class="simple">
+<dt>else:</dt><dd><p>agent_state=state</p>
+</dd>
+</dl>
+<p>scores=torch.randn(B,self.n_actions)
+probabilities=torch.softmax(scores,dim=1)
+actions=torch.distributions.Categorical(probabilities).sample()
+new_state=DictTensor({“timestep”:agent_state[“timestep”]+1})
+# We also decide to output the action probabilities
+return agent_state,DictTensor({“action”:actions,”action_probabilities”:probabilities,”agent_id”:agent_info[“agent_id”]}),new_state</p>
+</dd>
+<dt>def specs_output(self):</dt><dd><p># Used to setup the buffer
+specs={}
+specs[“action”] = {“size”: torch.Size([]), “dtype”: torch.int64}
+specs[“agent_id”] = {“size”: torch.Size([]), “dtype”: torch.int64}
+specs[“action_probabilities”] = {“size”: torch.Size([self.n_actions]), “dtype”: torch.float32}
+return specs</p>
+</dd>
+<dt>def specs_state(self):</dt><dd><p># Used to setup the buffer
+specs = {}
+specs[“timestep”] = {“size”: torch.Size([]), “dtype”: torch.int64}
+return specs</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a></p>
+<p>By specifying a particular value of <em>env_info</em> and <em>agent_infoo</em> when calling the <em>batcher.execute</em> method, the user may control which agent interacts with which environment
+Let us illustrate this using <strong>Multi-processes batchers</strong>
+* <strong>NOTE:</strong> For using multi-processes batchers, the user has to add the <em>slot</em> and <em>position_in_slot</em> arguments in the <em>Agent.__call__</em> methods (this will be explained later, but can be ignored)
+<a href="#id13"><span class="problematic" id="id14">``</span></a><a href="#id15"><span class="problematic" id="id16">`</span></a></p>
+<dl>
+<dt>def create_env(seed=0,max_episode_steps=100):</dt><dd><p>envs=[]
+for k in range(4):</p>
+<blockquote>
+<div><p>e=MyEnv()
+e=TimeLimit(e, max_episode_steps=max_episode_steps)
+envs.append(e)</p>
+</div></blockquote>
+<p>return GymEnv(envs,seed=seed)</p>
+</dd>
+<dt>def create_agent(buffer=None,n_actions=None):</dt><dd><p># Here, the buffer argument must be specified
+return UniformAgent(buffer,n_actions)</p>
+</dd>
+</dl>
+<p><a href="#id17"><span class="problematic" id="id18">``</span></a><a href="#id19"><span class="problematic" id="id20">`</span></a></p>
+<p>Since we are using multi-process batchers, we have to switch to <em>spawn</em> mode.</p>
+<p><a href="#id21"><span class="problematic" id="id22">``</span></a>`
+if __name__ == “__main__”:</p>
+<blockquote>
+<div><p>import torch.multiprocessing as mp
+mp.set_start_method(“spawn”)</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">The</span> <span class="pre">**EpisodeBatcher**</span> <span class="pre">will</span> <span class="pre">sample</span> <span class="pre">full</span> <span class="pre">episodes</span> <span class="pre">(until</span> <span class="pre">the</span> <span class="pre">environment</span> <span class="pre">returns</span> <span class="pre">done==True)</span>
+<span class="pre">If</span> <span class="pre">one</span> <span class="pre">consider</span> <span class="pre">a</span> <span class="pre">rlstructures.VecEnv</span> <span class="pre">env,</span> <span class="pre">and</span> <span class="pre">n_threads</span> <span class="pre">(or</span> <span class="pre">processes),</span> <span class="pre">then</span> <span class="pre">the</span> <span class="pre">batcher</span> <span class="pre">will</span> <span class="pre">sample</span> <span class="pre">n_episodes</span> <span class="pre">=</span> <span class="pre">N</span> <span class="pre">*</span> <span class="pre">env.n_envs()*n_threads</span> <span class="pre">episodes</span> <span class="pre">at</span> <span class="pre">each</span> <span class="pre">execution</span> <span class="pre">(where</span> <span class="pre">N</span> <span class="pre">is</span> <span class="pre">chosen</span> <span class="pre">by</span> <span class="pre">the</span> <span class="pre">user)</span>
+<span class="pre">*</span> <span class="pre">*seeds*</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">environment</span> <span class="pre">seeds,</span> <span class="pre">one</span> <span class="pre">seed</span> <span class="pre">per</span> <span class="pre">process</span>
+<span class="pre">*</span> <span class="pre">The</span> <span class="pre">batcher</span> <span class="pre">has</span> <span class="pre">to</span> <span class="pre">be</span> <span class="pre">configured</span> <span class="pre">'at</span> <span class="pre">the</span> <span class="pre">right</span> <span class="pre">size'</span> <span class="pre">since</span> <span class="pre">all</span> <span class="pre">the</span> <span class="pre">processes</span> <span class="pre">are</span> <span class="pre">sharing</span> <span class="pre">a</span> <span class="pre">common</span> <span class="pre">*Buffer*</span> <span class="pre">to</span> <span class="pre">store</span> <span class="pre">trajectories</span>
+<span class="pre">*</span> <span class="pre">The</span> <span class="pre">simplest</span> <span class="pre">case</span> <span class="pre">is</span> <span class="pre">to</span> <span class="pre">choose</span> <span class="pre">*n_slots=maximun</span>&#160; <span class="pre">number</span> <span class="pre">of</span> <span class="pre">acquired</span> <span class="pre">episodes*</span> <span class="pre">and</span> <span class="pre">*n_timesteps=max</span> <span class="pre">size</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">episodes*.</span> <span class="pre">We</span> <span class="pre">will</span> <span class="pre">describe</span> <span class="pre">later</span> <span class="pre">the</span> <span class="pre">exact</span> <span class="pre">meaning</span> <span class="pre">of</span> <span class="pre">theses</span> <span class="pre">arguments.</span>
+<span class="pre">`</span></code></p>
+<blockquote>
+<div><dl class="simple">
+<dt>batcher=EpisodeBatcher(</dt><dd><p>n_timesteps=100,
+n_slots=128,
+n_threads=4,
+seeds=[1,2,3,4],
+create_agent=create_agent,
+agent_args={“n_actions”:2},
+create_env=create_env,
+env_args={“max_episode_steps”:100}</p>
+</dd>
+</dl>
+<p>)</p>
+</div></blockquote>
+<p><a href="#id23"><span class="problematic" id="id24">``</span></a><a href="#id25"><span class="problematic" id="id26">`</span></a></p>
+<p>Execution will start the acqusition process (such that some other computations can be done in parallel to the episodes acquisition).Since we will sample 32 episodes, we need to configure the 32 agents and 32 environments that will interact</p>
+<dl class="simple">
+<dt><a href="#id27"><span class="problematic" id="id28">``</span></a><a href="#id29"><span class="problematic" id="id30">`</span></a></dt><dd><p>agent_info=DictTensor({“agent_id”:torch.arange(32)})
+env_info=DictTensor({“env_id”:torch.arange(32)})</p>
+</dd>
+</dl>
+<p><a href="#id31"><span class="problematic" id="id32">``</span></a><a href="#id33"><span class="problematic" id="id34">`</span></a></p>
+<p>Running the batcher. It is a non-blocking function that launch the acqusition
+<a href="#id35"><span class="problematic" id="id36">``</span></a><a href="#id37"><span class="problematic" id="id38">`</span></a></p>
+<blockquote>
+<div><p>batcher.execute(n_episodes=32,agent_info=agent_info,env_info=env_info)</p>
+</div></blockquote>
+<p><a href="#id39"><span class="problematic" id="id40">``</span></a><a href="#id41"><span class="problematic" id="id42">`</span></a></p>
+<p>Getting episodes – not that get is a blocking function such that the process will wait until the end of the acquisition.
+<a href="#id43"><span class="problematic" id="id44">``</span></a><a href="#id45"><span class="problematic" id="id46">`</span></a></p>
+<blockquote>
+<div><p>trajectories=batcher.get()</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">*</span> <span class="pre">*get*</span> <span class="pre">can</span> <span class="pre">also</span> <span class="pre">be</span> <span class="pre">called</span> <span class="pre">in</span> <span class="pre">non-blocking</span> <span class="pre">mode</span> <span class="pre">*trajectories.get(blocking=Flase)*</span> <span class="pre">that</span> <span class="pre">wil</span> <span class="pre">return</span> <span class="pre">*None*</span> <span class="pre">if</span> <span class="pre">the</span> <span class="pre">acqusition</span> <span class="pre">process</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">terminated</span>
+<span class="pre">*</span> <span class="pre">the</span> <span class="pre">**reexecute**</span> <span class="pre">method</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">shortcut</span> <span class="pre">to</span> <span class="pre">call</span> <span class="pre">*execute*</span> <span class="pre">again</span> <span class="pre">with</span> <span class="pre">the</span> <span class="pre">same</span> <span class="pre">arguments</span>
+<span class="pre">`</span></code></p>
+<blockquote>
+<div><p>batcher.reexecute()
+trajectories=batcher.get()</p>
+</div></blockquote>
+<p><a href="#id47"><span class="problematic" id="id48">``</span></a><a href="#id49"><span class="problematic" id="id50">`</span></a></p>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
