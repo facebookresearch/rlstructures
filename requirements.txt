@@ -1,2 +1,6 @@
+torch 
+torchvision
 gym
 tensorboard
+hydra-core 
+omegaconf
