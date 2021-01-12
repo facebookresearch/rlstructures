@@ -1,0 +1,685 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rlstructures API &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Batchers" href="rlstructures.batchers.html" />
+    <link rel="prev" title="RLStructures API" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">RLStructures API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">rlstructures API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-rlstructures.dicttensor">DictTensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rlstructures.temporaldicttensor">TemporalDictTensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rlstructures.env">VecEnv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rlstructures.agent">Agent</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rlstructures.dicttensor.DictTensor">DictTensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rlstructures.dicttensor.masked_dicttensor">masked_dicttensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rlstructures.dicttensor.masked_tensor">masked_tensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor">TemporalDictTensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rlstructures.env.VecEnv">VecEnv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rlstructures.agent.Agent">Agent</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rlstructures.batchers.html">Batchers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rlstructures.env_wrappers.html">rlstructures.env_wrappers package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">RLStructures API</a> &raquo;</li>
+        
+      <li>rlstructures API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/rlstructures.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rlstructures-api">
+<h1>rlstructures API<a class="headerlink" href="#rlstructures-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-rlstructures.dicttensor">
+<span id="dicttensor"></span><h2>DictTensor<a class="headerlink" href="#module-rlstructures.dicttensor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="rlstructures.dicttensor.DictTensor">
+<em class="property">class </em><code class="sig-prename descclassname">rlstructures.dicttensor.</code><code class="sig-name descname">DictTensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.dicttensor.DictTensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary of torch.Tensor. The first dimension of each tensor is the batch dimension such that all tensors have the same
+batch dimension size.</p>
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.cat">
+<code class="sig-name descname">cat</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">rlstructures.dicttensor.DictTensor</a><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.cat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aggregate multiple packed tensors over the batch dimension</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tensors</strong> (<em>list</em>) – a list of tensors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.clone">
+<code class="sig-name descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">rlstructures.dicttensor.DictTensor</a><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clone the dicttensor by cloning all its tensors
+:rtype: DictTensor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.device">
+<code class="sig-name descname">device</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; torch.device<a class="headerlink" href="#rlstructures.dicttensor.DictTensor.device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the device of the tensors stored in the DictTensor.
+:rtype: torch.device</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.empty">
+<code class="sig-name descname">empty</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#rlstructures.dicttensor.DictTensor.empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is the DictTensor empty? (no tensors in it)
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keys</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">clone</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">rlstructures.dicttensor.DictTensor</a><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a DictTensor composed of a subset of the tensors specifed by their keys</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keys</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – The keys to keep in the new DictTensor</p></li>
+<li><p><strong>clone</strong> (<em>bool</em><em>, </em><em>optional</em>) – if True, the new DictTensor is composed of clone of the original tensors, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">DictTensor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">rlstructures.dicttensor.DictTensor</a><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>The same as self.slice(index)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.keys">
+<code class="sig-name descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Iterable<span class="p">[</span>str<span class="p">]</span><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the keys of the DictTensor (as an iterator)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.n_elems">
+<code class="sig-name descname">n_elems</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#rlstructures.dicttensor.DictTensor.n_elems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the size of size of the batch dimension (i.e the first dimension of the tensors)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.prepend_key">
+<code class="sig-name descname">prepend_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">_str</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">rlstructures.dicttensor.DictTensor</a><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.prepend_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new DictTensor where _str has been concatenated to all the keys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.set">
+<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">torch.Tensor</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a tensor to the DictTensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – the name of the tensor</p></li>
+<li><p><strong>value</strong> (<em>torch.Tensor</em>) – the tensor to add, with a correct batch
+dimension size</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.slice">
+<code class="sig-name descname">slice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_from</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">index_to</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">rlstructures.dicttensor.DictTensor</a><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dict tensor, keeping only batch dimensions between index_from and index_to+1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_from</strong> (<em>int</em>) – The first batch index to keep</p></li>
+<li><p><strong>index_to</strong> (<em>int</em><em>, </em><em>optional</em>) – The last+1 batch index to keep. If None, then just index_from is kept</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">DictTensor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.specs">
+<code class="sig-name descname">specs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.specs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the specifications of the dicttensor as a dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.to">
+<code class="sig-name descname">to</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device</span><span class="p">:</span> <span class="n">torch.device</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of the DictTensor on a new device (if needed)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.truncate_key">
+<code class="sig-name descname">truncate_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">_str</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">rlstructures.dicttensor.DictTensor</a><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.truncate_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new DictTensor where _str has been removed to all the keys that have _str as a prefix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.dicttensor.DictTensor.unfold">
+<code class="sig-name descname">unfold</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span><a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">rlstructures.dicttensor.DictTensor</a><span class="p">]</span><a class="headerlink" href="#rlstructures.dicttensor.DictTensor.unfold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of DictTensor, each DictTensor capturing one element of the batch dimension (i.e suc that n_elems()==1)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="rlstructures.dicttensor.masked_dicttensor">
+<code class="sig-prename descclassname">rlstructures.dicttensor.</code><code class="sig-name descname">masked_dicttensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dicttensor0</span></em>, <em class="sig-param"><span class="n">dicttensor1</span></em>, <em class="sig-param"><span class="n">mask</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.dicttensor.masked_dicttensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as <cite>masked_tensor</cite>, but for DictTensor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rlstructures.dicttensor.masked_tensor">
+<code class="sig-prename descclassname">rlstructures.dicttensor.</code><code class="sig-name descname">masked_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor0</span></em>, <em class="sig-param"><span class="n">tensor1</span></em>, <em class="sig-param"><span class="n">mask</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.dicttensor.masked_tensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a tensor by combining two tensors with a mask</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tensor0</strong> (<em>torch.Tensor</em>) – a Bx(N) tensor</p></li>
+<li><p><strong>tensor1</strong> (<em>torch.Tensor</em>) – a Bx(N) tensor</p></li>
+<li><p><strong>mask</strong> (<em>torch.Tensor</em>) – a B tensor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(1-m) * tensor 0 + m <a href="#id1"><span class="problematic" id="id2">*</span></a>tensor1 (averafging is made ine by line)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tensor0.dtype</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rlstructures.temporaldicttensor">
+<span id="temporaldicttensor"></span><h2>TemporalDictTensor<a class="headerlink" href="#module-rlstructures.temporaldicttensor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor">
+<em class="property">class </em><code class="sig-prename descclassname">rlstructures.temporaldicttensor.</code><code class="sig-name descname">TemporalDictTensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">from_dict</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>torch.Tensor<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">lengths</span><span class="p">:</span> <span class="n">torch.Tensor</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describe a batch of temporal tensors where:
+* each tensor has a name
+* each tensor is of size B x T x …., where B is the batch index, and T</p>
+<blockquote>
+<div><p>the time index</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>the length tensor gives the number of timesteps for each batch</p></li>
+</ul>
+<p>It is an extension of DictTensor where a temporal dimension has been added.
+The structure also allows dealing with batches of sequences of different
+sizes.</p>
+<p>Note that self.lengths returns a tensor of the lengths of each element of
+the batch.</p>
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.cat">
+<code class="sig-name descname">cat</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="rlstructures.temporaldicttensor.TemporalDictTensor">rlstructures.temporaldicttensor.TemporalDictTensor</a><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.cat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aggregate multiple packed tensors over the batch dimension</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tensors</strong> (<em>list</em>) – a list of tensors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.copy_">
+<code class="sig-name descname">copy_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">source_indexes</span></em>, <em class="sig-param"><span class="n">destination_indexes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.copy_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of a source TDT at given indexes to the current TDT at the specified indexes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.device">
+<code class="sig-name descname">device</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; torch.device<a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the device of the TemporalDictTensor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.expand">
+<code class="sig-name descname">expand</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_batch_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand a TemporalDictTensor to reach a given batch_size</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keys</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="rlstructures.temporaldicttensor.TemporalDictTensor">rlstructures.temporaldicttensor.TemporalDictTensor</a><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a subset of the TemporalDictTensor depending on the specifed keys</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keys</strong> (<em>iterable</em>) – the keys to keep in the new TemporalDictTensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="rlstructures.temporaldicttensor.TemporalDictTensor">rlstructures.temporaldicttensor.TemporalDictTensor</a><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the 1xT TemporalDictTensor for the specified batch index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.keys">
+<code class="sig-name descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Iterable<span class="p">[</span>str<span class="p">]</span><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the keys in the TemporalDictTensor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.mask">
+<code class="sig-name descname">mask</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a mask over sequences based on the length of each trajectory</p>
+<p>Considering that the TemporalDictTensor is of size B x T, the mask is
+a float tensor (0.0 or 1.0) of size BxT. A 0.0 value means that the
+value at b x t is not set in the TemporalDictTensor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.masked_temporal_index">
+<code class="sig-name descname">masked_temporal_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_t</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <span class="p">[</span>DictTensor<span class="p">, </span>torch.Tensor<span class="p">]</span><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.masked_temporal_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a DictTensor at time t along with a mapping vector
+Considering the TemporalDictTensor is of size BxT, the method returns
+a TemporalDictTensor of size B’xT and a tensor of size B’ where:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>only the B’ relevant dimension has been kept (depending on the</dt><dd><p>index_t &lt; self.lengths criterion)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>the mapping vector maps each of the B’ dimension to the B</dt><dd><p>dimension of the original TemporalDictTensor</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.n_elems">
+<code class="sig-name descname">n_elems</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.n_elems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of element in the TemporalDictTensor (i.e size of
+the first dimension of each tensor).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.shorten">
+<code class="sig-name descname">shorten</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="rlstructures.temporaldicttensor.TemporalDictTensor">rlstructures.temporaldicttensor.TemporalDictTensor</a><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.shorten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restrict the size of the variables (in term of timesteps) to provide the smallest
+possible tensors.</p>
+<p>If the TemporalDictTensor is of size B x T, considering that
+Tmax = self.lengths.max(), then it returns a TemporalDictTensor of size B x Tmax</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.slice">
+<code class="sig-name descname">slice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_from</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">index_to</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="rlstructures.temporaldicttensor.TemporalDictTensor">rlstructures.temporaldicttensor.TemporalDictTensor</a><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a slice (in the batch dimension)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.specs">
+<code class="sig-name descname">specs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.specs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.temporal_index">
+<code class="sig-name descname">temporal_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_t</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="rlstructures.temporaldicttensor.TemporalDictTensor">rlstructures.temporaldicttensor.TemporalDictTensor</a><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.temporal_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a DictTensor corresponding to the TemporalDictTensor at time
+index_t.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.temporal_multi_index">
+<code class="sig-name descname">temporal_multi_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_t</span><span class="p">:</span> <span class="n">torch.Tensor</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="rlstructures.temporaldicttensor.TemporalDictTensor">rlstructures.temporaldicttensor.TemporalDictTensor</a><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.temporal_multi_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a DictTensor corresponding to the TemporalDictTensor at time index_t</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.temporal_slice">
+<code class="sig-name descname">temporal_slice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_from</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">index_to</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="rlstructures.temporaldicttensor.TemporalDictTensor">rlstructures.temporaldicttensor.TemporalDictTensor</a><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.temporal_slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a slice (in the temporal dimension)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.to">
+<code class="sig-name descname">to</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device</span><span class="p">:</span> <span class="n">torch.device</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the TemporalDictTensor to the provided device (if
+needed).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.temporaldicttensor.TemporalDictTensor.unfold">
+<code class="sig-name descname">unfold</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span><a class="reference internal" href="#rlstructures.temporaldicttensor.TemporalDictTensor" title="rlstructures.temporaldicttensor.TemporalDictTensor">rlstructures.temporaldicttensor.TemporalDictTensor</a><span class="p">]</span><a class="headerlink" href="#rlstructures.temporaldicttensor.TemporalDictTensor.unfold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of TemporalDictTensor of size 1 x T</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rlstructures.env">
+<span id="vecenv"></span><h2>VecEnv<a class="headerlink" href="#module-rlstructures.env" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="rlstructures.env.VecEnv">
+<em class="property">class </em><code class="sig-prename descclassname">rlstructures.env.</code><code class="sig-name descname">VecEnv</code><a class="headerlink" href="#rlstructures.env.VecEnv" title="Permalink to this definition">¶</a></dt>
+<dd><p>An VecEnvironment corresponds to multiple ‘gym’ environments (i.e a batch)
+that are running simultaneously.</p>
+<p>At each timestep, upon the B environments, a subset B’ of envs are running
+(since some envs may have stopped).</p>
+<p>So each observation returned by the VecEnv is a DictTensor of size B’. To
+mark which environments that are still running, the observation is returned
+with a mapping vector of size B’. e.g [0,2,5] means that the observation 0
+corresponds to the env 0, the observation 1 corresponds to env 2, and the
+observation 3 corresponds to env 5.</p>
+<p>Finally, when running a step (at time t) method (over B’ running envs), the
+agent has to provide an action (DictTensor) of size B’. The VecEnv will return
+the next observation (time t+1) (size B’). But some of the B’ envs may have
+stopped at t+1, such that actually only B’’ envs are still running. The
+step method will thus also return a B’’ observation (and corresponding
+mapping).</p>
+<dl class="simple">
+<dt>The return of the step function is thus:</dt><dd><p>((DictTensor of size B’, tensor of size B’),
+(Dicttensor of size B’’, mapping vector if size B’’))</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="rlstructures.env.VecEnv.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.env.VecEnv.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate the environment</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.env.VecEnv.n_envs">
+<code class="sig-name descname">n_envs</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#rlstructures.env.VecEnv.n_envs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of environment instances contained in this env
+:rtype: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.env.VecEnv.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><em class="sig-param">env_info: rlstructures.dicttensor.DictTensor = &lt;rlstructures.dicttensor.DictTensor object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.env.VecEnv.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>reset the environments instances</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>env_info</strong> (<a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor"><em>DictTensor</em></a><em>, </em><em>optional</em>) – a DictTensor of size n_envs, such that each value will be transmitted to each environment instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.env.VecEnv.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">policy_output</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">rlstructures.dicttensor.DictTensor</a></span></em><span class="sig-paren">)</span> &#x2192; [[&lt;class ‘rlstructures.dicttensor.DictTensor’&gt;, &lt;class ‘torch.Tensor’&gt;], [&lt;class ‘rlstructures.dicttensor.DictTensor’&gt;, &lt;class ‘torch.Tensor’&gt;]]<a class="headerlink" href="#rlstructures.env.VecEnv.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute one step over alll the running environment instances</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>policy_output</strong> (<a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor"><em>DictTensor</em></a>) – the output given by the policy</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>see general description</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[[<a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">DictTensor</a>,torch.Tensor],[<a class="reference internal" href="#rlstructures.dicttensor.DictTensor" title="rlstructures.dicttensor.DictTensor">DictTensor</a>,torch.Tensor]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rlstructures.agent">
+<span id="agent"></span><h2>Agent<a class="headerlink" href="#module-rlstructures.agent" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="rlstructures.agent.Agent">
+<em class="property">class </em><code class="sig-prename descclassname">rlstructures.agent.</code><code class="sig-name descname">Agent</code><a class="headerlink" href="#rlstructures.agent.Agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describes an agent responsible for producing actions when receiving
+observations and agent states.</p>
+<p>At each time step, and agent receives observations (DictTensor of size B),
+and agent states (DictTensor of size B) that reflect the agent’s internal
+state.</p>
+<dl class="simple">
+<dt>It then returns a triplet:</dt><dd><dl class="simple">
+<dt>agent state when receiving the observation (DictTensor): it is the</dt><dd><p>agent state before computing anything. It is mainly used to
+initialize the state of the agent when facing initial states from the environment.</p>
+</dd>
+<dt>action (DictTensor): the action + and additional outputs produced by</dt><dd><p>the agent</p>
+</dd>
+<dt>next agent state (DictTensor): the new state of the agent after all</dt><dd><p>the computation. This value will then be provided to the agent at
+the next timestep.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="rlstructures.agent.Agent.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.agent.Agent.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate the agent</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.agent.Agent.require_history">
+<code class="sig-name descname">require_history</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.agent.Agent.require_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>if True, then the ‘history’ argument in the __call__ method will contain the set of previous transitions (e.g for transformers based policies)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rlstructures.agent.Agent.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">info</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rlstructures.agent.Agent.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the agent. For instance, may update the pytorch model of this agent</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rlstructures.batchers.html" class="btn btn-neutral float-right" title="Batchers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="RLStructures API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

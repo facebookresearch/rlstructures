@@ -1,0 +1,430 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Implementing Reinforce with rlstructures &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Evaluation of RL models in other processes" href="reinforce_with_evaluation.html" />
+    <link rel="prev" title="Tutorials" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Implementing Reinforce with rlstructures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-the-policy">Creating the policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-the-learning-loop">Creating the learning Loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#computing-the-reinforce-loss">Computing the Reinforce Loss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remarks">Remarks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main-function">Main function</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reinforce_with_evaluation.html">Evaluation of RL models in other processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="a2c.html">Implemeting Actor-Critic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recurrent_policy.html">Implemeting Recurrent Policies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">RLStructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Implementing Reinforce with rlstructures</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorial/reinforce.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="implementing-reinforce-with-rlstructures">
+<h1>Implementing Reinforce with rlstructures<a class="headerlink" href="#implementing-reinforce-with-rlstructures" title="Permalink to this headline">¶</a></h1>
+<p>We explain how we can quickly implement a REINFORCE algorithm working on multiple processes (see <cite>tutorial/tutorial_reinforce</cite>). Note that all the provided algorithms produce a tensorboard and CSV output.</p>
+<div class="section" id="creating-the-policy">
+<h2>Creating the policy<a class="headerlink" href="#creating-the-policy" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to create the pytorch model for both the policy and the baseline (in ‘agent.py’). We will use simple MLP with one hidden layer.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AgentModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; The model that computes one score per action</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_observations</span><span class="p">,</span> <span class="n">n_actions</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_observations</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_actions</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
+        <span class="n">score_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">probabilities_actions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">score_actions</span><span class="p">,</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">probabilities_actions</span>
+
+<span class="k">class</span> <span class="nc">BaselineModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; The model that computes V(s)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_observations</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_observations</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
+        <span class="n">critic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">critic</span>
+</pre></div>
+</div>
+<p>On top of that, we define an Agent that is using the <cite>AgentModel</cite>.We consider an agent that can work both in stochastic or deterministic model, depending on the provided <cite>agent_info</cite>. In addition, the agent will produce an <cite>agent_step</cite> field to keep track of the computations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ReinforceAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_actions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_actions</span> <span class="o">=</span> <span class="n">n_actions</span>
+
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">state_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span><span class="n">agent_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">history</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executing one step of the agent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Verify that the batch size is 1</span>
+        <span class="n">initial_state</span> <span class="o">=</span> <span class="n">observation</span><span class="p">[</span><span class="s2">&quot;initial_state&quot;</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">observation</span><span class="o">.</span><span class="n">n_elems</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">agent_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">agent_info</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;stochastic&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="kc">True</span><span class="p">])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">B</span><span class="p">)})</span>
+
+        <span class="c1">#We will store the agent step in the trajectories to illustrate how information can be propagated among multiple timesteps</span>
+        <span class="n">zero_step</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;agent_step&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()})</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># if state is None, it means that the agent does not have any internal state. The internal state thus has to be initialized</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">zero_step</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#We initialize the agent_step only for trajectory where an initial_state is met</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">masked_dicttensor</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">zero_step</span><span class="p">,</span><span class="n">observation</span><span class="p">[</span><span class="s2">&quot;initial_state&quot;</span><span class="p">])</span>
+        <span class="c1">#We compute one score per possible action</span>
+        <span class="n">action_proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">observation</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">])</span>
+
+        <span class="c1">#We sample an action following the distribution</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">action_proba</span><span class="p">)</span>
+        <span class="n">action_sampled</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+
+        <span class="c1">#Depending on the agent_info variable that tells us if we are in &#39;stochastic&#39; or &#39;deterministic&#39; mode, we keep the sampled action, or compute the action with the max score</span>
+        <span class="n">action_max</span> <span class="o">=</span> <span class="n">action_proba</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">smask</span><span class="o">=</span><span class="n">agent_info</span><span class="p">[</span><span class="s2">&quot;stochastic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+        <span class="n">action</span><span class="o">=</span><span class="n">masked_tensor</span><span class="p">(</span><span class="n">action_max</span><span class="p">,</span><span class="n">action_sampled</span><span class="p">,</span><span class="n">agent_info</span><span class="p">[</span><span class="s2">&quot;stochastic&quot;</span><span class="p">])</span>
+
+
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;agent_step&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;agent_step&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">})</span>
+
+        <span class="n">agent_do</span> <span class="o">=</span> <span class="n">DictTensor</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span> <span class="s2">&quot;action_probabilities&quot;</span><span class="p">:</span> <span class="n">action_proba</span><span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">agent_do</span><span class="p">,</span> <span class="n">new_state</span>
+</pre></div>
+</div>
+<p>Note that an <cite>Agent</cite> can produce any field in <cite>agent_do</cite> or <cite>agent_state</cite> but the produced field must be always the same, and of the same dimension.</p>
+</div>
+<div class="section" id="creating-the-learning-loop">
+<h2>Creating the learning Loop<a class="headerlink" href="#creating-the-learning-loop" title="Permalink to this headline">¶</a></h2>
+<p>To create the learning loop (see <cite>reinforce.py</cite>), the key element is the batcher which will sample episodes with multiple agents on multiple environments at the same time.
+We use an <cite>EpisodeBatcher</cite> in our case to sample complete episodes. Such a batcher needs multiple parameters when created, and more particularly the functions and argument to create an <cite>Agent</cite> and a <cite>rlstructures.VecEnv</cite>.
+These functions are usually declared in the main file (see <cite>main_reinforce.py</cite>) to avoid <cite>pickle</cite> problems in <cite>spawn</cite> multiprocessing mode.</p>
+<p>We create the batcher as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">=</span><span class="n">EpisodeBatcher</span><span class="p">(</span>
+        <span class="n">n_timesteps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;max_episode_steps&quot;</span><span class="p">],</span>
+        <span class="n">n_slots</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_envs&quot;</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_threads&quot;</span><span class="p">],</span>
+        <span class="n">create_agent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_agent</span><span class="p">,</span>
+        <span class="n">create_env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_env</span><span class="p">,</span>
+        <span class="n">env_args</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;n_envs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_envs&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;max_episode_steps&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;max_episode_steps&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;env_name&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;env_name&quot;</span><span class="p">]</span>
+        <span class="p">},</span>
+        <span class="n">agent_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;n_actions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_actions</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="p">},</span>
+        <span class="n">n_threads</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_threads&quot;</span><span class="p">],</span>
+        <span class="n">seeds</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;env_seed&quot;</span><span class="p">]</span><span class="o">+</span><span class="n">k</span><span class="o">*</span><span class="mi">10</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_threads&quot;</span><span class="p">])],</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>The <cite>n_timesteps</cite> is the maximum size of the episode. <cite>n_slots</cite> is the maximum number of episodes that will be acquired simultaneously. In our case, we are using environments that each contain <cite>n_envs</cite> gym instances, and <cite>n_threads</cite> processes such that <cite>n_envs * n_threads</cite> episodes will be sampled at each iteration.
+The <cite>seeds</cite> argument is used to choose the seed of the environment in each process, so we have as many seeds as <cite>n_threads</cite></p>
+<p>Now that we have a batcher, we can acquire <cite>n_episodes = n_envs * n_threads</cite> episodes through <cite>batcher.execute</cite>. Since <cite>n_episodes</cite> will be acquired simultaneously, we have to provide <cite>n_episodes</cite> agent information. In our case, we want all the agents to be in <cite>stochastic</cite> mode.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_episodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_envs&quot;</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_threads&quot;</span><span class="p">]</span>
+<span class="n">agent_info</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;stochastic&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="kc">True</span><span class="p">])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">n_episodes</span><span class="p">)})</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">n_episodes</span><span class="o">=</span><span class="n">n_episodes</span><span class="p">,</span><span class="n">agent_info</span><span class="o">=</span><span class="n">agent_info</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then episodes can be acquired as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trajectories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, the <cite>get</cite> function is in blocking mode, so the process will wait until the episodes have been acquired.</p>
+</div>
+<div class="section" id="computing-the-reinforce-loss">
+<h2>Computing the Reinforce Loss<a class="headerlink" href="#computing-the-reinforce-loss" title="Permalink to this headline">¶</a></h2>
+<p>Now, we have trajectories on which we can compute a loss. The trajectories are a <cite>TemporalDictTensor</cite>, and each episode may be of different length (see <cite>TemporalDictTensor.lengths</cite> and <cite>TemporalDictTensor.mask()</cite>)</p>
+<p>To compute the loss in REINFORCE, we first have to compute the cumulated discounted future reward. Note that the reward obtained by the action at time <cite>t</cite> is received in the observation at time <cite>t+1</cite>, and thus can be accessed throughg <cite>trajectories[“_reward”]</cite> (don’t forget that the prefix <cite>_</cite> corresponds to the state of the system at time <cite>t+1</cite>)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#First, we want to compute the cumulated reward per trajectory</span>
+<span class="c1">#The reward is a t+1 in each iteration (since it is btained after the aaction), so we use the &#39;_reward&#39; field in the trajectory</span>
+<span class="c1"># The &#39;reward&#39; field corresopnds to the reward at time t</span>
+<span class="n">reward</span><span class="o">=</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;_reward&quot;</span><span class="p">]</span>
+
+<span class="c1">#We get the mask that tells which transition is in a trajectory (1) or not (0)</span>
+<span class="n">mask</span><span class="o">=</span><span class="n">trajectories</span><span class="o">.</span><span class="n">mask</span><span class="p">()</span>
+
+<span class="c1">#We remove the reward values that are not in the trajectories</span>
+<span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="o">*</span><span class="n">mask</span>
+
+<span class="c1">#We compute the future cumulated reward at each timestep (by reverse computation)</span>
+<span class="n">max_length</span><span class="o">=</span><span class="n">trajectories</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">cumulated_reward</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+<span class="n">cumulated_reward</span><span class="p">[:,</span><span class="n">max_length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">reward</span><span class="p">[:,</span><span class="n">max_length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">cumulated_reward</span><span class="p">[:,</span><span class="n">t</span><span class="p">]</span><span class="o">=</span><span class="n">reward</span><span class="p">[:,</span><span class="n">t</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;discount_factor&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">cumulated_reward</span><span class="p">[:,</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now, we have to compute the action probabilities to be able to compute the gradient:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">action_probabilities</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span><span class="p">):</span>
+    <span class="n">proba</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_model</span><span class="p">(</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">][:,</span><span class="n">t</span><span class="p">])</span>
+    <span class="n">action_probabilities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proba</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># We append the probability, and introduces the temporal dimension (2nde dimension)</span>
+<span class="n">action_probabilities</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">action_probabilities</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Now, we have a B x T x n_actions tensor</span>
+</pre></div>
+</div>
+<p>And the same for the baseline:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">baseline</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span><span class="p">):</span>
+    <span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">baseline_model</span><span class="p">(</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">][:,</span><span class="n">t</span><span class="p">])</span>
+    <span class="n">baseline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">baseline</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">baseline</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Now, we have a B x T tensor</span>
+</pre></div>
+</div>
+<p>At last, we can compute the baseline loss, the reinforce loss and the entropy loss easily (but don’t forget to use the mask to consider only elements that are in each episodes since the episodes are of variable length)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#We compute the baseline loss</span>
+<span class="n">baseline_loss</span><span class="o">=</span><span class="p">(</span><span class="n">baseline</span><span class="o">-</span><span class="n">cumulated_reward</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="c1">#We sum the loss for each episode (considering the mask)</span>
+<span class="n">baseline_loss</span><span class="o">=</span> <span class="p">(</span><span class="n">baseline_loss</span><span class="o">*</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#We average the loss over all the trajectories</span>
+<span class="n">avg_baseline_loss</span> <span class="o">=</span> <span class="n">baseline_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1">#We do the same on the reinforce loss</span>
+<span class="n">action_distribution</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">action_probabilities</span><span class="p">)</span>
+<span class="n">log_proba</span><span class="o">=</span><span class="n">action_distribution</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">])</span>
+<span class="n">reinforce_loss</span> <span class="o">=</span> <span class="n">log_proba</span> <span class="o">*</span> <span class="p">(</span><span class="n">cumulated_reward</span><span class="o">-</span><span class="n">baseline</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+<span class="n">reinforce_loss</span> <span class="o">=</span> <span class="p">(</span><span class="n">reinforce_loss</span><span class="o">*</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">avg_reinforce_loss</span><span class="o">=</span><span class="n">reinforce_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1">#We compute the entropy loss</span>
+<span class="n">entropy</span><span class="o">=</span><span class="n">action_distribution</span><span class="o">.</span><span class="n">entropy</span><span class="p">()</span>
+<span class="n">entropy</span><span class="o">=</span><span class="p">(</span><span class="n">entropy</span><span class="o">*</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">avg_entropy</span><span class="o">=</span><span class="n">entropy</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="remarks">
+<h2>Remarks<a class="headerlink" href="#remarks" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Note that, once the model is updated, the parameters of the model have to be transmitted to the batcher since the batcher is running in another process.</p></li>
+<li><p>Note also that, easily, the loss computation can be made on GPU (running batcher on GPUs is more complicated)</p></li>
+</ul>
+</div>
+<div class="section" id="main-function">
+<h2>Main function<a class="headerlink" href="#main-function" title="Permalink to this headline">¶</a></h2>
+<p>Now, we can write the main function (see <cite>main_reinforce.py</cite>)</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reinforce_with_evaluation.html" class="btn btn-neutral float-right" title="Evaluation of RL models in other processes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

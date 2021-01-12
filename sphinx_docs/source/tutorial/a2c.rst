@@ -1,0 +1,118 @@
+Implemeting Actor-Critic
+==========================================
+
+The previous REINFORCE implementation can be easily adapted to actor-critic. The main differences are:
+1) we just need to acquire N steps at each iteration (instead of complete episodes)
+2) the loss will be using the temporal differences
+
+
+The Batcher
+-----------
+
+Since we do not need to acquire complete episodes, we will use the simple `Batcher`:
+
+.. code-block:: python
+
+        #We create a batcher dedicated to evaluation
+
+        self.train_batcher=Batcher(
+            n_timesteps=self.config["a2c_timesteps"],
+            n_slots=self.config["n_envs"]*self.config["n_threads"],
+            create_agent=self._create_agent,
+            create_env=self._create_env,
+            env_args={
+                "n_envs": self.config["n_envs"],
+                "max_episode_steps": self.config["max_episode_steps"],
+                "env_name":self.config["env_name"]
+            },
+            agent_args={"n_actions": self.n_actions, "model": model},
+            n_threads=self.config["n_threads"],
+            seeds=[self.config["env_seed"]+k*10 for k in range(self.config["n_threads"])],
+        )
+
+In our case, the batcher is configured to acquired `n_timesteps` steps at each call (instead of complete episodes).
+
+It will work has follows:
+
+1) at `reset`, the batcher will initialize `n_envs * n_threads` agents (one agent per environment)
+
+.. code-block:: python
+
+    self.train_batcher.reset(agent_info=agent_info)
+
+2) at `execute`, the batcher will launch the acquisition of the `n_timesteps` steps
+
+.. code-block:: python
+
+            self.train_batcher.execute()
+            trajectories=self.train_batcher.get(blocking=True)
+
+3) at `get`, the batcher will return the acquired trajectories
+
+.. code-block:: python
+
+                if trajectories is None: #All the agents have finished their jobs on the previous episodes:
+                #Then, reset  again to start new episodes
+                n_episodes=self.config["n_envs"]*self.config["n_threads"]
+                agent_info=DictTensor({"stochastic":torch.tensor([True]).repeat(n_episodes)})
+                self.train_batcher.reset(agent_info=agent_info)
+                self.train_batcher.execute()
+                trajectories=self.train_batcher.get(blocking=True)
+
+
+Note that, at each call, some of the `n_envs * n_threads` environments may be terminated. In that case, the batcher will only return trajectories over the running environments.
+At last, if `get` returns `None`, it means that the `n_envs * n_threads` have terminated, and the batcher has to be `reset` again.
+
+
+Computing A2C loss
+------------------
+
+Now, the computation involved the computation of the critic value at all timestep of the acquired trajectory, but also at the last acquired observation.
+
+The computation of the critic at each timestep can be computed as:
+
+.. code-block:: python
+
+            critic=[]
+            for t in range(max_length):
+                b=self.critic_model(trajectories["frame"][:,t])
+                critic.append(b.unsqueeze(1))
+
+We need one more space to compute the value at time `T+1` (or at the end of the episode if the episode is finishing in these trajectories)
+
+.. code-block:: python
+
+            critic=torch.cat(critic+[b.unsqueeze(1)],dim=1).squeeze(-1) #Now, we have a B x (T+1) tensor
+
+            #We also need to compute the critic value at for the last observation of the trajectories (to compute the TD)
+            # It may be the last element of the trajectories (if episode is not finished), or on the last frame of the episode
+            idx=torch.arange(trajectories.n_elems())
+            last_critic=self.critic_model(trajectories["_frame"][idx,trajectories.lengths-1]).squeeze(-1)
+            critic[idx,trajectories.lengths]=last_critic
+
+
+No, the following is similar to REINFORCE
+
+Speeding-up A2C with Infinite Environments
+------------------------------------------
+
+In the previous version, when acquiring trajectories, some environments may be terminated. To avoid wasting time, we can auto-reset the terminated environment. This can be done very easily by using a `GymEnvInf` instead of a `GymEnv` in the `main` function.
+
+.. code-block:: python
+
+def create_env(n_envs, env_name=None, max_episode_steps=None, seed=None):
+    envs=[]
+    for k in range(n_envs):
+        e = create_gym_env(env_name)
+        e = TimeLimit(e, max_episode_steps=max_episode_steps)
+        envs.append(e)
+    return GymEnv(envs, seed)
+
+
+def create_train_env(n_envs, env_name=None, max_episode_steps=None, seed=None):
+    envs=[]
+    for k in range(n_envs):
+        e = create_gym_env(env_name)
+        e = TimeLimit(e, max_episode_steps=max_episode_steps)
+        envs.append(e)
+    return GymEnvInf(envs, seed)

@@ -1,0 +1,24 @@
+environment:
+  env_name: CartPole-v0
+
+n_envs: 4
+max_episode_steps: 100
+discount_factor: 0.9
+logdir: ./log
+lr: 0.01
+n_threads: 4
+n_evaluation_threads: 4       
+n_evaluation_rollouts: 64
+time_limit: 360
+coef_critic: 1.0
+coef_entropy: 0.01
+coef_a2c: 1.0
+env_seed: 42
+gae_lambda: 0.0
+clip_grad: 2
+learner_device: "cpu"
+evaluation_mode: "stochastic"
+verbose: True
+
+model:
+  hidden_size: 16

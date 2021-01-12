@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Overview &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="gettingstarted/index.html" />
+    <link rel="prev" title="rlstructures" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tl-dr">TL;DR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-what">Why/What?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#learning-to-use-rlstructures">Learning to use rlstructures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-by-step-implementation-of-classical-algorithms">Step-by-Step implementation of classical algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#provided-algorithms-as-examples">Provided algorithms (as examples)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#citing">Citing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">RLStructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Overview</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tl-dr">
+<h2>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">¶</a></h2>
+<p><cite>rlstructures</cite> is a lightweight Python library that provides simple APIs as well as data structures that make as little assumptions as possible on the structure of your agent or your task while allowing for transparently executing multiple policies on multiple environments in parallel (incl. multiple GPUs).</p>
+</div>
+<div class="section" id="why-what">
+<h2>Why/What?<a class="headerlink" href="#why-what" title="Permalink to this headline">¶</a></h2>
+<p>RL research addresses multiple aspects of RL like hierarchical policies, option-based policies, goal-oriented policies, structured input/output spaces, transformers-based policies, … and there are currently only few tools to handle this diversity of research projects.</p>
+<p>We propose <cite>rlstructures</cite> as a way to:</p>
+<ul class="simple">
+<li><p>Simulate multiple policies, multiple models and multiple environments simultaneously at scale</p></li>
+<li><p>Define complex loss functions</p></li>
+<li><p>Quickly implement various policies architectures.</p></li>
+</ul>
+<p>The main RLStructures principle is that the users delegate to the library the sampling of trajectories and episodes such that they will spend most of their time on the interesting part of RL research: developing new models and algorithms.</p>
+<p><cite>rlstructures</cite> is easy to use: it has very few simple interfaces that can be learned in one hour by reading the tutorials. It comes with multiple RL algorithms as examples including A2C, PPO, DDQN and SAC. Besides, there are 5 projects already using it (Multitask RL, Exploration, Diversity in RL, Optimization, …) and helping each other.
+Please reach out to us if you intend to use it. We will be happy to help, and potentially to implement missing functionalities.</p>
+</div>
+<div class="section" id="learning-to-use-rlstructures">
+<h2>Learning to use rlstructures<a class="headerlink" href="#learning-to-use-rlstructures" title="Permalink to this headline">¶</a></h2>
+<p>Learning <cite>rlstructures</cite> can be made in a very few hours (from the feedback from multiple users). It involves the following steps (see the <cite>getting started</cite> Section)</p>
+<ul class="simple">
+<li><p>Learning about <strong>DictTensor</strong> and <strong>TemporalDictTensor</strong> that are the two data structures used everywhere in RLStructures <strong>(15 minutes)</strong></p></li>
+<li><p>Learning about mapping a Gym Environment to a <strong>RLStructure Environment</strong> <strong>(5 minutes)</strong></p></li>
+<li><p>Learning about the <strong>Agent API</strong> allowing one to implement any agent, including recurrent agents <strong>(30 minutes)</strong>. Note that an agent mayy be parameterized such that one implementation may corresponds to different agents.</p></li>
+<li><p>Learning about creating and using <strong>multi-processes batchers</strong> (i.e Batcher and EpisodeBatcher) <strong>(15 minutes)</strong>  – see [Episode Batcher Tutorial](doc/MultiProcessEpisodeBatcher.md) and [Trajectory Batcher Tutorial](doc/MultiProcessTrajectoryBatcher.md). These batchers are the core objects that will allow you to work at scale.</p></li>
+</ul>
+<p>Now, you can execute a complex policy over an environment in a multi-thread way, and get a simple data structure as an output on which you can compute any complex loss and gradients.</p>
+</div>
+<div class="section" id="step-by-step-implementation-of-classical-algorithms">
+<h2>Step-by-Step implementation of classical algorithms<a class="headerlink" href="#step-by-step-implementation-of-classical-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>We also propose a step-by-step tutorial to implement both REINFORCE, and A2C with a simple and a recurrent policy (see <cite>tutorial</cite> section). Following this tutorial will help you to understand the basis of <cite>rlstructures</cite></p>
+<p><strong>Now, you are ready to implement your own algorithms.</strong></p>
+</div>
+<div class="section" id="provided-algorithms-as-examples">
+<h2>Provided algorithms (as examples)<a class="headerlink" href="#provided-algorithms-as-examples" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>We provide multiple implementations of RL algorithms in the <cite>rlaglos</cite> package as illustrative examples. Note that these algorithms have been benchmarked on simple environments only.</dt><dd><ul class="simple">
+<li><p>A2C for discrete action space (using recurrent or not recurrent architectures) with GAE (i.e including REINFORCE)</p></li>
+<li><p>PPO for discrete action space (using recurrent or not recurrent architectures)</p></li>
+<li><p>Dueling DQN for discrete action space (using not recurrent architectures)</p></li>
+<li><p>SAC for continuous action space (using not recurrent architectures)</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+<p>Contributions to <cite>rlstructures</cite> are greatly appreciated! Particularly:
+1) new algorithms
+2) execution of batchers over remote computers
+3) API simplification
+4) …….</p>
+</div>
+<div class="section" id="citing">
+<h2>Citing<a class="headerlink" href="#citing" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@misc</span><span class="p">{</span><span class="nl">rlstructures</span><span class="p">,</span>
+    <span class="na">author</span> <span class="p">=</span> <span class="s">{L. Denoyer, D. Rothermel and X. Martinet}</span><span class="p">,</span>
+    <span class="na">title</span> <span class="p">=</span> <span class="s">{{RLStructures - A simple library for RL research}}</span><span class="p">,</span>
+    <span class="na">year</span> <span class="p">=</span> <span class="s">{2021}</span><span class="p">,</span>
+    <span class="na">publisher</span> <span class="p">=</span> <span class="s">{GitHub}</span><span class="p">,</span>
+    <span class="na">journal</span> <span class="p">=</span> <span class="s">{GitHub repository}</span><span class="p">,</span>
+    <span class="na">howpublished</span> <span class="p">=</span> <span class="s">{\url{https://GitHub.com/FacebookResearch/rlstructures}}</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p><code class="code docutils literal notranslate"><span class="pre">RLStructures</span></code> is released under the MIT license. See <a class="reference external" href="https://github.com/facebookresearch/rlstructures/blob/master/LICENSE">LICENSE</a> for additional details about it, as well as our <a class="reference external" href="https://opensource.facebook.com/legal/terms">Terms of Use</a> and <a class="reference external" href="https://opensource.facebook.com/legal/privacy">Privacy Policy</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gettingstarted/index.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="rlstructures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

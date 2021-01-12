@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Implemeting Recurrent Policies &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Provided Algorithms" href="../algorithms/index.html" />
+    <link rel="prev" title="Implemeting Actor-Critic" href="a2c.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="reinforce.html">Implementing Reinforce with rlstructures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reinforce_with_evaluation.html">Evaluation of RL models in other processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="a2c.html">Implemeting Actor-Critic</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Implemeting Recurrent Policies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adapting-the-loss-function">Adapting the loss function</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">RLStructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Implemeting Recurrent Policies</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorial/recurrent_policy.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="implemeting-recurrent-policies">
+<h1>Implemeting Recurrent Policies<a class="headerlink" href="#implemeting-recurrent-policies" title="Permalink to this headline">¶</a></h1>
+<p>We explain how to implement recurrent policies. We need first a reccurent model for the policy and the critic:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AgentModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; The model that computes one score per action</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_observations</span><span class="p">,</span> <span class="n">n_actions</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_observations</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear_state</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear_z</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_actions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span><span class="o">=</span><span class="n">n_hidden</span>
+
+    <span class="k">def</span> <span class="nf">initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">B</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span><span class="n">frame</span><span class="p">):</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
+        <span class="n">state</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear_state</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear_z</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">frame</span><span class="p">,</span><span class="n">state</span><span class="p">],</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="n">score_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">probabilities_actions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">score_actions</span><span class="p">,</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span><span class="p">,</span><span class="n">probabilities_actions</span>
+
+<span class="k">class</span> <span class="nc">BaselineModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; The model that computes V(s)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_observations</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_observations</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear_state</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear_z</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
+        <span class="n">state</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear_state</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear_z</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">frame</span><span class="p">,</span><span class="n">state</span><span class="p">],</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="n">critic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span><span class="p">,</span><span class="n">critic</span>
+</pre></div>
+</div>
+<p>On top of that, we will adapt our Agent as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">RecurrentAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_actions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_actions</span> <span class="o">=</span> <span class="n">n_actions</span>
+
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">state_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span><span class="n">agent_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">history</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executing one step of the agent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Verify that the batch size is 1</span>
+        <span class="n">initial_state</span> <span class="o">=</span> <span class="n">observation</span><span class="p">[</span><span class="s2">&quot;initial_state&quot;</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">observation</span><span class="o">.</span><span class="n">n_elems</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">agent_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">agent_info</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;stochastic&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="kc">True</span><span class="p">])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">B</span><span class="p">)})</span>
+
+        <span class="c1"># Create the initial state of the recurrent policy</span>
+        <span class="n">agent_initial</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">initial_state</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span> <span class="c1"># If the batcher is starting</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;agent_state&quot;</span><span class="p">:</span><span class="n">agent_initial</span><span class="p">,</span><span class="s2">&quot;agent_step&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#Maybe some observations are initial states of new episodes. For these state, we must initialize the internal state of the policy</span>
+            <span class="n">istate</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;agent_state&quot;</span><span class="p">:</span><span class="n">agent_initial</span><span class="p">,</span><span class="s2">&quot;agent_step&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()})</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">masked_dicttensor</span><span class="p">(</span><span class="n">istate</span><span class="p">,</span><span class="n">state</span><span class="p">,</span><span class="n">initial_state</span><span class="p">)</span>
+
+
+        <span class="n">new_z</span><span class="p">,</span><span class="n">action_proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;agent_state&quot;</span><span class="p">],</span><span class="n">observation</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">])</span>
+
+        <span class="c1">#We sample an action following the distribution</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">action_proba</span><span class="p">)</span>
+        <span class="n">action_sampled</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+
+        <span class="c1">#Depending on the agent_info variable that tells us if we are in &#39;stochastic&#39; or &#39;deterministic&#39; mode, we keep the sampled action, or compute the action with the max score</span>
+        <span class="n">action_max</span> <span class="o">=</span> <span class="n">action_proba</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">smask</span><span class="o">=</span><span class="n">agent_info</span><span class="p">[</span><span class="s2">&quot;stochastic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+        <span class="n">action</span><span class="o">=</span><span class="n">masked_tensor</span><span class="p">(</span><span class="n">action_max</span><span class="p">,</span><span class="n">action_sampled</span><span class="p">,</span><span class="n">agent_info</span><span class="p">[</span><span class="s2">&quot;stochastic&quot;</span><span class="p">])</span>
+
+
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;agent_state&quot;</span><span class="p">:</span><span class="n">new_z</span><span class="p">,</span><span class="s2">&quot;agent_step&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;agent_step&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">})</span>
+
+        <span class="n">agent_do</span> <span class="o">=</span> <span class="n">DictTensor</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span> <span class="s2">&quot;action_probabilities&quot;</span><span class="p">:</span> <span class="n">action_proba</span><span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">agent_do</span><span class="p">,</span> <span class="n">new_state</span>
+</pre></div>
+</div>
+<div class="section" id="adapting-the-loss-function">
+<h2>Adapting the loss function<a class="headerlink" href="#adapting-the-loss-function" title="Permalink to this headline">¶</a></h2>
+<p>The A2C loss function needs to be adapted to this particular agent in the way the action probabilities and critic values are computed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">action_probabilities</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">agent_state</span><span class="o">=</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;agent_state&quot;</span><span class="p">][:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span><span class="p">):</span>
+    <span class="n">agent_state</span><span class="p">,</span><span class="n">proba</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_model</span><span class="p">(</span><span class="n">agent_state</span><span class="p">,</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">][:,</span><span class="n">t</span><span class="p">])</span>
+    <span class="n">action_probabilities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proba</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># We append the probability, and introduces the temporal dimension (2nde dimension)</span>
+<span class="n">action_probabilities</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">action_probabilities</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Now, we have a B x T x n_actions tensor</span>
+
+<span class="c1">#We compute the critic value for t=0 to T (i.e including the very last observation)</span>
+<span class="n">critic</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">agent_state</span><span class="o">=</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;agent_state&quot;</span><span class="p">][:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span><span class="p">):</span>
+    <span class="n">agent_state</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_model</span><span class="p">(</span><span class="n">agent_state</span><span class="p">,</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">][:,</span><span class="n">t</span><span class="p">])</span>
+    <span class="n">critic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">critic</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">critic</span><span class="o">+</span><span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Now, we have a B x (T+1) tensor</span>
+<span class="c1">#We also need to compute the critic value at for the last observation of the trajectories (to compute the TD)</span>
+<span class="c1"># It may be the last element of the trajectories (if episode is not finished), or on the last frame of the episode</span>
+<span class="n">idx</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">trajectories</span><span class="o">.</span><span class="n">n_elems</span><span class="p">())</span>
+<span class="n">_</span><span class="p">,</span><span class="n">last_critic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_model</span><span class="p">(</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;_agent_state&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span><span class="n">trajectories</span><span class="o">.</span><span class="n">lengths</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;_frame&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span><span class="n">trajectories</span><span class="o">.</span><span class="n">lengths</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">last_critic</span><span class="o">=</span><span class="n">last_critic</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">critic</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="n">trajectories</span><span class="o">.</span><span class="n">lengths</span><span class="p">]</span><span class="o">=</span><span class="n">last_critic</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../algorithms/index.html" class="btn btn-neutral float-right" title="Provided Algorithms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="a2c.html" class="btn btn-neutral float-left" title="Implemeting Actor-Critic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Implemeting Actor-Critic &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Implemeting Recurrent Policies" href="recurrent_policy.html" />
+    <link rel="prev" title="Evaluation of RL models in other processes" href="reinforce_with_evaluation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="reinforce.html">Implementing Reinforce with rlstructures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reinforce_with_evaluation.html">Evaluation of RL models in other processes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Implemeting Actor-Critic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-batcher">The Batcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#computing-a2c-loss">Computing A2C loss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#speeding-up-a2c-with-infinite-environments">Speeding-up A2C with Infinite Environments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="recurrent_policy.html">Implemeting Recurrent Policies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">RLStructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Implemeting Actor-Critic</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorial/a2c.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="implemeting-actor-critic">
+<h1>Implemeting Actor-Critic<a class="headerlink" href="#implemeting-actor-critic" title="Permalink to this headline">¶</a></h1>
+<p>The previous REINFORCE implementation can be easily adapted to actor-critic. The main differences are:
+1) we just need to acquire N steps at each iteration (instead of complete episodes)
+2) the loss will be using the temporal differences</p>
+<div class="section" id="the-batcher">
+<h2>The Batcher<a class="headerlink" href="#the-batcher" title="Permalink to this headline">¶</a></h2>
+<p>Since we do not need to acquire complete episodes, we will use the simple <cite>Batcher</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#We create a batcher dedicated to evaluation</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">=</span><span class="n">Batcher</span><span class="p">(</span>
+    <span class="n">n_timesteps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;a2c_timesteps&quot;</span><span class="p">],</span>
+    <span class="n">n_slots</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_envs&quot;</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_threads&quot;</span><span class="p">],</span>
+    <span class="n">create_agent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_agent</span><span class="p">,</span>
+    <span class="n">create_env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_env</span><span class="p">,</span>
+    <span class="n">env_args</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;n_envs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_envs&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;max_episode_steps&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;max_episode_steps&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;env_name&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;env_name&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="n">agent_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;n_actions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_actions</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="p">},</span>
+    <span class="n">n_threads</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_threads&quot;</span><span class="p">],</span>
+    <span class="n">seeds</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;env_seed&quot;</span><span class="p">]</span><span class="o">+</span><span class="n">k</span><span class="o">*</span><span class="mi">10</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_threads&quot;</span><span class="p">])],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>In our case, the batcher is configured to acquired <cite>n_timesteps</cite> steps at each call (instead of complete episodes).</p>
+<p>It will work has follows:</p>
+<ol class="arabic simple">
+<li><p>at <cite>reset</cite>, the batcher will initialize <cite>n_envs * n_threads</cite> agents (one agent per environment)</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">agent_info</span><span class="o">=</span><span class="n">agent_info</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>at <cite>execute</cite>, the batcher will launch the acquisition of the <cite>n_timesteps</cite> steps</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+<span class="n">trajectories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>at <cite>get</cite>, the batcher will return the acquired trajectories</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">trajectories</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="c1">#All the agents have finished their jobs on the previous episodes:</span>
+<span class="c1">#Then, reset  again to start new episodes</span>
+<span class="n">n_episodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_envs&quot;</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;n_threads&quot;</span><span class="p">]</span>
+<span class="n">agent_info</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;stochastic&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="kc">True</span><span class="p">])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">n_episodes</span><span class="p">)})</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">agent_info</span><span class="o">=</span><span class="n">agent_info</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+<span class="n">trajectories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_batcher</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that, at each call, some of the <cite>n_envs * n_threads</cite> environments may be terminated. In that case, the batcher will only return trajectories over the running environments.
+At last, if <cite>get</cite> returns <cite>None</cite>, it means that the <cite>n_envs * n_threads</cite> <cite>n_envs * n_threads</cite> have terminated, and the batcher has to be <cite>reset</cite> again.</p>
+</div>
+<div class="section" id="computing-a2c-loss">
+<h2>Computing A2C loss<a class="headerlink" href="#computing-a2c-loss" title="Permalink to this headline">¶</a></h2>
+<p>Now, the computation involved the computation of the critic value at all timestep of the acquired trajectory, but also at the last acquired observation.</p>
+<p>The computation of the critic at each timestep can be computed as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">critic</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span><span class="p">):</span>
+    <span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_model</span><span class="p">(</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">][:,</span><span class="n">t</span><span class="p">])</span>
+    <span class="n">critic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We need one more space to compute the value at time <cite>T+1</cite> (or at the end of the episode if the episode is finishing in these trajectories)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">critic</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">critic</span><span class="o">+</span><span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Now, we have a B x (T+1) tensor</span>
+
+<span class="c1">#We also need to compute the critic value at for the last observation of the trajectories (to compute the TD)</span>
+<span class="c1"># It may be the last element of the trajectories (if episode is not finished), or on the last frame of the episode</span>
+<span class="n">idx</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">trajectories</span><span class="o">.</span><span class="n">n_elems</span><span class="p">())</span>
+<span class="n">last_critic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_model</span><span class="p">(</span><span class="n">trajectories</span><span class="p">[</span><span class="s2">&quot;_frame&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span><span class="n">trajectories</span><span class="o">.</span><span class="n">lengths</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">critic</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="n">trajectories</span><span class="o">.</span><span class="n">lengths</span><span class="p">]</span><span class="o">=</span><span class="n">last_critic</span>
+</pre></div>
+</div>
+<p>No, the following is similar to REINFORCE</p>
+</div>
+<div class="section" id="speeding-up-a2c-with-infinite-environments">
+<h2>Speeding-up A2C with Infinite Environments<a class="headerlink" href="#speeding-up-a2c-with-infinite-environments" title="Permalink to this headline">¶</a></h2>
+<p>In the previous version, when acquiring trajectories, some environments may be terminated. To avoid wasting time, we can auto-reset the terminated environment. This can be done very easily by using a <cite>GymEnvInf</cite> instead of a <cite>GymEnv</cite> in the <cite>main</cite> function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<dl>
+<dt>def create_env(n_envs, env_name=None, max_episode_steps=None, seed=None):</dt><dd><p>envs=[]
+for k in range(n_envs):</p>
+<blockquote>
+<div><p>e = create_gym_env(env_name)
+e = TimeLimit(e, max_episode_steps=max_episode_steps)
+envs.append(e)</p>
+</div></blockquote>
+<p>return GymEnv(envs, seed)</p>
+</dd>
+<dt>def create_train_env(n_envs, env_name=None, max_episode_steps=None, seed=None):</dt><dd><p>envs=[]
+for k in range(n_envs):</p>
+<blockquote>
+<div><p>e = create_gym_env(env_name)
+e = TimeLimit(e, max_episode_steps=max_episode_steps)
+envs.append(e)</p>
+</div></blockquote>
+<p>return GymEnvInf(envs, seed)</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="recurrent_policy.html" class="btn btn-neutral float-right" title="Implemeting Recurrent Policies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="reinforce_with_evaluation.html" class="btn btn-neutral float-left" title="Evaluation of RL models in other processes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

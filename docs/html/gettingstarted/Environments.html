@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Environments &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Agents/Policies" href="Agent.html" />
+    <link rel="prev" title="Data Structures" href="DataStructures.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DataStructures.html">Data Structures</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Environments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-from-gym-environments">Creating from Gym Environments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-know-more-about-rlstructures-vecenv">To know more about rlstructures.VecEnv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interacting-with-the-environment">Interacting with the Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Agent.html">Agents/Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Batchers.html">Batchers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MultiProcessEpisodeBatcher.html">Multiprocess Episode Batcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MultiProcessTrajectoryBatcher.html">Multiprocess Batcher</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">RLStructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Getting Started</a> &raquo;</li>
+        
+      <li>Environments</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gettingstarted/Environments.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="environments">
+<h1>Environments<a class="headerlink" href="#environments" title="Permalink to this headline">¶</a></h1>
+<p>In <cite>rlstructures</cite>, an environment is an instance of <cite>rlstructures.VecEnv</cite>.</p>
+<p>A <cite>rlstructures.VecEnv</cite> represents <cite>VecEnv.n_envs()</cite> simple environments at once.</p>
+<p>Conceptually, a <cite>VecEnv.step</cite> methods takes as an input an <cite>action</cite> (as a <cite>DictTensor</cite>) and returns an obervation (as a <cite>DictTensor</cite>).</p>
+<p>In practice the return type of the <cite>VecEnv.step</cite> returns a more complicated structure (that you don’t need to understand if you don’t intend to create your own environments or are usiing the openAI gym interface)</p>
+<p>Note that typically, the observation may contain the reward obtained by the agent and any relevant information.</p>
+<p>The <cite>reset</cite> function may receive an <cite>env_info</cite> (of size <cite>VecEnv.n_envs()</cite>) arguments as a dictionnary of list/np.array. It allows one to implement parametrized environments (i.e different environments in the same <cite>VecEnv</cite>).</p>
+<div class="section" id="creating-from-gym-environments">
+<h2>Creating from Gym Environments<a class="headerlink" href="#creating-from-gym-environments" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way to create a <cite>rlstructures/VecEnv</cite> is to do it from a <cite>gym.Env</cite>. In that case, the <cite>gym</cite> env will:
+* return a <cite>dict</cite> or a simple array as an observation
+* the <cite>observation_space</cite> and <cite>action_space</cite> are not needed</p>
+<p>Let us define a simple <cite>gym.Env</cite> environment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">from</span> <span class="nn">gym.utils</span> <span class="kn">import</span> <span class="n">seeding</span>
+<span class="kn">from</span> <span class="nn">gym.spaces</span> <span class="kn">import</span> <span class="n">Discrete</span>
+
+
+<span class="k">class</span> <span class="nc">MyEnv</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">=</span><span class="n">Discrete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">seed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Seed = </span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">seed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="p">,</span><span class="n">seed</span><span class="o">=</span><span class="n">seeding</span><span class="o">.</span><span class="n">np_random</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">env_info</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span><span class="o">*</span><span class="mf">2.0</span><span class="o">-</span><span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;identifier&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">action</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">action</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">-=</span><span class="mf">0.3</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">+=</span><span class="mf">0.3</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;identifier&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="p">},</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">&lt;-</span><span class="mi">1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">,{}</span>
+</pre></div>
+</div>
+<p>We can cast 4 environment instances to a <cite>rlstructures.VecEnv</cite> as follows:
+.. code-block:: python</p>
+<blockquote>
+<div><p>envs=[MyEnv() for k in range(4)]
+env=GymEnv(envs,seed=80)</p>
+</div></blockquote>
+<p>Each instance <cite>i</cite> of the <cite>gym.Env</cite> will be initialized with <cite>seed+i</cite> such that the multiple instances will have different seeds.</p>
+<p>We also provide a wrapper allowing an infinite execution of the environment where each environment instance is automatically reseted at the end of each episode:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">envs</span><span class="o">=</span><span class="p">[</span><span class="n">MyEnv</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+<span class="n">env</span><span class="o">=</span><span class="n">GymInfEnv</span><span class="p">(</span><span class="n">envs</span><span class="p">,</span><span class="n">seed</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="to-know-more-about-rlstructures-vecenv">
+<h2>To know more about rlstructures.VecEnv<a class="headerlink" href="#to-know-more-about-rlstructures-vecenv" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>A VecEnv corresponds to <cite>env.n_envs()</cite> environnements that are running simultaneously.</p></li>
+<li><p>A each timestep, <cite>n &lt; env.n_envs()</cite> are running since some environmens may have stopped due to end of the episode.</p></li>
+</ol>
+<p>3. <cite>VecEnv</cite> returns a <cite>DictTensor</cite> denoted <cite>obs</cite> as an observation such that <cite>obs.n_elems()==n</cite> (i.e one observation per running environment)
+3. At time <cite>t+1</cite>, <cite>VecEnv.step</cite> has to receive a <cite>DictTensor</cite> of size <cite>n</cite> (i.e one action for each running environment)</p>
+<p>In the real-life, when executing the <cite>reset</cite> function, the <cite>rlstructures.VecEnv</cite> returns a tuple <cite>observation,running_environments</cite>. The <cite>running_environment</cite> tensor tells which environments are still running.</p>
+<p>When executing the <cite>step</cite> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">obs</span><span class="p">,</span><span class="n">who_was_running</span><span class="p">),(</span><span class="n">obs2</span><span class="p">,</span><span class="n">who_is_still_running</span><span class="p">)</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><cite>obs</cite> is the observation (at t) coming from the environments that were running at t-1</p></li>
+<li><p><cite>who_was_running</cite> is the list of environnments still running at time t-1. Note that <cite>who_was_running.size()[0]=obs.n_elems()</cite></p></li>
+<li><p><cite>obs2</cite> is the observation (at t) from the environments that are still running at time t (i.e <cite>obs2</cite> is a subset of <cite>obs</cite>)</p></li>
+<li><p><cite>who_is_still_running</cite> is the list of environments running at time t</p></li>
+</ul>
+</div>
+<div class="section" id="interacting-with-the-environment">
+<h2>Interacting with the Environment<a class="headerlink" href="#interacting-with-the-environment" title="Permalink to this headline">¶</a></h2>
+<p>Interaction with the environment is easy, the agent and environment exchanging <cite>DictTensor</cite></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Agent.html" class="btn btn-neutral float-right" title="Agents/Policies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="DataStructures.html" class="btn btn-neutral float-left" title="Data Structures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
