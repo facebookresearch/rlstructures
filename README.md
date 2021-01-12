@@ -14,6 +14,8 @@ RLStructures is easy to use: it has very few simple interfaces that can be learn
 
 ## Learning RLStructures
 
+* [http://facebookresearch.github.io/rlstructures](http://facebookresearch.github.io/rlstructures)
+
 The complete documentation is available at [http://facebookresearch.github.io/rlstructures](http://facebookresearch.github.io/rlstructures) and **tutorials** can be found in the *tutorial/* directory. The examples algorithms are provided in *raglos/*.
 
 A facebook group is also opened for discussion.
@@ -43,10 +45,6 @@ Please use this bibtex if you want to cite this repository in your publications:
 * Author: Ludovic Denoyer
 * Co-authors: Danielle Rothermel, Xavier Martinet
 * Other contributors: many....
-
-# FAQ
-
-[Here](https://github.com/facebookresearch/rlstructures/blob/master/FAQ.md)
 
 ## License
 
