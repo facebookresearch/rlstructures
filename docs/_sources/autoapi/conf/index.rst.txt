@@ -1,0 +1,74 @@
+:mod:`conf`
+===========
+
+.. py:module:: conf
+
+
+Module Contents
+---------------
+
+.. data:: project
+   :annotation: = RLStructures
+
+   
+
+.. data:: copyright
+   :annotation: = 2021, Facebook AI Research
+
+   
+
+.. data:: author
+   :annotation: = Facebook AI Research
+
+   
+
+.. data:: extensions
+   :annotation: = ['autoapi.extension', 'sphinx.ext.autodoc', 'sphinx.ext.githubpages', 'sphinx.ext.coverage', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary', 'recommonmark']
+
+   
+
+.. data:: autoapi_type
+   :annotation: = python
+
+   
+
+.. data:: autoapi_dirs
+   :annotation: = ['..']
+
+   
+
+.. data:: source_suffix
+   
+
+   
+
+.. data:: master_doc
+   :annotation: = index
+
+   
+
+.. data:: templates_path
+   :annotation: = []
+
+   
+
+.. data:: exclude_patterns
+   :annotation: = ['_build', 'Thumbs.db', '.DS_Store']
+
+   
+
+.. data:: html_theme
+   :annotation: = sphinx_rtd_theme
+
+   
+
+.. data:: html_sidebars
+   
+
+   
+
+.. data:: html_static_path
+   :annotation: = []
+
+   
+

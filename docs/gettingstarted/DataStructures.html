@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data Structures &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Environments" href="Environments.html" />
+    <link rel="prev" title="Getting Started" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dicttensor">DictTensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#temporaldicttensor">TemporalDictTensor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Environments.html">Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Agent.html">Agents/Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Batchers.html">Batchers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MultiProcessEpisodeBatcher.html">Multiprocess Episode Batcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MultiProcessTrajectoryBatcher.html">Multiprocess Batcher</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">RLStructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Getting Started</a> &raquo;</li>
+        
+      <li>Data Structures</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gettingstarted/DataStructures.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="data-structures">
+<h1>Data Structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dicttensor">
+<h2>DictTensor<a class="headerlink" href="#dicttensor" title="Permalink to this headline">¶</a></h2>
+<p>A DictTensor is dictionary of pytorch tensors. It assumes that the first dimension of each tensor contained in the DictTensor is the batch dimension. The easiest way to build a DictTensor is to use a ditcionnary of tensors as input</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rlstructures</span> <span class="kn">import</span> <span class="n">DictTensor</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">d</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span><span class="s2">&quot;y&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">8</span><span class="p">)})</span>
+</pre></div>
+</div>
+<p>The number of elements in the batch is accessible through <cite>n_elems()</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">n_elems</span><span class="p">(),</span><span class="s2">&quot; &lt;- number of elements in the batch&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An empty DictTensor can be defined as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({})</span>
+</pre></div>
+</div>
+<p>Many methods can be used over DictTensor (see DictTensor documentation):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="c1"># Returns the tensor &#39;x&#39; in the DictTensor</span>
+<span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="c1"># Returns the names of the variables of the DictTensor</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="temporaldicttensor">
+<h2>TemporalDictTensor<a class="headerlink" href="#temporaldicttensor" title="Permalink to this headline">¶</a></h2>
+<p>A <cite>TemporalDictTensor</cite> is a packed sequence of <cite>DictTensors</cite>. In memory, it is stored as a dictionary of tensors, where the first dimesion is the batch dimension, and the second dimension is the time index. Each element in the batch is a sequence, and two sequences can have a different length.etc…”)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rlstructures</span> <span class="kn">import</span> <span class="n">TemporalDictTensor</span>
+
+<span class="c1">#Create three sequences of variables x and y, where the length of the first sequence is 6, the length of the second is 10  and the length of the last sequence is 3</span>
+<span class="n">d</span><span class="o">=</span><span class="n">TemporalDictTensor</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span><span class="s2">&quot;y&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">)},</span><span class="n">lengths</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">]))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">n_elems</span><span class="p">(),</span><span class="s2">&quot; &lt;- number of elements in the batch&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">lengths</span><span class="p">,</span><span class="s2">&quot;&lt;- Lengths of the sequences&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span><span class="s2">&quot;&lt;- access to the tensor &#39;x&#39;&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Masking: &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">mask</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Slicing (restricting the sequence to some particular temporal indexes) &quot;</span><span class="p">)</span>
+<span class="n">d_slice</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">temporal_slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d_slice</span><span class="o">.</span><span class="n">lengths</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d_slice</span><span class="o">.</span><span class="n">mask</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><cite>DictTensor</cite> and <cite>TemporalDictTensor</cite> can be moved to cpu/gpu using the <em>xxx.to(…)</em> method.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Environments.html" class="btn btn-neutral float-right" title="Environments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
