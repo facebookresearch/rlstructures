@@ -8,7 +8,7 @@ Agents/Policies
 An agent is a parameterized policy
 ----------------------------------
 
-An agent is the (only) abstraction needed to allow `rlstructures` to collect interactions at scale. One Agent corresponds to a set of policy (formally :math:`\pi_z`)
+An agent is the (only) abstraction needed to allow `rlstructures` to collect interactions at scale. One Agent corresponds to a set of policies (formally :math:`\pi_z`)
 
 * An Agent class represents a policy (or *multiple policies* through the `agent_info` argument) acting on a **batch of environment**
 
@@ -16,19 +16,19 @@ An agent is the (only) abstraction needed to allow `rlstructures` to collect int
 
 * An Agent is stateless, and only implements a `__call__` method
 
-* The `__call__(agent_state,observation,agent_info=None,history=None)` methods takes as an input:
+* The `__call__(agent_state,observation,agent_info=None,history=None)` methods take as an input:
 
-  * `agent_state` is the state of the agent as time t-1 (as a `DictTensor`)
+  * `agent_state` is the state of the agent at time t-1 (as a `DictTensor`)
   * `observation` comes from the `rlstructures.VecEnv` environment
-  * `agent_info` corresponds additional (the :math:`z` in :math:`\pi_z`) information provided to the agent (e.g the value of epsilon for epsilon-greedy policies)
-  * `history` may be a `TemporalDictTensor` representing a set of previous transitions (e.d used for implementing Transformer based methods, but value is always `None` in the default implementation of an agent.), and activated only if `Agent.require_history()==True`.
+  * `agent_info` corresponds to additional (the :math:`z` in :math:`\pi_z`) information provided to the agent (e.g the value of epsilon for epsilon-greedy policies)
+  * `history` may be a `TemporalDictTensor` representing a set of previous transitions (e.g. used for implementing Transformer based methods, but its value is always `None` in the default implementation of an agent), and activated only if `Agent.require_history()==True`.
 
 * Note that `agent_state.n_elems()==observation.n_elems()` which is the number of environments on which the agent is computed.
-* `agent_info=None, history=None` is mandatory in the method definition, and the agent must initialize itself the value of `agent_info` if `agent_info is None`
+* `agent_info=None, history=None` is mandatory in the method definition, and the agent must initialize, for itself, the value of `agent_info` if `agent_info is None`
 
 As an output, the **__call__** method returns a triplet `(old_state,action,new_state)` where:
 
-* `action` is the action outputed by the agent as a `DictTensor`. Note that `action.n_elems()==observation.n_elems()`. This information will be transmitted to the environment through the `env.step` method. Note also that the action may contain any information that you would like to store in the resulting trajectory like debugging information for instance (e.g agent step).
+* `action` is the action outputed by the agent as a `DictTensor`. Note that `action.n_elems()==observation.n_elems()`. This information will be transmitted to the environment through the `env.step` method. Note also that the action may contain any information that you would like to store in the resulting trajectory like debugging information for instance (e.g. agent step).
 
 * `new_state` is the update of the state of the agent at time `t+1`. This new state is the information transmitted to the agent at the next call.
 
@@ -116,11 +116,11 @@ In the mono-process case, one can use the
 
 * `execute(agent_info=None,env_info=None)` function returns env.n_envs() episodes
 * Acquired episodes are accessible by calling the *get* method that returns a *TemporalDictTensor*
-* Note that, at each execute, the user as to provide an `agent_info` value that will be transmitted to each of the agents, and an `env_info` value that will be transmitted to each environment (through the `reset` function), allowing to execute multiple policies on multiple environments in a single batcher call.
+* Note that, at each execution, the user has to provide an `agent_info` value that will be transmitted to each of the agents, and an `env_info` value that will be transmitted to each environment (through the `reset` function), allowing the execution of multiple policies on multiple environments in a single batcher call.
 
 .. code-block:: python
     batcher.execute()
     trajectories=batcher.get()
     print("Lengths of trajectories = ",trajectories.lengths)
 
-At last, consider that each agent implements the `Agent.update` function that will allow one to update the parameters of the agent.
+And finally, consider that each agent implements the `Agent.update` function that will allow one to update the parameters of the agent.

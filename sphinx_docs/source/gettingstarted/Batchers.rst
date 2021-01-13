@@ -1,7 +1,7 @@
 Batchers
 ========
 
-Batchers are object allowing to execute multiple policies over multiple environments, using multiple processes. We provide two batchers:
+Batchers are objects allowing the execution of multiple policies over multiple environments, using multiple processes. We provide two batchers:
 1) `EpisodeBatcher` to acquire complete episodes (until a `done` is reached)
 2) `Batcher` to acquire the `n` next timesteps over multiple environments
 

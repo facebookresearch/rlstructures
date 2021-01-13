@@ -10,11 +10,11 @@ A `rlstructures.VecEnv` represents `VecEnv.n_envs()` simple environments at once
 
 Conceptually, a `VecEnv.step` methods takes as an input an `action` (as a `DictTensor`) and returns an obervation (as a `DictTensor`).
 
-In practice the return type of the `VecEnv.step` returns a more complicated structure (that you don't need to understand if you don't intend to create your own environments or are usiing the openAI gym interface)
+In practice the return type of the `VecEnv.step` returns a more complicated structure (that you don't need to understand if you don't intend to create your own environments or are using the OpenAI gym interface)
 
-Note that typically, the observation may contain the reward obtained by the agent and any relevant information.
+Note that typically the observation will contain the reward obtained by the agent and any relevant information.
 
-The `reset` function may receive an `env_info` (of size `VecEnv.n_envs()`) arguments as a dictionnary of list/np.array. It allows one to implement parametrized environments (i.e different environments in the same `VecEnv`).
+The `reset` function may receive an `env_info` (of size `VecEnv.n_envs()`) argument as a dictionnary of lists/np.arrays. It allows one to implement parametrized environments (i.e different environments in the same `VecEnv`).
 
 Creating from Gym Environments
 -------------------------------------------
@@ -73,8 +73,8 @@ We also provide a wrapper allowing an infinite execution of the environment wher
 To know more about rlstructures.VecEnv
 --------------------------------------
 
-1. A VecEnv corresponds to `env.n_envs()` environnements that are running simultaneously.
-2. A each timestep, `n < env.n_envs()` are running since some environmens may have stopped due to end of the episode.
+1. A VecEnv corresponds to `env.n_envs()` environments that are running simultaneously.
+2. A each timestep, `n < env.n_envs()` are running since some environments may have stopped due to end of the episode.
 3. `VecEnv` returns a `DictTensor` denoted `obs` as an observation such that `obs.n_elems()==n` (i.e one observation per running environment)
 3. At time `t+1`, `VecEnv.step` has to receive a `DictTensor` of size `n` (i.e one action for each running environment)
 
@@ -95,7 +95,7 @@ When executing the `step` method:
 Interacting with the Environment
 --------------------------------
 
-Interaction with the environment is easy, the agent and environment exchanging `DictTensor`
+Interaction with the environment is easy, the agent and environment exchange `DictTensor`s
 
 .. code-block:: python
     obs,who_is_still_running=env.reset()
