@@ -26,7 +26,7 @@ Please reach out to us if you intend to use it. We will be happy to help, and po
 Install rlstructures
 --------------------
 
-* clone the repository
+* clone the repository from http://github.com/facebookresearch/rlstructures
 * run "pip install ."
 
 Learning to use rlstructures
