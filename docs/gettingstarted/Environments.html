@@ -175,12 +175,15 @@
             
   <div class="section" id="environments">
 <h1>Environments<a class="headerlink" href="#environments" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_environments.py">https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_environments.py</a></p></li>
+</ul>
 <p>In <cite>rlstructures</cite>, an environment is an instance of <cite>rlstructures.VecEnv</cite>.</p>
 <p>A <cite>rlstructures.VecEnv</cite> represents <cite>VecEnv.n_envs()</cite> simple environments at once.</p>
 <p>Conceptually, a <cite>VecEnv.step</cite> methods takes as an input an <cite>action</cite> (as a <cite>DictTensor</cite>) and returns an obervation (as a <cite>DictTensor</cite>).</p>
-<p>In practice the return type of the <cite>VecEnv.step</cite> returns a more complicated structure (that you don’t need to understand if you don’t intend to create your own environments or are usiing the openAI gym interface)</p>
-<p>Note that typically, the observation may contain the reward obtained by the agent and any relevant information.</p>
-<p>The <cite>reset</cite> function may receive an <cite>env_info</cite> (of size <cite>VecEnv.n_envs()</cite>) arguments as a dictionnary of list/np.array. It allows one to implement parametrized environments (i.e different environments in the same <cite>VecEnv</cite>).</p>
+<p>In practice the return type of the <cite>VecEnv.step</cite> returns a more complicated structure (that you don’t need to understand if you don’t intend to create your own environments or are using the OpenAI gym interface)</p>
+<p>Note that typically the observation will contain the reward obtained by the agent and any relevant information.</p>
+<p>The <cite>reset</cite> function may receive an <cite>env_info</cite> (of size <cite>VecEnv.n_envs()</cite>) argument as a dictionnary of lists/np.arrays. It allows one to implement parametrized environments (i.e different environments in the same <cite>VecEnv</cite>).</p>
 <div class="section" id="creating-from-gym-environments">
 <h2>Creating from Gym Environments<a class="headerlink" href="#creating-from-gym-environments" title="Permalink to this headline">¶</a></h2>
 <p>The simplest way to create a <cite>rlstructures/VecEnv</cite> is to do it from a <cite>gym.Env</cite>. In that case, the <cite>gym</cite> env will:
@@ -231,8 +234,8 @@ env=GymEnv(envs,seed=80)</p>
 <div class="section" id="to-know-more-about-rlstructures-vecenv">
 <h2>To know more about rlstructures.VecEnv<a class="headerlink" href="#to-know-more-about-rlstructures-vecenv" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li><p>A VecEnv corresponds to <cite>env.n_envs()</cite> environnements that are running simultaneously.</p></li>
-<li><p>A each timestep, <cite>n &lt; env.n_envs()</cite> are running since some environmens may have stopped due to end of the episode.</p></li>
+<li><p>A VecEnv corresponds to <cite>env.n_envs()</cite> environments that are running simultaneously.</p></li>
+<li><p>A each timestep, <cite>n &lt; env.n_envs()</cite> are running since some environments may have stopped due to end of the episode.</p></li>
 </ol>
 <p>3. <cite>VecEnv</cite> returns a <cite>DictTensor</cite> denoted <cite>obs</cite> as an observation such that <cite>obs.n_elems()==n</cite> (i.e one observation per running environment)
 3. At time <cite>t+1</cite>, <cite>VecEnv.step</cite> has to receive a <cite>DictTensor</cite> of size <cite>n</cite> (i.e one action for each running environment)</p>
@@ -250,7 +253,7 @@ env=GymEnv(envs,seed=80)</p>
 </div>
 <div class="section" id="interacting-with-the-environment">
 <h2>Interacting with the Environment<a class="headerlink" href="#interacting-with-the-environment" title="Permalink to this headline">¶</a></h2>
-<p>Interaction with the environment is easy, the agent and environment exchanging <cite>DictTensor</cite></p>
+<p>Interaction with the environment is easy, the agent and environment exchange <a href="#id1"><span class="problematic" id="id2">`</span></a>DictTensor`s</p>
 </div>
 </div>
 

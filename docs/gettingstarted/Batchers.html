@@ -91,7 +91,10 @@
 <li class="toctree-l2"><a class="reference internal" href="DataStructures.html">Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Environments.html">Environments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Agent.html">Agents/Policies</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Batchers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Batchers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parallelization-schema">Parallelization Schema</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="MultiProcessEpisodeBatcher.html">Multiprocess Episode Batcher</a></li>
 <li class="toctree-l2"><a class="reference internal" href="MultiProcessTrajectoryBatcher.html">Multiprocess Batcher</a></li>
 </ul>
@@ -170,11 +173,28 @@
             
   <div class="section" id="batchers">
 <h1>Batchers<a class="headerlink" href="#batchers" title="Permalink to this headline">¶</a></h1>
-<p>Batchers are object allowing to execute multiple policies over multiple environments, using multiple processes. We provide two batchers:
+<p>Batchers are objects allowing the execution of multiple policies over multiple environments, using multiple processes. We provide two batchers:
 1) <cite>EpisodeBatcher</cite> to acquire complete episodes (until a <cite>done</cite> is reached)
 2) <cite>Batcher</cite> to acquire the <cite>n</cite> next timesteps over multiple environments</p>
 <p>Examples about how to use batchers are given in the other sections.</p>
-<p><strong>Important</strong>: All the information (e.g <cite>DictTensor</cite>) produced by both the <cite>Agent</cite> and the <cite>Env</cite> will be available to the user.</p>
+<p><strong>Important</strong>: All the information (e.g <cite>DictTensor</cite>) produced by both the <cite>Agent</cite> and the <cite>Env</cite> will be available to the user in the returned <cite>TemporalDictTensor</cite></p>
+<div class="section" id="parallelization-schema">
+<h2>Parallelization Schema<a class="headerlink" href="#parallelization-schema" title="Permalink to this headline">¶</a></h2>
+<p>The generic parallelization schema is illustrated in the following picture.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/facebookresearch/rlstructures/main/docs/images/batchers.jpg?token=ABNXVXPVRMSMY5XGYBMOUILAA725Q"><img alt="Parallelization Schema" src="https://raw.githubusercontent.com/facebookresearch/rlstructures/main/docs/images/batchers.jpg?token=ABNXVXPVRMSMY5XGYBMOUILAA725Q" style="width: 1024px;" /></a>
+<ul class="simple">
+<li><p>One batcher creates multiple processes</p></li>
+<li><p>Each process contains a copy of the <cite>Agent</cite> and a copy of the <cite>rlstructures.VecEnv</cite> (the copy are made through <cite>create_agent</cite> and <cite>create_env</cite> functions that are arguments at the batcher creation)</p>
+<ul>
+<li><p>In our case, each Agent as its own copy of the pytorch model (note that it can be a shared_memory model to avoid to use extra memory)</p></li>
+</ul>
+</li>
+<li><p>Each <cite>VecEnv</cite> corresponds to multiple simple environments</p></li>
+<li><p>At <cite>execute</cite>, the processes start to acquire information by simulating the interaction betweeh the agent and the environments</p></li>
+<li><p>At <cite>get</cite>, the information collected by the processes are merged to a <cite>TemporalDictTensor</cite> that is the output of <cite>get</cite></p></li>
+<li><p>The call of <cite>Batcher.update</cite> will call <cite>Agent.update</cite> in all the processes to typically update the model of each Agent</p></li>
+</ul>
+</div>
 </div>
 
 

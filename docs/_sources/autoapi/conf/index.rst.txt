@@ -23,7 +23,7 @@ Module Contents
    
 
 .. data:: extensions
-   :annotation: = ['autoapi.extension', 'sphinx.ext.autodoc', 'sphinx.ext.githubpages', 'sphinx.ext.coverage', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary', 'recommonmark']
+   :annotation: = ['autoapi.extension', 'sphinx.ext.autodoc', 'sphinx.ext.githubpages', 'sphinx.ext.coverage', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary', 'recommonmark', 'sphinx.ext.viewcode']
 
    
 

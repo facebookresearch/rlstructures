@@ -161,20 +161,26 @@
 <h1>rlstructures<a class="headerlink" href="#rlstructures" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="tl-dr">
 <h2>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">¶</a></h2>
-<p><cite>rlstructures</cite> is a lightweight Python library that provides simple APIs as well as data structures that make as little assumptions as possible on the structure of your agent or your task while allowing for transparently executing multiple policies on multiple environments in parallel (incl. multiple GPUs).</p>
+<p><cite>rlstructures</cite> is a lightweight Python library that provides simple APIs as well as data structures that make as few assumptions as possible on the structure of your agent or your task while allowing the transparent execution of multiple policies on multiple environments in parallel (incl. multiple GPUs).</p>
 </div>
 <div class="section" id="why-what">
 <h2>Why/What?<a class="headerlink" href="#why-what" title="Permalink to this headline">¶</a></h2>
-<p>RL research addresses multiple aspects of RL like hierarchical policies, option-based policies, goal-oriented policies, structured input/output spaces, transformers-based policies, … and there are currently only few tools to handle this diversity of research projects.</p>
+<p>RL research addresses multiple aspects of RL like hierarchical policies, option-based policies, goal-oriented policies, structured input/output spaces, transformers-based policies, etc., and there are currently few tools to handle this diversity of research projects.</p>
 <p>We propose <cite>rlstructures</cite> as a way to:</p>
 <ul class="simple">
 <li><p>Simulate multiple policies, multiple models and multiple environments simultaneously at scale</p></li>
 <li><p>Define complex loss functions</p></li>
-<li><p>Quickly implement various policies architectures.</p></li>
+<li><p>Quickly implement various policy architectures.</p></li>
 </ul>
-<p>The main RLStructures principle is that the users delegate to the library the sampling of trajectories and episodes such that they will spend most of their time on the interesting part of RL research: developing new models and algorithms.</p>
+<p>The main RLStructures principle is that the users delegates the sampling of trajectories and episodes to the library so they can spend most of their time on the interesting part of RL research: developing new models and algorithms.</p>
 <p><cite>rlstructures</cite> is easy to use: it has very few simple interfaces that can be learned in one hour by reading the tutorials. It comes with multiple RL algorithms as examples including A2C, PPO, DDQN and SAC. Besides, there are 5 projects already using it (Multitask RL, Exploration, Diversity in RL, Optimization, …) and helping each other.
 Please reach out to us if you intend to use it. We will be happy to help, and potentially to implement missing functionalities.</p>
+</div>
+<div class="section" id="discussion-group">
+<h2>Discussion Group<a class="headerlink" href="#discussion-group" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Discussion Group: <a class="reference external" href="https://www.facebook.com/groups/834804787067021">https://www.facebook.com/groups/834804787067021</a></p></li>
+</ul>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>

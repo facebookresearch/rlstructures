@@ -170,6 +170,9 @@
             
   <div class="section" id="multiprocess-episode-batcher">
 <h1>Multiprocess Episode Batcher<a class="headerlink" href="#multiprocess-episode-batcher" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_multiprocess_episode_batcher.py">https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_multiprocess_episode_batcher.py</a></p></li>
+</ul>
 <p>Let us consider that we define multiple environments identified by an <em>environment_id</em>, such that two environments with two different <em>ids</em> does not behave exactly the same. This can be easily implemented by using the env_info* argument in the reset function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rlstructures</span> <span class="kn">import</span> <span class="n">Agent</span><span class="p">,</span><span class="n">DictTensor</span>
 <span class="kn">import</span> <span class="nn">torch</span>
@@ -208,7 +211,7 @@
         <span class="k">return</span> <span class="n">obs</span>
 </pre></div>
 </div>
-<p>As you can see, the env_info can be used as an input parameter for the environment allowing to model multiple environments through a single class.</p>
+<p>As you can see, the env_info can be used as an input parameter for the environment allowing one to model multiple environments through a single class.</p>
 <p>We can do the same with agents, and implement an <em>Agent</em> that is parametrized by an <em>agent_info</em>. In our case, the agent is just an agent outputting its agent_id as an action. Advanced examples are shown in the <em>rlaglos</em> directory (e.g stochastic/deterministic polices, epsilon-greedy policies, …)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">UniformAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_actions</span><span class="p">):</span>

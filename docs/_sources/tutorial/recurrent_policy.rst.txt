@@ -1,7 +1,9 @@
 Implemeting Recurrent Policies
 =============================
 
-We explain how to implement recurrent policies. We need first a reccurent model for the policy and the critic:
+* https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_recurrent_policy
+
+We explain how to implement recurrent policies. We need first a recurrent model for the policy and the critic:
 
 .. code-block:: python
 
@@ -111,6 +113,9 @@ The A2C loss function needs to be adapted to this particular agent in the way th
             action_probabilities=[]
             agent_state=trajectories["agent_state"][:,0]
             for t in range(max_length):
+                #since we are using an infinite env, we have to re-initialize the agent_state if we reach a new episode initial state
+                agent_state=masked_tensor(agent_state,trajectories["agent_state"][:,t],rajectories["initial_state"][:,t])
+
                 agent_state,proba=self.learning_model(agent_state,trajectories["frame"][:,t])
                 action_probabilities.append(proba.unsqueeze(1)) # We append the probability, and introduces the temporal dimension (2nde dimension)
             action_probabilities=torch.cat(action_probabilities,dim=1) #Now, we have a B x T x n_actions tensor
@@ -119,14 +124,10 @@ The A2C loss function needs to be adapted to this particular agent in the way th
             critic=[]
             agent_state=trajectories["agent_state"][:,0]
             for t in range(max_length):
+                #since we are using an infinite env, we have to re-initialize the agent_state if we reach a new episode initial state
+                agent_state=masked_tensor(agent_state,trajectories["agent_state"][:,t],rajectories["initial_state"][:,t])
+
                 agent_state,b=self.critic_model(agent_state,trajectories["frame"][:,t])
                 critic.append(b.unsqueeze(1))
-            critic=torch.cat(critic+[b.unsqueeze(1)],dim=1).squeeze(-1) #Now, we have a B x (T+1) tensor
-            #We also need to compute the critic value at for the last observation of the trajectories (to compute the TD)
-            # It may be the last element of the trajectories (if episode is not finished), or on the last frame of the episode
-            idx=torch.arange(trajectories.n_elems())
-            _,last_critic=self.critic_model(trajectories["_agent_state"][idx,trajectories.lengths-1],trajectories["_frame"][idx,trajectories.lengths-1])
-            last_critic=last_critic.squeeze(-1)
-            critic[idx,trajectories.lengths]=last_critic
 
 That's all, now, everyting works with a recurrent policy.

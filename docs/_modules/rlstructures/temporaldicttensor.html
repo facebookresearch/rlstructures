@@ -1,0 +1,487 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rlstructures.temporaldicttensor &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview of rlstructures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gettingstarted/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">RLStructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>rlstructures.temporaldicttensor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rlstructures.temporaldicttensor</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># Copyright (c) Facebook, Inc. and its affiliates.</span>
+<span class="c1">#</span>
+<span class="c1"># This source code is licensed under the MIT license found in the</span>
+<span class="c1"># LICENSE file in the root directory of this source tree.</span>
+<span class="c1">#</span>
+
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">.dicttensor</span> <span class="kn">import</span> <span class="n">DictTensor</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span><span class="n">Dict</span><span class="p">,</span><span class="n">List</span>
+
+<div class="viewcode-block" id="TemporalDictTensor"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor">[docs]</a><span class="k">class</span> <span class="nc">TemporalDictTensor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Describe a batch of temporal tensors where:</span>
+<span class="sd">    * each tensor has a name</span>
+<span class="sd">    * each tensor is of size B x T x ...., where B is the batch index, and T</span>
+<span class="sd">        the time index</span>
+<span class="sd">    * the length tensor gives the number of timesteps for each batch</span>
+
+<span class="sd">    It is an extension of DictTensor where a temporal dimension has been added.</span>
+<span class="sd">    The structure also allows dealing with batches of sequences of different</span>
+<span class="sd">    sizes.</span>
+
+<span class="sd">    Note that self.lengths returns a tensor of the lengths of each element of</span>
+<span class="sd">    the batch.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_dict</span><span class="p">:</span><span class="n">Dict</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">lengths</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            from_dict (dict of tensors): the tensors to store.</span>
+<span class="sd">            lengths (long tensor): the length of each element in the batch. If</span>
+<span class="sd">                None, then use the second dimension of the tensors to compute</span>
+<span class="sd">                the length.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">from_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span> <span class="o">=</span> <span class="n">lengths</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">())</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+                <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_specs</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="TemporalDictTensor.specs"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.specs">[docs]</a>    <span class="k">def</span> <span class="nf">specs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_specs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">Specs</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_specs</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_specs</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.device"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.device">[docs]</a>    <span class="k">def</span> <span class="nf">device</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the device of the TemporalDictTensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">device</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.n_elems"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.n_elems">[docs]</a>    <span class="k">def</span> <span class="nf">n_elems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the number of element in the TemporalDictTensor (i.e size of</span>
+<span class="sd">        the first dimension of each tensor).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.keys"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the keys in the TemporalDictTensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.mask"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.mask">[docs]</a>    <span class="k">def</span> <span class="nf">mask</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a mask over sequences based on the length of each trajectory</span>
+
+<span class="sd">        Considering that the TemporalDictTensor is of size B x T, the mask is</span>
+<span class="sd">        a float tensor (0.0 or 1.0) of size BxT. A 0.0 value means that the</span>
+<span class="sd">        value at b x t is not set in the TemporalDictTensor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>            
+            <span class="n">max_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">_mask</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">max_length</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">_mask</span> <span class="o">=</span> <span class="n">_mask</span><span class="o">.</span><span class="n">lt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_length</span><span class="p">))</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">_mask</span></div>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a single tensor of size B x T x ....</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): the name of the variable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+<div class="viewcode-block" id="TemporalDictTensor.shorten"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.shorten">[docs]</a>    <span class="k">def</span> <span class="nf">shorten</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">TemporalDictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Restrict the size of the variables (in term of timesteps) to provide the smallest</span>
+<span class="sd">        possible tensors.</span>
+
+<span class="sd">        If the TemporalDictTensor is of size B x T, considering that</span>
+<span class="sd">        Tmax = self.lengths.max(), then it returns a TemporalDictTensor of size B x Tmax</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][:,</span> <span class="p">:</span><span class="n">ml</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="n">TemporalDictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">pt</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.unfold"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.unfold">[docs]</a>    <span class="k">def</span> <span class="nf">unfold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">List</span><span class="p">[</span><span class="n">TemporalDictTensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a list of TemporalDictTensor of size 1 x T</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">()):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">pt</span> <span class="o">=</span> <span class="n">TemporalDictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.get"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span><span class="o">-&gt;</span><span class="n">TemporalDictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a subset of the TemporalDictTensor depending on the specifed keys</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            keys (iterable): the keys to keep in the new TemporalDictTensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span><span class="nb">str</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">TemporalDictTensor</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">},</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.slice"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.slice">[docs]</a>    <span class="k">def</span> <span class="nf">slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_from</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">index_to</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">TemporalDictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a slice (in the batch dimension)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index_to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index_from</span><span class="p">:</span><span class="n">index_to</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="p">[</span><span class="n">index_from</span><span class="p">:</span><span class="n">index_to</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">TemporalDictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index_from</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="p">[</span><span class="n">index_from</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">TemporalDictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.temporal_slice"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.temporal_slice">[docs]</a>    <span class="k">def</span> <span class="nf">temporal_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_from</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">index_to</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">TemporalDictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a slice (in the temporal dimension)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][:,</span> <span class="n">index_from</span><span class="p">:</span><span class="n">index_to</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+
+        <span class="c1"># Compute new length</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span> <span class="o">-</span> <span class="n">index_from</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="o">*</span><span class="n">l</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">*</span> <span class="p">(</span><span class="n">index_to</span> <span class="o">-</span> <span class="n">index_from</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">())</span>
+        <span class="n">low</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">lt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">low</span> <span class="o">*</span> <span class="n">l</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">low</span><span class="p">)</span> <span class="o">*</span> <span class="n">m</span>
+        <span class="k">return</span> <span class="n">TemporalDictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">long</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.index"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">TemporalDictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the 1xT TemporalDictTensor for the specified batch index</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index</span><span class="p">][:]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">TemporalDictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.temporal_index"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.temporal_index">[docs]</a>    <span class="k">def</span> <span class="nf">temporal_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_t</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">TemporalDictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a DictTensor corresponding to the TemporalDictTensor at time</span>
+<span class="sd">        index_t.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][:,</span> <span class="n">index_t</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.temporal_multi_index"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.temporal_multi_index">[docs]</a>    <span class="k">def</span> <span class="nf">temporal_multi_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_t</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">TemporalDictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a DictTensor corresponding to the TemporalDictTensor at time index_t</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">a</span><span class="p">,</span> <span class="n">index_t</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.masked_temporal_index"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.masked_temporal_index">[docs]</a>    <span class="k">def</span> <span class="nf">masked_temporal_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_t</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">[</span><span class="n">DictTensor</span><span class="p">,</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a DictTensor at time t along with a mapping vector</span>
+<span class="sd">        Considering the TemporalDictTensor is of size BxT, the method returns</span>
+<span class="sd">        a TemporalDictTensor of size B&#39;xT and a tensor of size B&#39; where:</span>
+<span class="sd">            * only the B&#39; relevant dimension has been kept (depending on the</span>
+<span class="sd">                index_t &lt; self.lengths criterion)</span>
+<span class="sd">            * the mapping vector maps each of the B&#39; dimension to the B</span>
+<span class="sd">                dimension of the original TemporalDictTensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">index_t</span><span class="p">])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">())</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">lt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">m</span><span class="p">,</span> <span class="n">index_t</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">())[</span><span class="n">m</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">m</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.cat"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.cat">[docs]</a>    <span class="k">def</span> <span class="nf">cat</span><span class="p">(</span><span class="n">tensors</span><span class="p">:</span><span class="n">Iterable</span><span class="p">[</span><span class="n">TemporalDictTensor</span><span class="p">])</span><span class="o">-&gt;</span><span class="n">TemporalDictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregate multiple packed tensors over the batch dimension</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tensors (list): a list of tensors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">lengths</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">])</span>
+        <span class="n">lm</span> <span class="o">=</span> <span class="n">lengths</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">retour</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">to_concat</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tensors</span><span class="p">)):</span>                
+                <span class="n">v</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>                
+                <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span> <span class="o">+</span> <span class="p">(</span><span class="n">lm</span> <span class="o">-</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">],)</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">toadd</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">v</span><span class="p">,</span> <span class="n">toadd</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">to_concat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">retour</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">to_concat</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TemporalDictTensor</span><span class="p">(</span><span class="n">retour</span><span class="p">,</span> <span class="n">lengths</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TemporalDictTensor.to"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.to">[docs]</a>    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a copy of the TemporalDictTensor to the provided device (if</span>
+<span class="sd">        needed).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="n">lengths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TemporalDictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">lengths</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TemporalDictTensor:&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">()))</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Length=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">numpy</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+
+<div class="viewcode-block" id="TemporalDictTensor.expand"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.expand">[docs]</a>    <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_batch_size</span><span class="p">):</span>        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Expand a TemporalDictTensor to reach a given batch_size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">new_batch_size</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">()</span>
+        <span class="n">diff</span><span class="o">=</span><span class="n">new_batch_size</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">()</span>
+        <span class="n">new_lengths</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_batch_size</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">())</span>
+        <span class="n">new_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">()]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lengths</span>
+        <span class="n">new_variables</span><span class="o">=</span><span class="p">{}</span>
+        
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+            <span class="n">zeros</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span><span class="o">*</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">())</span>
+            <span class="n">nv</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">zeros</span><span class="p">])</span>
+            <span class="n">new_variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">nv</span>
+        
+        <span class="k">return</span> <span class="n">TemporalDictTensor</span><span class="p">(</span><span class="n">new_variables</span><span class="p">,</span><span class="n">new_lengths</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="TemporalDictTensor.copy_"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.copy_">[docs]</a>    <span class="k">def</span> <span class="nf">copy_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">source</span><span class="p">,</span><span class="n">source_indexes</span><span class="p">,</span><span class="n">destination_indexes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Copy the values of a source TDT at given indexes to the current TDT at the specified indexes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">source_indexes</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">==</span><span class="n">destination_indexes</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+        <span class="n">max_length_source</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>        
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">destination_indexes</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">max_length_source</span><span class="p">]</span><span class="o">=</span><span class="n">source</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">source_indexes</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">max_length_source</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="p">[</span><span class="n">destination_indexes</span><span class="p">]</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">lengths</span><span class="p">[</span><span class="n">source_indexes</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

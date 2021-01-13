@@ -170,10 +170,13 @@
             
   <div class="section" id="multiprocess-batcher">
 <h1>Multiprocess Batcher<a class="headerlink" href="#multiprocess-batcher" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_multiprocess_trajectory_batcher.py">https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_multiprocess_trajectory_batcher.py</a></p></li>
+</ul>
 <p>A trajectory batcher will just acquire N timesteps (and not full episodes)</p>
 <ul class="simple">
 <li><p><cite>n_timesteps</cite> is the number of steps to acquire at each call</p></li>
-<li><p><cite>n_slots</cite> is the number of simulatenous acquisition which is typically <cite>n_slots=n_threads*n_envs</cite></p></li>
+<li><p><cite>n_slots</cite> is the number of simulatenous acquisitions which is typically <cite>n_slots=n_threads*n_envs</cite></p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">batcher</span><span class="o">=</span><span class="n">Batcher</span><span class="p">(</span>
         <span class="n">n_timesteps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>

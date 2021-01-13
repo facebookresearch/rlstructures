@@ -175,6 +175,10 @@
             
   <div class="section" id="implemeting-actor-critic">
 <h1>Implemeting Actor-Critic<a class="headerlink" href="#implemeting-actor-critic" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_from_reinforce_to_a2c">https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_from_reinforce_to_a2c</a></p></li>
+<li><p><a class="reference external" href="https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_a2c_with_infinite_env">https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_a2c_with_infinite_env</a></p></li>
+</ul>
 <p>The previous REINFORCE implementation can be easily adapted to actor-critic. The main differences are:
 1) we just need to acquire N steps at each iteration (instead of complete episodes)
 2) the loss will be using the temporal differences</p>
@@ -254,29 +258,24 @@ At last, if <cite>get</cite> returns <cite>None</cite>, it means that the <cite>
 <div class="section" id="speeding-up-a2c-with-infinite-environments">
 <h2>Speeding-up A2C with Infinite Environments<a class="headerlink" href="#speeding-up-a2c-with-infinite-environments" title="Permalink to this headline">¶</a></h2>
 <p>In the previous version, when acquiring trajectories, some environments may be terminated. To avoid wasting time, we can auto-reset the terminated environment. This can be done very easily by using a <cite>GymEnvInf</cite> instead of a <cite>GymEnv</cite> in the <cite>main</cite> function.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_env</span><span class="p">(</span><span class="n">n_envs</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">envs</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_envs</span><span class="p">):</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">create_gym_env</span><span class="p">(</span><span class="n">env_name</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">TimeLimit</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="n">max_episode_steps</span><span class="p">)</span>
+        <span class="n">envs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">GymEnv</span><span class="p">(</span><span class="n">envs</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">create_train_env</span><span class="p">(</span><span class="n">n_envs</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">envs</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_envs</span><span class="p">):</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">create_gym_env</span><span class="p">(</span><span class="n">env_name</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">TimeLimit</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="n">max_episode_steps</span><span class="p">)</span>
+        <span class="n">envs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">GymEnvInf</span><span class="p">(</span><span class="n">envs</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
 </pre></div>
 </div>
-<dl>
-<dt>def create_env(n_envs, env_name=None, max_episode_steps=None, seed=None):</dt><dd><p>envs=[]
-for k in range(n_envs):</p>
-<blockquote>
-<div><p>e = create_gym_env(env_name)
-e = TimeLimit(e, max_episode_steps=max_episode_steps)
-envs.append(e)</p>
-</div></blockquote>
-<p>return GymEnv(envs, seed)</p>
-</dd>
-<dt>def create_train_env(n_envs, env_name=None, max_episode_steps=None, seed=None):</dt><dd><p>envs=[]
-for k in range(n_envs):</p>
-<blockquote>
-<div><p>e = create_gym_env(env_name)
-e = TimeLimit(e, max_episode_steps=max_episode_steps)
-envs.append(e)</p>
-</div></blockquote>
-<p>return GymEnvInf(envs, seed)</p>
-</dd>
-</dl>
 </div>
 </div>
 

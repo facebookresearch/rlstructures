@@ -93,6 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#learning-to-use-rlstructures">Learning to use rlstructures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-by-step-implementation-of-classical-algorithms">Step-by-Step implementation of classical algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#provided-algorithms-as-examples">Provided algorithms (as examples)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discussion-group">Discussion Group</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#citing">Citing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
@@ -173,54 +174,59 @@
 <h1>Overview of rlstructures<a class="headerlink" href="#overview-of-rlstructures" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="tl-dr">
 <h2>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">¶</a></h2>
-<p><cite>rlstructures</cite> is a lightweight Python library that provides simple APIs as well as data structures that make as little assumptions as possible on the structure of your agent or your task while allowing for transparently executing multiple policies on multiple environments in parallel (incl. multiple GPUs).</p>
+<p><cite>rlstructures</cite> is a lightweight Python library that provides simple APIs as well as data structures that make as few assumptions as possible about the structure of your agent or your task while allowing the transparent execution of multiple policies on multiple environments in parallel (incl. multiple GPUs).</p>
 </div>
 <div class="section" id="why-what">
 <h2>Why/What?<a class="headerlink" href="#why-what" title="Permalink to this headline">¶</a></h2>
-<p>RL research addresses multiple aspects of RL like hierarchical policies, option-based policies, goal-oriented policies, structured input/output spaces, transformers-based policies, … and there are currently only few tools to handle this diversity of research projects.</p>
+<p>RL research addresses multiple aspects of RL like hierarchical policies, option-based policies, goal-oriented policies, structured input/output spaces, transformers-based policies, etc. and there are currently few tools to handle this diversity of research projects.</p>
 <p>We propose <cite>rlstructures</cite> as a way to:</p>
 <ul class="simple">
 <li><p>Simulate multiple policies, multiple models and multiple environments simultaneously at scale</p></li>
 <li><p>Define complex loss functions</p></li>
-<li><p>Quickly implement various policies architectures.</p></li>
+<li><p>Quickly implement various policy architectures.</p></li>
 </ul>
-<p>The main RLStructures principle is that the users delegate to the library the sampling of trajectories and episodes such that they will spend most of their time on the interesting part of RL research: developing new models and algorithms.</p>
-<p><cite>rlstructures</cite> is easy to use: it has very few simple interfaces that can be learned in one hour by reading the tutorials. It comes with multiple RL algorithms as examples including A2C, PPO, DDQN and SAC. Besides, there are 5 projects already using it (Multitask RL, Exploration, Diversity in RL, Optimization, …) and helping each other.
+<p>The main RLStructures principle is that the users delegates the sampling of trajectories and episodes to the library so that they can spend most of their time on the interesting part of RL research: developing new models and algorithms.</p>
+<p><cite>rlstructures</cite> is easy to use: it has very few simple interfaces that can be learned in one hour by reading the tutorials. It comes with multiple RL algorithms as examples including A2C, PPO, DDQN and SAC. In addition, there are 5 projects already using it (Multitask RL, Exploration, Diversity in RL, Optimization, …) and helping each other.
 Please reach out to us if you intend to use it. We will be happy to help, and potentially to implement missing functionalities.</p>
 </div>
 <div class="section" id="install-rlstructures">
 <h2>Install rlstructures<a class="headerlink" href="#install-rlstructures" title="Permalink to this headline">¶</a></h2>
-<p>There is currently no <cite>PIP</cite> way to install rlstructures. The best is to:
-* clone the repository
-* then use <cite>PYTHONPATH=rlstructures</cite> when executing your code</p>
+<ul class="simple">
+<li><p>clone the repository</p></li>
+<li><p>run “pip install .”</p></li>
+</ul>
 </div>
 <div class="section" id="learning-to-use-rlstructures">
 <h2>Learning to use rlstructures<a class="headerlink" href="#learning-to-use-rlstructures" title="Permalink to this headline">¶</a></h2>
-<p>Learning <cite>rlstructures</cite> can be made in a very few hours (from the feedback from multiple users). It involves the following steps (see the <cite>getting started</cite> Section)</p>
+<p>Learning <cite>rlstructures</cite> can be done in close to an hour (based on the feedback from multiple users). It involves the following steps (see the <cite>getting started</cite> Section)</p>
 <ul class="simple">
 <li><p>Learning about <strong>DictTensor</strong> and <strong>TemporalDictTensor</strong> that are the two data structures used everywhere in RLStructures <strong>(15 minutes)</strong></p></li>
 <li><p>Learning about mapping a Gym Environment to a <strong>RLStructure Environment</strong> <strong>(5 minutes)</strong></p></li>
-<li><p>Learning about the <strong>Agent API</strong> allowing one to implement any agent, including recurrent agents <strong>(30 minutes)</strong>. Note that an agent mayy be parameterized such that one implementation may corresponds to different agents.</p></li>
-<li><p>Learning about creating and using <strong>multi-processes batchers</strong> (i.e Batcher and EpisodeBatcher) <strong>(15 minutes)</strong>  – see [Episode Batcher Tutorial](doc/MultiProcessEpisodeBatcher.md) and [Trajectory Batcher Tutorial](doc/MultiProcessTrajectoryBatcher.md). These batchers are the core objects that will allow you to work at scale.</p></li>
+<li><p>Learning about the <strong>Agent API</strong> allowing one to implement any agent, including recurrent agents <strong>(30 minutes)</strong>. Note that an agent may be parameterized such that one implementation may correspond to different agents <span class="math notranslate nohighlight">\(\pi_z\)</span>.</p></li>
+<li><p>Learning about creating and using <strong>multi-processes batchers</strong> (i.e Batcher and EpisodeBatcher) <strong>(15 minutes)</strong> . These batchers are the core objects that will allow you to work at scale.</p></li>
 </ul>
-<p>Now, you can execute a complex policy over an environment in a multi-thread way, and get a simple data structure as an output on which you can compute any complex loss and gradients.</p>
+<p>Now, you can execute a complex policy over an environment in a multi-threaded way, and get a simple data structure as an output on which you can compute any complex loss and gradients.</p>
 </div>
 <div class="section" id="step-by-step-implementation-of-classical-algorithms">
 <h2>Step-by-Step implementation of classical algorithms<a class="headerlink" href="#step-by-step-implementation-of-classical-algorithms" title="Permalink to this headline">¶</a></h2>
 <p>We also propose a step-by-step tutorial to implement both REINFORCE, and A2C with a simple and a recurrent policy (see <cite>tutorial</cite> section). Following this tutorial will help you to understand the basis of <cite>rlstructures</cite></p>
-<p><strong>Now, you are ready to implement your own algorithms.</strong></p>
+<p>Now, you are ready to implement your own algorithms!!</p>
 </div>
 <div class="section" id="provided-algorithms-as-examples">
 <h2>Provided algorithms (as examples)<a class="headerlink" href="#provided-algorithms-as-examples" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>We provide multiple implementations of RL algorithms in the <cite>rlaglos</cite> package as illustrative examples. Note that these algorithms have been benchmarked on simple environments only.</dt><dd><ul class="simple">
+<p>We provide multiple implementations of RL algorithms in the <cite>rlaglos</cite> package as illustrative examples. Note that these algorithms have been benchmarked on simple environments only.</p>
+<ul class="simple">
 <li><p>A2C for discrete action space (using recurrent or not recurrent architectures) with GAE (i.e including REINFORCE)</p></li>
 <li><p>PPO for discrete action space (using recurrent or not recurrent architectures)</p></li>
 <li><p>Dueling DQN for discrete action space (using not recurrent architectures)</p></li>
 <li><p>SAC for continuous action space (using not recurrent architectures)</p></li>
 </ul>
-</dd>
-</dl>
+</div>
+<div class="section" id="discussion-group">
+<h2>Discussion Group<a class="headerlink" href="#discussion-group" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Discussion Group: <a class="reference external" href="https://www.facebook.com/groups/834804787067021">https://www.facebook.com/groups/834804787067021</a></p></li>
+</ul>
 </div>
 <div class="section" id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>

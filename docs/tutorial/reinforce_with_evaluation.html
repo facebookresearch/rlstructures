@@ -175,6 +175,9 @@
             
   <div class="section" id="evaluation-of-rl-models-in-other-processes">
 <h1>Evaluation of RL models in other processes<a class="headerlink" href="#evaluation-of-rl-models-in-other-processes" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_reinforce_with_evaluation">https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_reinforce_with_evaluation</a></p></li>
+</ul>
 <p>Regarding the REINFORCE implementation, one missing aspect is a good evaluation of the policy:
 * the evaluation has to be done with the <cite>deterministic</cite> policy (while learning is made with the stochastic policy)
 * the evaluation over N episodes may be long, and we would like to avoid to slow down the learning</p>

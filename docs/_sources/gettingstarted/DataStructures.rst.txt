@@ -2,10 +2,13 @@
 Data Structures
 ===============
 
+* https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_datastructures.py
+
+
 DictTensor
 ----------
 
-A DictTensor is dictionary of pytorch tensors. It assumes that the first dimension of each tensor contained in the DictTensor is the batch dimension. The easiest way to build a DictTensor is to use a ditcionnary of tensors as input
+A DictTensor is dictionary of pytorch tensors. It assumes that the first dimension of each tensor contained in the DictTensor is the batch dimension. The easiest way to build a DictTensor is to use a ditcionary of tensors as input
 
 .. code-block:: python
 
@@ -35,7 +38,7 @@ Many methods can be used over DictTensor (see DictTensor documentation):
 TemporalDictTensor
 ------------------
 
-A `TemporalDictTensor` is a packed sequence of `DictTensors`. In memory, it is stored as a dictionary of tensors, where the first dimesion is the batch dimension, and the second dimension is the time index. Each element in the batch is a sequence, and two sequences can have a different length.etc...")
+A `TemporalDictTensor` is a packed sequence of `DictTensors`. In memory, it is stored as a dictionary of tensors, where the first dimesion is the batch dimension, and the second dimension is the time index. Each element in the batch is a sequence, and two sequences can have different lengths.
 
 .. code-block:: python
 

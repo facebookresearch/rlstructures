@@ -174,27 +174,30 @@
             
   <div class="section" id="agents-policies">
 <h1>Agents/Policies<a class="headerlink" href="#agents-policies" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_agent.py">https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_agent.py</a></p></li>
+</ul>
 <div class="section" id="an-agent-is-a-parameterized-policy">
 <h2>An agent is a parameterized policy<a class="headerlink" href="#an-agent-is-a-parameterized-policy" title="Permalink to this headline">¶</a></h2>
-<p>An agent is the (only) abstraction needed to allow <cite>rlstructures</cite> to collect interactions at scale. One Agent corresponds to a set of policy (formally <span class="math notranslate nohighlight">\(\pi_z\)</span>)</p>
+<p>An agent is the (only) abstraction needed to allow <cite>rlstructures</cite> to collect interactions at scale. One Agent corresponds to a set of policies (formally <span class="math notranslate nohighlight">\(\pi_z\)</span>)</p>
 <ul class="simple">
 <li><p>An Agent class represents a policy (or <em>multiple policies</em> through the <cite>agent_info</cite> argument) acting on a <strong>batch of environment</strong></p></li>
 <li><p>An Agent may include (or not) one or multiple pytorch modules</p></li>
 <li><p>An Agent is stateless, and only implements a <cite>__call__</cite> method</p></li>
-<li><p>The <cite>__call__(agent_state,observation,agent_info=None,history=None)</cite> methods takes as an input:</p>
+<li><p>The <cite>__call__(agent_state,observation,agent_info=None,history=None)</cite> methods take as an input:</p>
 <ul>
-<li><p><cite>agent_state</cite> is the state of the agent as time t-1 (as a <cite>DictTensor</cite>)</p></li>
+<li><p><cite>agent_state</cite> is the state of the agent at time t-1 (as a <cite>DictTensor</cite>)</p></li>
 <li><p><cite>observation</cite> comes from the <cite>rlstructures.VecEnv</cite> environment</p></li>
-<li><p><cite>agent_info</cite> corresponds additional (the <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(\pi_z\)</span>) information provided to the agent (e.g the value of epsilon for epsilon-greedy policies)</p></li>
-<li><p><cite>history</cite> may be a <cite>TemporalDictTensor</cite> representing a set of previous transitions (e.d used for implementing Transformer based methods, but value is always <cite>None</cite> in the default implementation of an agent.), and activated only if <cite>Agent.require_history()==True</cite>.</p></li>
+<li><p><cite>agent_info</cite> corresponds to additional (the <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(\pi_z\)</span>) information provided to the agent (e.g the value of epsilon for epsilon-greedy policies)</p></li>
+<li><p><cite>history</cite> may be a <cite>TemporalDictTensor</cite> representing a set of previous transitions (e.g. used for implementing Transformer based methods, but its value is always <cite>None</cite> in the default implementation of an agent), and activated only if <cite>Agent.require_history()==True</cite>.</p></li>
 </ul>
 </li>
 <li><p>Note that <cite>agent_state.n_elems()==observation.n_elems()</cite> which is the number of environments on which the agent is computed.</p></li>
-<li><p><cite>agent_info=None, history=None</cite> is mandatory in the method definition, and the agent must initialize itself the value of <cite>agent_info</cite> if <cite>agent_info is None</cite></p></li>
+<li><p><cite>agent_info=None, history=None</cite> is mandatory in the method definition, and the agent must initialize, for itself, the value of <cite>agent_info</cite> if <cite>agent_info is None</cite></p></li>
 </ul>
 <p>As an output, the <strong>__call__</strong> method returns a triplet <cite>(old_state,action,new_state)</cite> where:</p>
 <ul class="simple">
-<li><p><cite>action</cite> is the action outputed by the agent as a <cite>DictTensor</cite>. Note that <cite>action.n_elems()==observation.n_elems()</cite>. This information will be transmitted to the environment through the <cite>env.step</cite> method. Note also that the action may contain any information that you would like to store in the resulting trajectory like debugging information for instance (e.g agent step).</p></li>
+<li><p><cite>action</cite> is the action outputed by the agent as a <cite>DictTensor</cite>. Note that <cite>action.n_elems()==observation.n_elems()</cite>. This information will be transmitted to the environment through the <cite>env.step</cite> method. Note also that the action may contain any information that you would like to store in the resulting trajectory like debugging information for instance (e.g. agent step).</p></li>
 <li><p><cite>new_state</cite> is the update of the state of the agent at time <cite>t+1</cite>. This new state is the information transmitted to the agent at the next call.</p></li>
 <li><p><cite>old_state</cite> is the state of the agent before action/new_state computation</p>
 <ul>
@@ -269,9 +272,9 @@ In the mono-process case, one can use the</p>
 <ul class="simple">
 <li><p><cite>execute(agent_info=None,env_info=None)</cite> function returns env.n_envs() episodes</p></li>
 <li><p>Acquired episodes are accessible by calling the <em>get</em> method that returns a <em>TemporalDictTensor</em></p></li>
-<li><p>Note that, at each execute, the user as to provide an <cite>agent_info</cite> value that will be transmitted to each of the agents, and an <cite>env_info</cite> value that will be transmitted to each environment (through the <cite>reset</cite> function), allowing to execute multiple policies on multiple environments in a single batcher call.</p></li>
+<li><p>Note that, at each execution, the user has to provide an <cite>agent_info</cite> value that will be transmitted to each of the agents, and an <cite>env_info</cite> value that will be transmitted to each environment (through the <cite>reset</cite> function), allowing the execution of multiple policies on multiple environments in a single batcher call.</p></li>
 </ul>
-<p>At last, consider that each agent implements the <cite>Agent.update</cite> function that will allow one to update the parameters of the agent.</p>
+<p>And finally, consider that each agent implements the <cite>Agent.update</cite> function that will allow one to update the parameters of the agent.</p>
 </div>
 </div>
 

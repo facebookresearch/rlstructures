@@ -1,0 +1,483 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rlstructures.dicttensor &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview of rlstructures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gettingstarted/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">RLStructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>rlstructures.dicttensor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rlstructures.dicttensor</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># Copyright (c) Facebook, Inc. and its affiliates.</span>
+<span class="c1">#</span>
+<span class="c1"># This source code is licensed under the MIT license found in the</span>
+<span class="c1"># LICENSE file in the root directory of this source tree.</span>
+<span class="c1">#</span>
+
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span><span class="n">List</span><span class="p">,</span><span class="n">Dict</span>
+
+<div class="viewcode-block" id="masked_tensor"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.masked_tensor">[docs]</a><span class="k">def</span> <span class="nf">masked_tensor</span><span class="p">(</span><span class="n">tensor0</span><span class="p">,</span><span class="n">tensor1</span><span class="p">,</span><span class="n">mask</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;  Compute a tensor by combining two tensors with a mask</span>
+
+<span class="sd">    :param tensor0: a Bx(N) tensor</span>
+<span class="sd">    :type tensor0: torch.Tensor</span>
+<span class="sd">    :param tensor1: a Bx(N) tensor</span>
+<span class="sd">    :type tensor1: torch.Tensor</span>
+<span class="sd">    :param mask: a B tensor</span>
+<span class="sd">    :type mask: torch.Tensor</span>
+<span class="sd">    :return: (1-m) * tensor 0 + m *tensor1 (averafging is made ine by line)</span>
+<span class="sd">    :rtype: tensor0.dtype</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">s</span><span class="o">=</span><span class="n">tensor0</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="n">mask</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">=</span><span class="n">mask</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">m</span><span class="o">=</span><span class="n">mask</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">*</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+    <span class="n">out</span><span class="o">=</span><span class="p">((</span><span class="mf">1.0</span><span class="o">-</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">tensor0</span><span class="o">+</span><span class="n">m</span><span class="o">*</span><span class="n">tensor1</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">tensor0</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+<div class="viewcode-block" id="masked_dicttensor"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.masked_dicttensor">[docs]</a><span class="k">def</span> <span class="nf">masked_dicttensor</span><span class="p">(</span><span class="n">dicttensor0</span><span class="p">,</span><span class="n">dicttensor1</span><span class="p">,</span><span class="n">mask</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Same as `masked_tensor`, but for DictTensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dicttensor0</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">v0</span><span class="o">=</span><span class="n">dicttensor0</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">v1</span><span class="o">=</span><span class="n">dicttensor1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">masked_tensor</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span><span class="n">v1</span><span class="p">,</span><span class="n">mask</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DictTensor"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor">[docs]</a><span class="k">class</span> <span class="nc">DictTensor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A dictionary of torch.Tensor. The first dimension of each tensor is the batch dimension such that all tensors have the same</span>
+<span class="sd">    batch dimension size.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span><span class="n">Dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initialize the DictTensor with a dictionary of Tensors.</span>
+<span class="sd">            All tensors must have the same first dimension size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">device</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">d</span> <span class="o">==</span> <span class="n">k</span><span class="o">.</span><span class="n">device</span>
+
+    <span class="k">def</span> <span class="nf">_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check that all tensors have the same batch dimension size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">s</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># def _check_specs(self, specs)-&gt;bool:</span>
+    <span class="c1">#     &quot;&quot;&quot; Check that a DictTensor follow a particular specification</span>
+
+    <span class="c1">#     :param specs: specs (dict): a dictionary where each key is associated with</span>
+    <span class="c1">#                     &#39;dtype&#39; and &#39;size&#39; values</span>
+    <span class="c1">#     :return: True or False</span>
+    <span class="c1">#     :rtype: bool</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     for k in specs:</span>
+    <span class="c1">#         assert k in self.variables, &quot;Variable not found&quot;</span>
+
+<div class="viewcode-block" id="DictTensor.keys"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the keys of the DictTensor (as an iterator)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get one particular tensor in the DictTensor</span>
+
+<span class="sd">        :param key: the name of the tensor</span>
+<span class="sd">        :type key: str</span>
+<span class="sd">        :return: the correspondiong tensor</span>
+<span class="sd">        :rtype: torch.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+<div class="viewcode-block" id="DictTensor.get"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span><span class="n">clone</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">-&gt;</span> <span class="n">DictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns a DictTensor composed of a subset of the tensors specifed by their keys</span>
+
+<span class="sd">        :param keys: The keys to keep in the new DictTensor</span>
+<span class="sd">        :type keys: Iterable[str]</span>
+<span class="sd">        :param clone: if True, the new DictTensor is composed of clone of the original tensors, defaults to False</span>
+<span class="sd">        :type clone: bool, optional</span>
+<span class="sd">        :rtype: DictTensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">clone</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="DictTensor.clone"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">DictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Clone the dicttensor by cloning all its tensors</span>
+<span class="sd">        :rtype: DictTensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">({</span><span class="n">k</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="DictTensor.specs"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.specs">[docs]</a>    <span class="k">def</span> <span class="nf">specs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the specifications of the dicttensor as a dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_specs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="n">_specs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span>
+                <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">_specs</span></div>
+
+<div class="viewcode-block" id="DictTensor.device"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.device">[docs]</a>    <span class="k">def</span> <span class="nf">device</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the device of the tensors stored in the DictTensor.</span>
+<span class="sd">        :rtype: torch.device</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="o">.</span><span class="n">device</span></div>
+
+<div class="viewcode-block" id="DictTensor.n_elems"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.n_elems">[docs]</a>    <span class="k">def</span> <span class="nf">n_elems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the size of size of the batch dimension (i.e the first dimension of the tensors)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># TODO: Empty dicts should be handled better than this</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="DictTensor.empty"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.empty">[docs]</a>    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Is the DictTensor empty? (no tensors in it)</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span></div>
+
+<div class="viewcode-block" id="DictTensor.unfold"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.unfold">[docs]</a>    <span class="k">def</span> <span class="nf">unfold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">List</span><span class="p">[</span><span class="n">DictTensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of DictTensor, each DictTensor capturing one element of the batch dimension (i.e suc that n_elems()==1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">()):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+            <span class="n">pt</span> <span class="o">=</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="DictTensor.slice"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.slice">[docs]</a>    <span class="k">def</span> <span class="nf">slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_from</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">index_to</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">DictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns a dict tensor, keeping only batch dimensions between index_from and index_to+1</span>
+
+<span class="sd">        :param index_from: The first batch index to keep</span>
+<span class="sd">        :type index_from: int</span>
+<span class="sd">        :param index_to: The last+1 batch index to keep. If None, then just index_from is kept</span>
+<span class="sd">        :type index_to: int, optional</span>
+<span class="sd">        :rtype: DictTensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index_to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                <span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index_from</span><span class="p">:</span><span class="n">index_to</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                <span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index_from</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DictTensor.index"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">DictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The same as self.slice(index)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DictTensor.cat"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.cat">[docs]</a>    <span class="k">def</span> <span class="nf">cat</span><span class="p">(</span><span class="n">tensors</span><span class="p">:</span><span class="n">Iterable</span><span class="p">[</span><span class="n">DictTensor</span><span class="p">])</span><span class="o">-&gt;</span><span class="n">DictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregate multiple packed tensors over the batch dimension</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tensors (list): a list of tensors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">DictTensor</span><span class="p">({})</span>
+        <span class="n">retour</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="n">to_concat</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tensors</span><span class="p">)):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">to_concat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">retour</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">to_concat</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">retour</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DictTensor.to"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.to">[docs]</a>    <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a copy of the DictTensor on a new device (if needed)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DictTensor.set"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a tensor to the DictTensor</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): the name of the tensor</span>
+<span class="sd">            value (torch.Tensor): the tensor to add, with a correct batch</span>
+<span class="sd">                dimension size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_elems</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">value</span><span class="o">.</span><span class="n">device</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="DictTensor.prepend_key"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.prepend_key">[docs]</a>    <span class="k">def</span> <span class="nf">prepend_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_str</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">DictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a new DictTensor where _str has been concatenated to all the keys</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="n">_str</span> <span class="o">+</span> <span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DictTensor.truncate_key"><a class="viewcode-back" href="../../api/rlstructures.html#rlstructures.dicttensor.DictTensor.truncate_key">[docs]</a>    <span class="k">def</span> <span class="nf">truncate_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_str</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">DictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a new DictTensor where _str has been removed to all the keys that have _str as a prefix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">_str</span><span class="p">):</span>
+                <span class="n">nk</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">_str</span><span class="p">):]</span>
+                <span class="n">v</span><span class="p">[</span><span class="n">nk</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;DictTensor: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span><span class="n">DictTensor</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">DictTensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new DictTensor containing all the tensors from self and dt</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">dt</span><span class="o">.</span><span class="n">device</span><span class="p">()</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dt</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span> <span class="p">(</span>
+                <span class="s2">&quot;variable &quot;</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot; already exists in the DictTensor&quot;</span>
+            <span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span> <span class="o">**</span><span class="n">dt</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
