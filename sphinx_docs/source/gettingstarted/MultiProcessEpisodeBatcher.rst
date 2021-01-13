@@ -1,7 +1,7 @@
 Multiprocess Episode Batcher
 ============================
 
-Let us consider that we define multiple environments identified by an *environment_id*, such that two environments with two different *ids* does not behave exactly the same. This can be easily implemented by using the env_info* argument in the reset function:
+Consider defining multiple environments identified by an *environment_id*, such that two environments with two different *ids* does not behave exactly the same. This can be easily implemented by using the *env_info* argument in the reset function:
 
 .. code-block:: python
 
@@ -41,7 +41,7 @@ Let us consider that we define multiple environments identified by an *environme
             obs={"x":self.x,"identifier":self.identifier,"env_id":self.env_id},self.x,done,{}
             return obs
 
-As you can see, the env_info can be used as an input parameter for the environment allowing to model multiple environments through a single class.
+As you can see, the env_info can be used as an input parameter for the environment allowing one to model multiple environments through a single class.
 
 We can do the same with agents, and implement an *Agent* that is parametrized by an *agent_info*. In our case, the agent is just an agent outputting its agent_id as an action. Advanced examples are shown in the *rlaglos* directory (e.g stochastic/deterministic polices, epsilon-greedy policies, ...)
 
