@@ -22,6 +22,12 @@ The main RLStructures principle is that the users delegates the sampling of traj
 `rlstructures` is easy to use: it has very few simple interfaces that can be learned in one hour by reading the tutorials. It comes with multiple RL algorithms as examples including A2C, PPO, DDQN and SAC. Besides, there are 5 projects already using it (Multitask RL, Exploration, Diversity in RL, Optimization, ...) and helping each other.
 Please reach out to us if you intend to use it. We will be happy to help, and potentially to implement missing functionalities.
 
+Where?
+------
+
+* http://github.com/facebookresearch/rlstructures
+
+
 Discussion Group
 ----------------
 
