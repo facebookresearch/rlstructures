@@ -12,6 +12,13 @@ The main principle of RLStructures is to allow the user to delegate the sampling
 
 RLStructures is easy to use: it has very few simple interfaces that can be learned in one hour by reading the tutorials. It is not a RL Alorithms catalog, but a library to do RL Research. For illustration purposes it comes with multiple RL algorithms including A2C, PPO, DDQN and SAC.
 
+## Installation
+
+Install from source by running the following inside the repo:
+```
+pip install .
+```
+
 ## Learning RLStructures
 
 * [http://facebookresearch.github.io/rlstructures](http://facebookresearch.github.io/rlstructures)
