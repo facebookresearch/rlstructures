@@ -104,19 +104,19 @@ In the previous version, when acquiring trajectories, some environments may be t
 
 .. code-block:: python
 
-def create_env(n_envs, env_name=None, max_episode_steps=None, seed=None):
-    envs=[]
-    for k in range(n_envs):
-        e = create_gym_env(env_name)
-        e = TimeLimit(e, max_episode_steps=max_episode_steps)
-        envs.append(e)
-    return GymEnv(envs, seed)
+    def create_env(n_envs, env_name=None, max_episode_steps=None, seed=None):
+        envs=[]
+        for k in range(n_envs):
+            e = create_gym_env(env_name)
+            e = TimeLimit(e, max_episode_steps=max_episode_steps)
+            envs.append(e)
+        return GymEnv(envs, seed)
 
 
-def create_train_env(n_envs, env_name=None, max_episode_steps=None, seed=None):
-    envs=[]
-    for k in range(n_envs):
-        e = create_gym_env(env_name)
-        e = TimeLimit(e, max_episode_steps=max_episode_steps)
-        envs.append(e)
-    return GymEnvInf(envs, seed)
+    def create_train_env(n_envs, env_name=None, max_episode_steps=None, seed=None):
+        envs=[]
+        for k in range(n_envs):
+            e = create_gym_env(env_name)
+            e = TimeLimit(e, max_episode_steps=max_episode_steps)
+            envs.append(e)
+        return GymEnvInf(envs, seed)
