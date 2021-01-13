@@ -12,8 +12,22 @@ Examples about how to use batchers are given in the other sections.
 Parallelization Schema
 ----------------------
 
-The generic parallelization schema is illustated in the following picture.
+The generic parallelization schema is illustrated in the following picture.
 
-.. image:: http://www-connex.lip6.fr/~denoyer/wordpress/wp-content/uploads/2014/09/41416063_1843670485712946_6632995093617836032_n.jpg
+.. image:: https://raw.githubusercontent.com/facebookresearch/rlstructures/main/docs/images/batchers.jpg?token=ABNXVXPVRMSMY5XGYBMOUILAA725Q
   :width: 1024
   :alt: Parallelization Schema
+
+* One batcher creates multiple processes
+
+* Each process contains a copy of the `Agent` and a copy of the `rlstructures.VecEnv` (the copy are made through `create_agent` and `create_env` functions that are arguments at the batcher creation)
+
+  * In our case, each Agent as its own copy of the pytorch model (note that it can be a shared_memory model to avoid to use extra memory)
+
+* Each `VecEnv` corresponds to multiple simple environments
+
+* At `execute`, the processes start to acquire information by simulating the interaction betweeh the agent and the environments
+
+* At `get`, the information collected by the processes are merged to a `TemporalDictTensor` that is the output of `get`
+
+* The call of `Batcher.update` will call `Agent.update` in all the processes to typically update the model of each Agent
