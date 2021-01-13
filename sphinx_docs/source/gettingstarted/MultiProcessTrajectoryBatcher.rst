@@ -4,7 +4,7 @@ Multiprocess Batcher
 A trajectory batcher will just acquire N timesteps (and not full episodes)
 
 * `n_timesteps` is the number of steps to acquire at each call
-* `n_slots` is the number of simulatenous acquisition which is typically `n_slots=n_threads*n_envs`
+* `n_slots` is the number of simulatenous acquisitions which is typically `n_slots=n_threads*n_envs`
 
 .. code-block:: python
 
