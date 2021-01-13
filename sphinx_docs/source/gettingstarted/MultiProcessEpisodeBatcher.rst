@@ -1,6 +1,9 @@
 Multiprocess Episode Batcher
 ============================
 
+* https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_multiprocess_episode_batcher.py
+
+
 Let us consider that we define multiple environments identified by an *environment_id*, such that two environments with two different *ids* does not behave exactly the same. This can be easily implemented by using the env_info* argument in the reset function:
 
 .. code-block:: python

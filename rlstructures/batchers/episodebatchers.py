@@ -13,6 +13,7 @@ import rlstructures.logging as logging
 import torch
 import numpy as np
 from rlstructures import DictTensor
+import copy
 
 class MultiThreadEpisodeBatcher:
     def execute(self, n_episodes, agent_info=DictTensor({}),env_info=DictTensor({})):
@@ -20,10 +21,10 @@ class MultiThreadEpisodeBatcher:
         assert n_episodes % (self.n_envs*n_workers) == 0
         assert isinstance(agent_info,DictTensor) and (agent_info.empty() or agent_info.n_elems()==n_episodes)
         assert isinstance(env_info,DictTensor) and (env_info.empty() or env_info.n_elems()==n_episodes)
-        
+
         self.n_per_worker = [int(n_episodes / n_workers) for w in range(n_workers)]
         pos=0
-        for k in range(n_workers):            
+        for k in range(n_workers):
                 n=self.n_per_worker[k]
                 assert n%self.n_envs==0
                 wi=agent_info.slice(pos,pos+n)
@@ -36,15 +37,15 @@ class MultiThreadEpisodeBatcher:
 
     def reexecute(self):
         n_workers = len(self.workers)
-        
-        for k in range(n_workers):                            
+
+        for k in range(n_workers):
                 self.workers[k].acquire_episodes_again()
-        
+
     def get(self,blocking=True):
         if not blocking:
             for w in range(len(self.workers)):
                 b=self.workers[w].finished()
-                if not b:    
+                if not b:
                     return None
 
         max_length = 0
@@ -70,7 +71,7 @@ class MultiThreadEpisodeBatcher:
     def update(self, info):
         for w in self.workers:
             w.update_worker(info)
-       
+
     def close(self):
         for w in self.workers:
             w.close()
@@ -89,18 +90,19 @@ class EpisodeBatcher(MultiThreadEpisodeBatcher):
         seeds=None,
     ):
         # Buffer creation:
-        agent = create_agent(**agent_args)        
+        agent = create_agent(**agent_args)
         env = create_env(**{**env_args,"seed":0})
         obs,who=env.reset()
-        a,b,c=agent(None,obs)
-        
+        with torch.no_grad():
+            a,b,c=agent(None,obs)
+
         self.n_envs=env.n_envs()
         specs_agent_state=a.specs()
         specs_agent_output=b.specs()
         specs_environment=obs.specs()
         del env
         del agent
-        
+
         self.buffer = LocalBuffer(
             n_slots=n_slots,
             s_slots=n_timesteps,
@@ -116,13 +118,13 @@ class EpisodeBatcher(MultiThreadEpisodeBatcher):
             logging.info(
                 "Seeds for batcher environments has not been chosen. Default"
                 + " is None"
-            )        
+            )
             seeds = [None for k in range(n_threads)]
-        
+
         if (isinstance(seeds,int)):
             s=seeds
             seeds=[s+k*64 for k in range(n_threads)]
-        assert len(seeds)==n_threads,"You have to choose one seed per thread"        
+        assert len(seeds)==n_threads,"You have to choose one seed per thread"
         logging.info("[EpisodeBatcher] Creating %d threads" % (n_threads))
         for k in range(n_threads):
             e_args = {**env_args, "seed": seeds[k]}
@@ -139,7 +141,7 @@ class EpisodeBatcher(MultiThreadEpisodeBatcher):
     def close(self):
         super().close()
         self.buffer.close()
-        
+
 
 class MonoThreadEpisodeBatcher:
     def __init__(self,
@@ -151,7 +153,7 @@ class MonoThreadEpisodeBatcher:
         self.agent=create_agent(**agent_args)
         assert not self.agent.require_history()
         self.env=create_env(**env_args)
-        self.n_envs=self.env.n_envs        
+        self.n_envs=self.env.n_envs
 
     def execute(self, agent_info=DictTensor({}),env_info=DictTensor({})):
         self.agent_info=agent_info
@@ -162,7 +164,7 @@ class MonoThreadEpisodeBatcher:
             obs,is_running=self.env.reset(self.env_info)
             n_elems=obs.n_elems()
             observations=[{k:obs[k] for k in obs.keys()}]
-            states=[]        
+            states=[]
             agent_state=None
             agent_info=self.agent_info
             if agent_info is None:
@@ -175,7 +177,7 @@ class MonoThreadEpisodeBatcher:
                 old_agent_state, agent_output, new_agent_state = self.agent(
                     agent_state, obs,agent_info
                 )
-                
+
                 if (len(states)==0):
                     first_state=old_agent_state
                     s={k:old_agent_state[k] for k in old_agent_state.keys()}
@@ -186,9 +188,9 @@ class MonoThreadEpisodeBatcher:
                     s={k:old_agent_state[k] for k in old_agent_state.keys()}
                     s={**s,**{k:agent_output[k] for k in agent_output.keys()}}
                     s={**s,**{"_"+k:new_agent_state[k] for k in new_agent_state.keys()}}
-                                        
+
                     ns={k:states[0][k].clone() for k in states[0]}
-                    
+
                     for k in states[0]:
                         ns[k][is_running]=(s[k])
                     states.append(ns)
@@ -207,15 +209,15 @@ class MonoThreadEpisodeBatcher:
                         observations[t][k]=observations[0][k].clone()
                     for k in obs.keys():
                         observations[t][k][is_running]=(obs[k])
-                         
-                    ag={k:first_state[k].clone() for k in first_state.keys()}                                      
+
+                    ag={k:first_state[k].clone() for k in first_state.keys()}
                     for k in ag:
                         ag[k][l_is_running]=new_agent_state[k]
                     agent_state=DictTensor({k:ag[k][is_running] for k in ag})
 
-                    ai={k:first_info[k].clone() for k in first_info.keys()}  
+                    ai={k:first_info[k].clone() for k in first_info.keys()}
                     agent_info=DictTensor({k:ai[k][is_running] for k in ai})
-                
+
             f_observations={}
             for k in observations[0]:
                 _all=[o[k].unsqueeze(1) for o in observations]
@@ -226,7 +228,7 @@ class MonoThreadEpisodeBatcher:
                 f_states[k]=torch.cat(_all,dim=1)
             return TemporalDictTensor({**f_observations,**f_states},lengths=length)
 
-        
+
     def update(self, info):
         self.agent.update(info)
 

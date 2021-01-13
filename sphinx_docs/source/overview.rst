@@ -38,7 +38,7 @@ Learning `rlstructures` can be made in a very few hours (from the feedback from 
 
 * Learning about **DictTensor** and **TemporalDictTensor** that are the two data structures used everywhere in RLStructures **(15 minutes)**
 * Learning about mapping a Gym Environment to a **RLStructure Environment** **(5 minutes)**
-* Learning about the **Agent API** allowing one to implement any agent, including recurrent agents **(30 minutes)**. Note that an agent mayy be parameterized such that one implementation may corresponds to different agents.
+* Learning about the **Agent API** allowing one to implement any agent, including recurrent agents **(30 minutes)**. Note that an agent may be parameterized such that one implementation may correspond to different agents :math:`\pi_z`.
 * Learning about creating and using **multi-processes batchers** (i.e Batcher and EpisodeBatcher) **(15 minutes)**  -- see [Episode Batcher Tutorial](doc/MultiProcessEpisodeBatcher.md) and [Trajectory Batcher Tutorial](doc/MultiProcessTrajectoryBatcher.md). These batchers are the core objects that will allow you to work at scale.
 
 Now, you can execute a complex policy over an environment in a multi-thread way, and get a simple data structure as an output on which you can compute any complex loss and gradients.
@@ -48,16 +48,25 @@ Step-by-Step implementation of classical algorithms
 
 We also propose a step-by-step tutorial to implement both REINFORCE, and A2C with a simple and a recurrent policy (see `tutorial` section). Following this tutorial will help you to understand the basis of `rlstructures`
 
-**Now, you are ready to implement your own algorithms.**
+Now, you are ready to implement your own algorithms!!
 
 Provided algorithms (as examples)
 ---------------------------------
 
 We provide multiple implementations of RL algorithms in the `rlaglos` package as illustrative examples. Note that these algorithms have been benchmarked on simple environments only.
-  * A2C for discrete action space (using recurrent or not recurrent architectures) with GAE (i.e including REINFORCE)
-  * PPO for discrete action space (using recurrent or not recurrent architectures)
-  * Dueling DQN for discrete action space (using not recurrent architectures)
-  * SAC for continuous action space (using not recurrent architectures)
+
+* A2C for discrete action space (using recurrent or not recurrent architectures) with GAE (i.e including REINFORCE)
+
+* PPO for discrete action space (using recurrent or not recurrent architectures)
+
+* Dueling DQN for discrete action space (using not recurrent architectures)
+
+* SAC for continuous action space (using not recurrent architectures)
+
+Discussion Group
+----------------
+
+* Discussion Group: https://www.facebook.com/groups/834804787067021
 
 Contributing
 ------------

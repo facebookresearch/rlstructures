@@ -1,6 +1,10 @@
 Implemeting Actor-Critic
 ==========================================
 
+* https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_from_reinforce_to_a2c
+* https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_a2c_with_infinite_env
+
+
 The previous REINFORCE implementation can be easily adapted to actor-critic. The main differences are:
 1) we just need to acquire N steps at each iteration (instead of complete episodes)
 2) the loss will be using the temporal differences

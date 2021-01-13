@@ -22,6 +22,12 @@ The main RLStructures principle is that the users delegate to the library the sa
 `rlstructures` is easy to use: it has very few simple interfaces that can be learned in one hour by reading the tutorials. It comes with multiple RL algorithms as examples including A2C, PPO, DDQN and SAC. Besides, there are 5 projects already using it (Multitask RL, Exploration, Diversity in RL, Optimization, ...) and helping each other.
 Please reach out to us if you intend to use it. We will be happy to help, and potentially to implement missing functionalities.
 
+Discussion Group
+----------------
+
+* Discussion Group: https://www.facebook.com/groups/834804787067021
+
+
 .. toctree::
    :maxdepth: 1
    :caption: Getting Started

@@ -1,6 +1,8 @@
 Multiprocess Batcher
 ====================
 
+* https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_multiprocess_trajectory_batcher.py
+
 A trajectory batcher will just acquire N timesteps (and not full episodes)
 
 * `n_timesteps` is the number of steps to acquire at each call

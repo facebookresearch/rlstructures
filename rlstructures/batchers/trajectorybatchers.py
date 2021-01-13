@@ -16,9 +16,9 @@ import numpy as np
 
 class MultiThreadTrajectoryBatcher:
     def reset(self,agent_info=DictTensor({}), env_info=DictTensor({})):
-        n_workers = len(self.workers) 
+        n_workers = len(self.workers)
         assert isinstance(agent_info,DictTensor) and (agent_info.empty() or agent_info.n_elems()==self.n_envs*n_workers)
-        assert isinstance(env_info,DictTensor) and (env_info.empty() or env_info.n_elems()==self.n_envs*n_workers)                
+        assert isinstance(env_info,DictTensor) and (env_info.empty() or env_info.n_elems()==self.n_envs*n_workers)
         pos=0
         for k in range(n_workers):
                 n=self.n_envs
@@ -27,11 +27,11 @@ class MultiThreadTrajectoryBatcher:
                 self.workers[k].reset(
                     agent_info=wi, env_info=ei
                 )
-                pos+=n                
+                pos+=n
 
     def execute(self):
-        n_workers = len(self.workers)         
-        for k in range(n_workers):                
+        n_workers = len(self.workers)
+        for k in range(n_workers):
                 self.workers[k].acquire_slot()
 
     def get(self,blocking=True):
@@ -51,7 +51,7 @@ class MultiThreadTrajectoryBatcher:
     def update(self, info):
         for w in self.workers:
             w.update_worker(info)
-        
+
     def close(self):
         for w in self.workers:
             w.close()
@@ -70,21 +70,22 @@ class Batcher(MultiThreadTrajectoryBatcher):
         create_env,
         env_args,
         n_threads,
-        seeds=None,        
+        seeds=None,
     ):
         # Buffer creation:
-        agent = create_agent(**agent_args)        
+        agent = create_agent(**agent_args)
         env = create_env(**{**env_args,"seed":0})
         obs,who=env.reset()
-        a,b,c=agent(None,obs)
-        
+        with torch.no_grad():
+            a,b,c=agent(None,obs)
+
         self.n_envs=env.n_envs()
         specs_agent_state=a.specs()
         specs_agent_output=b.specs()
         specs_environment=obs.specs()
         del env
         del agent
-        
+
         self.buffer = LocalBuffer(
             n_slots=n_slots,
             s_slots=n_timesteps,
@@ -100,7 +101,7 @@ class Batcher(MultiThreadTrajectoryBatcher):
                 "Seeds for batcher environments has not been chosen. Default is None"
             )
             seeds = [None for k in range(n_threads)]
-        
+
         if (isinstance(seeds,int)):
             s=seeds
             seeds=[s+k*64 for k in range(n_threads)]
@@ -121,4 +122,4 @@ class Batcher(MultiThreadTrajectoryBatcher):
 
     def close(self):
         super().close()
-        self.buffer.close()        
+        self.buffer.close()

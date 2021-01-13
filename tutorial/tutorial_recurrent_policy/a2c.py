@@ -18,6 +18,7 @@ import time
 import numpy as np
 import torch.nn.functional as F
 from tutorial.tutorial_recurrent_policy.agent import *
+from rlstructures.dicttensor import masked_tensor
 
 class A2C:
     def __init__(self, config,create_env,create_train_env,create_agent):
@@ -158,6 +159,9 @@ class A2C:
             action_probabilities=[]
             agent_state=trajectories["agent_state"][:,0]
             for t in range(max_length):
+                #since we are using an infinite env, we have to re-initialize the agent_state if we reach a new episode initial state
+                agent_state=masked_tensor(agent_state,trajectories["agent_state"][:,t],trajectories["initial_state"][:,t])
+
                 agent_state,proba=self.learning_model(agent_state,trajectories["frame"][:,t])
                 action_probabilities.append(proba.unsqueeze(1)) # We append the probability, and introduces the temporal dimension (2nde dimension)
             action_probabilities=torch.cat(action_probabilities,dim=1) #Now, we have a B x T x n_actions tensor
@@ -166,6 +170,9 @@ class A2C:
             critic=[]
             agent_state=trajectories["agent_state"][:,0]
             for t in range(max_length):
+                #since we are using an infinite env, we have to re-initialize the agent_state if we reach a new episode initial state
+                agent_state=masked_tensor(agent_state,trajectories["agent_state"][:,t],trajectories["initial_state"][:,t])
+
                 agent_state,b=self.critic_model(agent_state,trajectories["frame"][:,t])
                 critic.append(b.unsqueeze(1))
             critic=torch.cat(critic+[b.unsqueeze(1)],dim=1).squeeze(-1) #Now, we have a B x (T+1) tensor

@@ -1,6 +1,9 @@
 Implementing Reinforce with rlstructures
 ========================================
 
+* https://github.com/facebookresearch/rlstructures/tree/main/tutorial/tutorial_reinforce
+
+
 We explain how we can quickly implement a REINFORCE algorithm working on multiple processes (see `tutorial/tutorial_reinforce`). Note that all the provided algorithms produce a tensorboard and CSV output.
 
 Creating the policy

@@ -24,7 +24,7 @@ def worker_thread(
 ):
     env = create_env(**env_parameters)
     n_envs = env.n_envs()
-    
+
 
     agent = create_agent(**agent_parameters)
 
@@ -54,10 +54,10 @@ def worker_thread(
         elif order_name == "slot":
             if len(env_running)==0:
                 out_queue.put([])
-            else:                
+            else:
                 env_to_slot, agent_state, observation, t_agent_info, env_running = acquire_slot(
                         buffer,
-                        env,                    
+                        env,
                         agent,
                         agent_state,
                         observation,
@@ -65,12 +65,12 @@ def worker_thread(
                         env_running,
                 )
                 slots=[env_to_slot[k] for k in env_to_slot]
-                out_queue.put(slots)                               
+                out_queue.put(slots)
         elif order_name == "episode":
             _, agent_info, env_info,n_episodes = order
             assert n_episodes%n_envs==0
             n_sequential_rounds = int(n_episodes / n_envs)
-            buffer_slot_id_lists = []            
+            buffer_slot_id_lists = []
             for kk in range(n_sequential_rounds):
                 ei = env_info.slice(kk*n_envs,(kk+1)*n_envs)
                 ai = agent_info.slice(kk*n_envs,(kk+1)*n_envs)
@@ -79,13 +79,13 @@ def worker_thread(
             out_queue.put(buffer_slot_id_lists)
         elif order_name == "episode_again":
             n_sequential_rounds = int(n_episodes / n_envs)
-            buffer_slot_id_lists = []            
+            buffer_slot_id_lists = []
             for kk in range(n_sequential_rounds):
                 ei = env_info.slice(kk*n_envs,(kk+1)*n_envs)
                 ai = agent_info.slice(kk*n_envs,(kk+1)*n_envs)
                 id_lists = acquire_episodes(buffer, env, agent,ei,ai)
-                buffer_slot_id_lists += id_lists            
-            out_queue.put(buffer_slot_id_lists)            
+                buffer_slot_id_lists += id_lists
+            out_queue.put(buffer_slot_id_lists)
         elif order_name == "update":
             agent.update(order[1])
             out_queue.put("ok")
@@ -113,7 +113,7 @@ class ThreadWorker:
                 create_agent,
                 agent_args,
                 self.inq,
-                self.outq,                
+                self.outq,
             ),
         )
         self.process = p
