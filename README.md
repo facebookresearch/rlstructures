@@ -15,7 +15,7 @@ Main changes:
 * A replay function has been added to allow to replay an Agent over acquired trajectories
   * It greatly facilitate loss functions implementation
 * More RL algorithms as examples (including PPO,SAC, REINFORCE, A2C, DQN, DIAYN)
-* A growing series of tutorials at [https://medium.com/@ludovic.den](https://medium.com/@ludovic.den)
+* A growing series of tutorials at [https://ludovic-denoyer.medium.com/](https://ludovic-denoyer.medium.com/)
 
 All these changes are documented in the HTML documentation at [http://facebookresearch.github.io/rlstructures](http://facebookresearch.github.io/rlstructures)
 
@@ -45,7 +45,7 @@ pip install .
 
 * [http://facebookresearch.github.io/rlstructures](http://facebookresearch.github.io/rlstructures)
 
-* A must read: tutorials are provided at: [https://medium.com/@ludovic.den](https://medium.com/@ludovic.den)
+* A must read: tutorials are provided at: [https://ludovic-denoyer.medium.com/](hhttps://ludovic-denoyer.medium.com/)
 
 * The complete documentation is available at [http://facebookresearch.github.io/rlstructures](http://facebookresearch.github.io/rlstructures). The example algorithms are provided in *rlaglos/*.
 
