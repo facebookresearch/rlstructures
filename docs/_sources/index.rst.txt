@@ -34,9 +34,9 @@ Main changes:
 
 * More RL algorithms as examples (including PPO,SAC, REINFORCE, A2C, DQN, DIAYN)
 
-* A growing series of tutorials at [https://medium.com/@ludovic.den](https://medium.com/@ludovic.den)
+* A growing series of tutorials at https://ludovic-denoyer.medium.com/
 
-All these changes are documented in the HTML documentation at [http://facebookresearch.github.io/rlstructures](http://facebookresearch.github.io/rlstructures)
+All these changes are documented in the HTML documentation at http://facebookresearch.github.io/rlstructures
 
 Why/What?
 ---------
@@ -67,7 +67,7 @@ Where?
 ------
 
 * Github: http://github.com/facebookresearch/rlstructures
-* Tutorials: https://medium.com/@ludovic.den
+* Tutorials: https://ludovic-denoyer.medium.com/
 * Discussion Group: https://www.facebook.com/groups/834804787067021
 
 .. toctree::
