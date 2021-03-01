@@ -35,6 +35,18 @@ Many methods can be used over DictTensor (see DictTensor documentation):
     d["x"] # Returns the tensor 'x' in the DictTensor
     d.keys() # Returns the names of the variables of the DictTensor
 
+Tensors can be organized in a tree structure:
+
+.. code-block:: python
+    d=DictTensor({})
+    d.set("observation/x",torch.randn(5,3))
+    d.set("observation/y",torch.randn(5,8,2))
+    d.set("agent_state/z",torch.randn(5,4))
+
+    observation=d.truncate_key("observation/") #returns a DictTensor with 'x' and 'y'
+    print(observation)
+
+
 TemporalDictTensor
 ------------------
 
@@ -60,3 +72,14 @@ A `TemporalDictTensor` is a packed sequence of `DictTensors`. In memory, it is s
     print(d_slice.mask())
 
 `DictTensor` and `TemporalDictTensor` can be moved to cpu/gpu using the *xxx.to(...)* method.
+
+Trajectories
+------------
+
+We recently introduced the `Trajectories` structure as a pair of one DictTensor and one TemporalDictTensor to represent Trajectories
+
+.. code-block:: python
+    trajectories.info #A DictTensor
+    trajectories.trajectories #A TemporalDictTensor of transitions
+
+See the `Agent and Batcher` documentation for more details.

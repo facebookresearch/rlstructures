@@ -5,5 +5,4 @@ RLStructures API
    :caption: API
 
    rlstructures
-   rlstructures.batchers
    rlstructures.env_wrappers

@@ -39,7 +39,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="RLStructures API" href="../api/index.html" />
-    <link rel="prev" title="Transformer Policy" href="../tutorial/transformer_policy.html" /> 
+    <link rel="prev" title="Playing with rlstructures" href="../gettingstarted/PlayingWithRLStructures.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,10 +88,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview of rlstructures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted/index.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Provided Algorithms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">RLStructures API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating_v0.1_v0.2.html">rlstructures – mgirating from v0.1 to v0.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deprecated/index.html">Deprecated API (v0.1)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
 </ul>
 
@@ -160,14 +161,19 @@
             
   <div class="section" id="provided-algorithms">
 <h1>Provided Algorithms<a class="headerlink" href="#provided-algorithms" title="Permalink to this headline">¶</a></h1>
-<p>We provide multiple RL algorithms as examples.
-1) A2C with General Advantage Estimator
-2) PPO with discrete actions
-3) Duelling Q-Learning
-4) SAC for continuous actions</p>
-<p>The algorithms can be used as examples to implement your own algorithms. Each algorithm is parameterized by a <cite>YAML</cite> file that contains the hyper-parameters (based on the <cite>hydra</cite> framework, allowing to launch on cluster).</p>
-<p>Typical execution is : <cite>python main.py -cd script_directory -cn config.yaml</cite></p>
-<p>Note that all algorithms produced a tensorboard and a CSV output.</p>
+<p>We provide multiple RL algorithms as examples.</p>
+<ol class="arabic simple">
+<li><p>A2C with General Advantage Estimator</p></li>
+<li><p>PPO with discrete actions</p></li>
+</ol>
+<p>3) Double Duelling Q-Learning + Prioritized Experience Replay
+3bis) A simpler DQN implementation (as an example)
+4) SAC for continuous actions
+5) REINFORCE
+6) REINFORCE DIAYN (see <a class="reference external" href="https://arxiv.org/abs/1802.06070">https://arxiv.org/abs/1802.06070</a>)</p>
+<p>The algorithms can be used as examples to implement your own algorithms.</p>
+<p>Typical execution is <cite>OMP_NUM_THREADS=1 PYTHONPATH=rlstructures python rlstructures/rlalgos/reinforce/main_reinforce.py</cite></p>
+<p>Note that all algorithms produced a tensorboard and a CSV output (see <cite>config[“logdir”]</cite> in the main file)</p>
 </div>
 
 
@@ -181,7 +187,7 @@
         <a href="../api/index.html" class="btn btn-neutral float-right" title="RLStructures API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../tutorial/transformer_policy.html" class="btn btn-neutral float-left" title="Transformer Policy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../gettingstarted/PlayingWithRLStructures.html" class="btn btn-neutral float-left" title="Playing with rlstructures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

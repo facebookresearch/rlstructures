@@ -91,19 +91,19 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Data Structures</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dicttensor">DictTensor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#temporaldicttensor">TemporalDictTensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trajectories">Trajectories</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="Environments.html">Environments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Agent.html">Agents/Policies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Batchers.html">Batchers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="MultiProcessEpisodeBatcher.html">Multiprocess Episode Batcher</a></li>
-<li class="toctree-l2"><a class="reference internal" href="MultiProcessTrajectoryBatcher.html">Multiprocess Batcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RLAgentAndBatcher.html">Agents/Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PlayingWithRLStructures.html">Playing with rlstructures</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../algorithms/index.html">Provided Algorithms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">RLStructures API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating_v0.1_v0.2.html">rlstructures – mgirating from v0.1 to v0.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deprecated/index.html">Deprecated API (v0.1)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
 </ul>
 
@@ -198,6 +198,7 @@
 <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="c1"># Returns the names of the variables of the DictTensor</span>
 </pre></div>
 </div>
+<p>Tensors can be organized in a tree structure:</p>
 </div>
 <div class="section" id="temporaldicttensor">
 <h2>TemporalDictTensor<a class="headerlink" href="#temporaldicttensor" title="Permalink to this headline">¶</a></h2>
@@ -221,6 +222,11 @@
 </pre></div>
 </div>
 <p><cite>DictTensor</cite> and <cite>TemporalDictTensor</cite> can be moved to cpu/gpu using the <em>xxx.to(…)</em> method.</p>
+</div>
+<div class="section" id="trajectories">
+<h2>Trajectories<a class="headerlink" href="#trajectories" title="Permalink to this headline">¶</a></h2>
+<p>We recently introduced the <cite>Trajectories</cite> structure as a pair of one DictTensor and one TemporalDictTensor to represent Trajectories</p>
+<p>See the <cite>Agent and Batcher</cite> documentation for more details.</p>
 </div>
 </div>
 

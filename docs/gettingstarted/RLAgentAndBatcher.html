@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Agents/Policies &mdash; RLStructures  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Playing with rlstructures" href="PlayingWithRLStructures.html" />
+    <link rel="prev" title="Environments" href="Environments.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> RLStructures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview of rlstructures</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DataStructures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Environments.html">Environments</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Agents/Policies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agent-and-batcher">Agent and Batcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trajectories-returned-by-a-batcher">Trajectories returned by a batcher</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="PlayingWithRLStructures.html">Playing with rlstructures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithms/index.html">Provided Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">RLStructures API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../migrating_v0.1_v0.2.html">rlstructures – mgirating from v0.1 to v0.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deprecated/index.html">Deprecated API (v0.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RLStructures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Getting Started</a> &raquo;</li>
+        
+      <li>Agents/Policies</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/gettingstarted/RLAgentAndBatcher.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="agents-policies">
+<h1>Agents/Policies<a class="headerlink" href="#agents-policies" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_rlagent.py">https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_rlagent.py</a></p></li>
+</ul>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<p>An agent is the (only) abstraction needed to allow <cite>rlstructures</cite> to collect interactions at scale. One Agent corresponds to a set of policies (formally <span class="math notranslate nohighlight">\(\pi_z\)</span>)</p>
+<ul class="simple">
+<li><p>An Agent class represents a policy (or <em>multiple policies</em> through the <cite>agent_info</cite> argument) acting on a <strong>batch of environment</strong></p></li>
+<li><p>An Agent may include (or not) one or multiple pytorch modules</p></li>
+<li><p>The <cite>__call__(agent_state,observation,agent_info=None,history=None)</cite> methods take as an input:</p>
+<ul>
+<li><p><cite>agent_state</cite> is the state of the agent at time t-1 (as a <cite>DictTensor</cite>)</p></li>
+<li><p><cite>observation</cite> comes from the <cite>rlstructures.VecEnv</cite> environment</p></li>
+<li><p><cite>agent_info</cite> corresponds to additional (the <span class="math notranslate nohighlight">\(z\)</span> in <span class="math notranslate nohighlight">\(\pi_z\)</span>) information provided to the agent (e.g the value of epsilon for epsilon-greedy policies)</p></li>
+<li><p><cite>history</cite> may be a <cite>TemporalDictTensor</cite> representing a set of previous transitions (e.g. used for implementing Transformer based methods, but its value is always <cite>None</cite> in the default implementation of an agent), and activated only if <cite>Agent.require_history()==True</cite>.</p></li>
+</ul>
+</li>
+<li><p>Note that <cite>agent_state.n_elems()==observation.n_elems()</cite> which is the number of environments on which the agent is computed.</p></li>
+</ul>
+<dl class="simple">
+<dt>As an output, the <strong>__call__</strong> method returns a pair <cite>action,new_state</cite> where:</dt><dd><ul class="simple">
+<li><p><cite>action</cite> is the action outputed by the agent as a <cite>DictTensor</cite>. Note that <cite>action.n_elems()==observation.n_elems()</cite>. This information will be transmitted to the environment through the <cite>env.step</cite> method. Note also that the action may contain any information that you would like to store in the resulting trajectory like debugging information for instance (e.g. agent step).</p></li>
+<li><p><cite>new_state</cite> is the update of the state of the agent at time <cite>t+1</cite>. This new state is the information transmitted to the agent at the next call when acquiring a trajectory.</p></li>
+</ul>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><cite>RL_Agent</cite> implements an <cite>initial_state(self,agent_info,B)</cite> methods responsible of setting the initial agent state at the beginning of an episode.</p></li>
+</ul>
+<p>Please, consider the <cite>tutorial</cite> examples to see different agent implementations.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>We provide here an example of a simple uniform RL_Agent that computes the timestep as its internal state.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">UniformAgent</span><span class="p">(</span><span class="n">RL_Agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_actions</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_actions</span><span class="o">=</span><span class="n">n_actions</span>
+
+    <span class="k">def</span> <span class="nf">initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">agent_info</span><span class="p">,</span><span class="n">B</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;timestep&quot;</span><span class="p">:</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()})</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">,</span><span class="n">observation</span><span class="p">,</span><span class="n">agent_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">history</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">B</span><span class="o">=</span><span class="n">observation</span><span class="o">.</span><span class="n">n_elems</span><span class="p">()</span>
+
+        <span class="n">scores</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">n_actions</span><span class="p">)</span>
+        <span class="n">probabilities</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">actions</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">probabilities</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">new_state</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;timestep&quot;</span><span class="p">:</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;timestep&quot;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">DictTensor</span><span class="p">({</span><span class="s2">&quot;action&quot;</span><span class="p">:</span><span class="n">actions</span><span class="p">}),</span><span class="n">new_state</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="agent-and-batcher">
+<h2>Agent and Batcher<a class="headerlink" href="#agent-and-batcher" title="Permalink to this headline">¶</a></h2>
+<p>An <cite>Agent</cite> and a <cite>VecEnv</cite> are used together through a <cite>RL_Batcher</cite> to collect trajectories.
+Building a <cite>RL_Batcher</cite> is made as illustrated below.</p>
+<p>First one has to define agent and environment creation methods:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_env</span><span class="p">(</span><span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">envs</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">e</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v0&quot;</span><span class="p">)</span>
+        <span class="n">e</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">e</span><span class="o">=</span><span class="n">TimeLimit</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="n">max_episode_steps</span><span class="p">)</span>
+        <span class="n">envs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">GymEnv</span><span class="p">(</span><span class="n">envs</span><span class="p">,</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">create_agent</span><span class="p">(</span><span class="n">n_actions</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">UniformAgent</span><span class="p">(</span><span class="n">n_actions</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then the creation of the batcher is quite simple.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">batcher</span><span class="o">=</span><span class="n">RL_Batcher</span><span class="p">(</span>
+            <span class="n">n_timesteps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">create_agent</span><span class="o">=</span><span class="n">create_agent</span><span class="p">,</span>
+            <span class="n">create_env</span><span class="o">=</span><span class="n">create_env</span><span class="p">,</span>
+            <span class="n">agent_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;n_actions&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">},</span>
+            <span class="n">env_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;max_episode_steps&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">},</span>
+            <span class="n">n_processes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">seeds</span><span class="o">=</span><span class="p">[</span><span class="mi">42</span><span class="p">],</span>
+            <span class="n">agent_info</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({}),</span>
+            <span class="n">env_info</span><span class="o">=</span><span class="n">DictTensor</span><span class="p">({})</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><cite>n_timesteps</cite> is the number of step that the batcher will acquire at each call.</p></li>
+<li><p><cite>n_processes</cite> is the number of processes created by the batcher.</p></li>
+<li><p><cite>seeds</cite> is a list of seed values, one per process to control the seeds of the environments in the different processes.</p></li>
+<li><p><cite>agent_info</cite> and <cite>env_info</cite> are examples of information that could be sent to the Agent/Environment when acquiring trajectories. Since our current Agent and Environment don’t make use of such information, we cosider empty DictTensor in our case.</p></li>
+</ul>
+<p>With a batcher, we can use three different methods:
+* batcher.reset(agent_info,env_info): It will reset both the agents and environments with the corresponding informations
+* batcher.execute(agent_info=None): It will launch the acquisition of trajectories (considering agent_info, or the agent_info provided at reset if not specified)
+* batcher.get: It will returns the acquired trajectories</p>
+<p>Here is an example of use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">batcher</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">batcher</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+<span class="n">acquired_trajectories</span><span class="p">,</span><span class="n">n_still_running_envs</span><span class="o">=</span><span class="n">batcher</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>the get function returns a pair of ( <cite>acquired trajectories</cite> , <cite>number of environments still running</cite> ). Indeed, at acquisition time, some environments may stop. If no more environments are running, then one has to call <cite>reset</cite> again.</p></li>
+<li><p>the <cite>acquired_trajectories</cite> is a <cite>Trajectories</cite> object containing both an information <cite>acquired_trajectories.info</cite> as a DictTensor and a sequence of transitions <cite>acquired_trajectories.trajectories</cite> as a <cite>TemporalDictTensor</cite></p></li>
+</ul>
+</div>
+<div class="section" id="trajectories-returned-by-a-batcher">
+<h2>Trajectories returned by a batcher<a class="headerlink" href="#trajectories-returned-by-a-batcher" title="Permalink to this headline">¶</a></h2>
+<p>Let us consider <cite>acquired_trajectories</cite>:</p>
+<ul class="simple">
+<li><p>Focus on  <cite>acquired_trajectories.info</cite></p>
+<ul>
+<li><p><cite>acquired_trajectories.info.truncate_key(“agent_info/”)</cite> returns the <cite>agent_info</cite> value used for this acquisition</p></li>
+<li><p><cite>acquired_trajectories.info.truncate_key(“env_info/”)</cite> returns the <cite>env_info</cite> value used for this acquisition</p></li>
+<li><p><cite>acquired_trajectories.info.truncate_key(“agent_state/”)</cite> returns the state of the agent when starting the acquisition</p></li>
+</ul>
+</li>
+<li><p>Focus on <cite>acquired_trajectories.trajectories</cite></p>
+<ul>
+<li><p><cite>acquired_trajectories.trajectories[“observation/”+k]</cite> is the value of field <cite>k</cite> returned by the environment at time <cite>t</cite></p></li>
+<li><p><cite>acquired_trajectories.trajectories[“action/”+k]</cite> is the value of field <cite>k</cite> returned by the agent as action at time <cite>t</cite></p></li>
+<li><p><cite>acquired_trajectories.trajectories[“_observation/”+k]</cite> is the value of field <cite>k</cite> returned by the environment at time <cite>t+1</cite></p></li>
+</ul>
+</li>
+</ul>
+<p>Note that, the final state of one episode is only available in <cite>acquired_trajectories.trajectories[“_observation/”+k]</cite>, i.e as the <cite>t+1</cite> observation in the last acquired transitions</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="PlayingWithRLStructures.html" class="btn btn-neutral float-right" title="Playing with rlstructures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Environments.html" class="btn btn-neutral float-left" title="Environments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Facebook AI Research
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,8 +1,15 @@
 Environments
 ============
 
+Examples
+--------
+
 * https://github.com/facebookresearch/rlstructures/blob/main/tutorial/tutorial_environments.py
 
+We also provide the https://github.com/facebookresearch/rlstructures/blob/main/tutorial/playing_with_rlstructures.py tutorial to help you to understand the data structures exchanged by the different components.
+
+Principles
+----------
 
 In `rlstructures`, an environment is an instance of `rlstructures.VecEnv`.
 
@@ -17,7 +24,7 @@ Note that typically the observation will contain the reward obtained by the agen
 The `reset` function may receive an `env_info` (of size `VecEnv.n_envs()`) argument as a dictionnary of lists/np.arrays. It allows one to implement parametrized environments (i.e different environments in the same `VecEnv`).
 
 Creating from Gym Environments
--------------------------------------------
+------------------------------
 
 The simplest way to create a `rlstructures/VecEnv` is to do it from a `gym.Env`. In that case, the `gym` env will:
 * return a `dict` or a simple array as an observation
@@ -26,7 +33,6 @@ The simplest way to create a `rlstructures/VecEnv` is to do it from a `gym.Env`.
 Let us define a simple `gym.Env` environment:
 
 .. code-block:: python
-
 
     import gym
     from gym.utils import seeding
@@ -56,6 +62,7 @@ Let us define a simple `gym.Env` environment:
             return {"x":self.x,"identifier":self.identifier},self.x,self.x<-1 or self.x>1,{}
 
 We can cast 4 environment instances to a `rlstructures.VecEnv` as follows:
+
 .. code-block:: python
 
     envs=[MyEnv() for k in range(4)]
@@ -95,9 +102,10 @@ When executing the `step` method:
 Interacting with the Environment
 --------------------------------
 
-Interaction with the environment is easy, the agent and environment exchange `DictTensor`s
+Interaction with the environment is easy, the agent and environment exchanges `DictTensor`s
 
 .. code-block:: python
+
     obs,who_is_still_running=env.reset()
     print(obs)
     n_running=who_is_still_running.size()[0]

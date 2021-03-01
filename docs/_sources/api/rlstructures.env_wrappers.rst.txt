@@ -8,4 +8,3 @@ OpenAI Gym Wrappers
    :members:
    :undoc-members:
    :show-inheritance:
-

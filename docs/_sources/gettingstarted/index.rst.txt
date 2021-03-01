@@ -12,7 +12,5 @@ We will explain the main concepts of rlstructures. Each HTML file is associated 
 
    DataStructures
    Environments
-   Agent
-   Batchers
-   MultiProcessEpisodeBatcher
-   MultiProcessTrajectoryBatcher
+   RLAgentAndBatcher
+   PlayingWithRLStructures

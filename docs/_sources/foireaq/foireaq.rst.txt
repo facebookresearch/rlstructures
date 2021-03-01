@@ -11,6 +11,8 @@ Moreover, we will help you at any stage of your project, and we have a small gro
 
 A: Multiple tutorials are provided to make the described principles concrete. More tutorials will be proposed in the next months.
 
+See: https://medium.com/@ludovic.den
+
 * *Q:  Is it complicated to use existing environments with RLStructures?*
 
 A: RLStructures comes with OpenAI Gym wrappers allowing users to quickly adapt a classical environment to RLStructures in one line of code.

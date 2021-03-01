@@ -86,10 +86,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview of rlstructures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted/index.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="algorithms/index.html">Provided Algorithms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">RLStructures API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="foireaq/foireaq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating_v0.1_v0.2.html">rlstructures – mgirating from v0.1 to v0.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deprecated/index.html">Deprecated API (v0.1)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
 </ul>
 
@@ -159,10 +160,10 @@
 
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
@@ -180,8 +181,6 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.agent.Agent">Agent (class in rlstructures.agent)</a>
-</li>
       <li><a href="autoapi/conf/index.html#conf.author">author (in module conf)</a>
 </li>
   </ul></td>
@@ -193,43 +192,41 @@
   </ul></td>
 </tr></table>
 
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.trajectorybatchers.Batcher">Batcher (class in rlstructures.batchers.trajectorybatchers)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.cat">cat() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent.call_replay">call_replay() (rlstructures.rl_batchers.agent.RL_Agent method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.cat">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent_CheckDevice.call_replay">(rlstructures.rl_batchers.agent.RL_Agent_CheckDevice method)</a>
 </li>
       </ul></li>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.clone">clone() (rlstructures.dicttensor.DictTensor method)</a>
-</li>
-      <li><a href="api/rlstructures.html#rlstructures.agent.Agent.close">close() (rlstructures.agent.Agent method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.cat">cat() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.EpisodeBatcher.close">(rlstructures.batchers.episodebatchers.EpisodeBatcher method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.cat">(rlstructures.core.TemporalDictTensor method)</a>
 </li>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MonoThreadEpisodeBatcher.close">(rlstructures.batchers.episodebatchers.MonoThreadEpisodeBatcher method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.Trajectories.cat">(rlstructures.core.Trajectories method)</a>
 </li>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher.close">(rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher method)</a>
+      </ul></li>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.clone">clone() (rlstructures.core.DictTensor method)</a>
+
+      <ul>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.clone">(rlstructures.core.TemporalDictTensor method)</a>
 </li>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.trajectorybatchers.Batcher.close">(rlstructures.batchers.trajectorybatchers.Batcher method)</a>
-</li>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher.close">(rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher method)</a>
-</li>
-        <li><a href="api/rlstructures.html#rlstructures.env.VecEnv.close">(rlstructures.env.VecEnv method)</a>
-</li>
+      </ul></li>
+      <li><a href="api/rlstructures.html#rlstructures.env.VecEnv.close">close() (rlstructures.env.VecEnv method)</a>
+
+      <ul>
         <li><a href="api/rlstructures.env_wrappers.html#rlstructures.env_wrappers.gymenv.GymEnv.close">(rlstructures.env_wrappers.gymenv.GymEnv method)</a>
 </li>
         <li><a href="api/rlstructures.env_wrappers.html#rlstructures.env_wrappers.gymenv.GymEnvInf.close">(rlstructures.env_wrappers.gymenv.GymEnvInf method)</a>
+</li>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent.close">(rlstructures.rl_batchers.agent.RL_Agent method)</a>
+</li>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent_CheckDevice.close">(rlstructures.rl_batchers.agent.RL_Agent_CheckDevice method)</a>
+</li>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.batcher.RL_Batcher.close">(rlstructures.rl_batchers.batcher.RL_Batcher method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -241,8 +238,12 @@
         <li><a href="autoapi/conf/index.html#module-conf">module</a>
 </li>
       </ul></li>
-      <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.copy_">copy_() (rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.copy_">copy_() (rlstructures.core.DictTensor method)</a>
+
+      <ul>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.copy_">(rlstructures.core.TemporalDictTensor method)</a>
 </li>
+      </ul></li>
       <li><a href="autoapi/conf/index.html#conf.copyright">copyright (in module conf)</a>
 </li>
   </ul></td>
@@ -251,15 +252,17 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.device">device() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.device">device() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.device">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.device">(rlstructures.core.TemporalDictTensor method)</a>
+</li>
+        <li><a href="api/rlstructures.html#rlstructures.core.Trajectories.device">(rlstructures.core.Trajectories method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor">DictTensor (class in rlstructures.dicttensor)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor">DictTensor (class in rlstructures.core)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -267,25 +270,29 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.empty">empty() (rlstructures.dicttensor.DictTensor method)</a>
-</li>
-      <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.EpisodeBatcher">EpisodeBatcher (class in rlstructures.batchers.episodebatchers)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.empty">empty() (rlstructures.core.DictTensor method)</a>
 </li>
       <li><a href="autoapi/conf/index.html#conf.exclude_patterns">exclude_patterns (in module conf)</a>
 </li>
-      <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MonoThreadEpisodeBatcher.execute">execute() (rlstructures.batchers.episodebatchers.MonoThreadEpisodeBatcher method)</a>
-
-      <ul>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher.execute">(rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher method)</a>
-</li>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher.execute">(rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher method)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.expand">expand() (rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.batcher.RL_Batcher.execute">execute() (rlstructures.rl_batchers.batcher.RL_Batcher method)</a>
+</li>
+      <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.expand">expand() (rlstructures.core.TemporalDictTensor method)</a>
 </li>
       <li><a href="autoapi/conf/index.html#conf.extensions">extensions (in module conf)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/rlstructures.env_wrappers.html#rlstructures.env_wrappers.gymenv.format_frame">format_frame() (in module rlstructures.env_wrappers.gymenv)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.full">full() (rlstructures.core.TemporalDictTensor method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -293,16 +300,12 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MonoThreadEpisodeBatcher.get">get() (rlstructures.batchers.episodebatchers.MonoThreadEpisodeBatcher method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.get">get() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher.get">(rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.get">(rlstructures.core.TemporalDictTensor method)</a>
 </li>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher.get">(rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher method)</a>
-</li>
-        <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.get">(rlstructures.dicttensor.DictTensor method)</a>
-</li>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.get">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.batcher.RL_Batcher.get">(rlstructures.rl_batchers.batcher.RL_Batcher method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -331,10 +334,18 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.index">index() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.index">index() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.index">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.index">(rlstructures.core.TemporalDictTensor method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent.initial_state">initial_state() (rlstructures.rl_batchers.agent.RL_Agent method)</a>
+
+      <ul>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent_CheckDevice.initial_state">(rlstructures.rl_batchers.agent.RL_Agent_CheckDevice method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -343,10 +354,10 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.keys">keys() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.keys">keys() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.keys">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.keys">(rlstructures.core.TemporalDictTensor method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -355,13 +366,13 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.mask">mask() (rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.mask">mask() (rlstructures.core.TemporalDictTensor method)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.masked_dicttensor">masked_dicttensor() (in module rlstructures.dicttensor)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.masked_dicttensor">masked_dicttensor() (in module rlstructures.core)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.masked_temporal_index">masked_temporal_index() (rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.masked_temporal_index">masked_temporal_index() (rlstructures.core.TemporalDictTensor method)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.masked_tensor">masked_tensor() (in module rlstructures.dicttensor)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.masked_tensor">masked_tensor() (in module rlstructures.core)</a>
 </li>
       <li><a href="autoapi/conf/index.html#conf.master_doc">master_doc (in module conf)</a>
 </li>
@@ -371,39 +382,31 @@
       <ul>
         <li><a href="autoapi/conf/index.html#module-conf">conf</a>
 </li>
-        <li><a href="api/rlstructures.html#module-rlstructures.agent">rlstructures.agent</a>
-</li>
-        <li><a href="api/rlstructures.batchers.html#module-rlstructures.batchers.episodebatchers">rlstructures.batchers.episodebatchers</a>
-</li>
-        <li><a href="api/rlstructures.batchers.html#module-rlstructures.batchers.trajectorybatchers">rlstructures.batchers.trajectorybatchers</a>
-</li>
-        <li><a href="api/rlstructures.html#module-rlstructures.dicttensor">rlstructures.dicttensor</a>
+        <li><a href="api/rlstructures.html#module-rlstructures.core">rlstructures.core</a>
 </li>
         <li><a href="api/rlstructures.html#module-rlstructures.env">rlstructures.env</a>
 </li>
         <li><a href="api/rlstructures.env_wrappers.html#module-rlstructures.env_wrappers.gymenv">rlstructures.env_wrappers.gymenv</a>
 </li>
-        <li><a href="api/rlstructures.html#module-rlstructures.temporaldicttensor">rlstructures.temporaldicttensor</a>
+        <li><a href="api/rlstructures.html#module-rlstructures.rl_batchers.agent">rlstructures.rl_batchers.agent</a>
+</li>
+        <li><a href="api/rlstructures.html#module-rlstructures.rl_batchers.batcher">rlstructures.rl_batchers.batcher</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MonoThreadEpisodeBatcher">MonoThreadEpisodeBatcher (class in rlstructures.batchers.episodebatchers)</a>
-</li>
-      <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher">MultiThreadEpisodeBatcher (class in rlstructures.batchers.episodebatchers)</a>
-</li>
-      <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher">MultiThreadTrajectoryBatcher (class in rlstructures.batchers.trajectorybatchers)</a>
-</li>
   </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.n_elems">n_elems() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.n_elems">n_elems() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.n_elems">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.n_elems">(rlstructures.core.TemporalDictTensor method)</a>
+</li>
+        <li><a href="api/rlstructures.html#rlstructures.core.Trajectories.n_elems">(rlstructures.core.Trajectories method)</a>
+</li>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.batcher.RL_Batcher.n_elems">(rlstructures.rl_batchers.batcher.RL_Batcher method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -422,7 +425,7 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.prepend_key">prepend_key() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.prepend_key">prepend_key() (rlstructures.core.DictTensor method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -434,48 +437,39 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher.reexecute">reexecute() (rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.replay_agent">replay_agent() (in module rlstructures.rl_batchers.agent)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.agent.Agent.require_history">require_history() (rlstructures.agent.Agent method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.replay_agent_stateless">replay_agent_stateless() (in module rlstructures.rl_batchers.agent)</a>
 </li>
-      <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher.reset">reset() (rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent.require_history">require_history() (rlstructures.rl_batchers.agent.RL_Agent method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.env.VecEnv.reset">(rlstructures.env.VecEnv method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent_CheckDevice.require_history">(rlstructures.rl_batchers.agent.RL_Agent_CheckDevice method)</a>
 </li>
+      </ul></li>
+      <li><a href="api/rlstructures.html#rlstructures.env.VecEnv.reset">reset() (rlstructures.env.VecEnv method)</a>
+
+      <ul>
         <li><a href="api/rlstructures.env_wrappers.html#rlstructures.env_wrappers.gymenv.GymEnv.reset">(rlstructures.env_wrappers.gymenv.GymEnv method)</a>
 </li>
         <li><a href="api/rlstructures.env_wrappers.html#rlstructures.env_wrappers.gymenv.GymEnvInf.reset">(rlstructures.env_wrappers.gymenv.GymEnvInf method)</a>
 </li>
-      </ul></li>
-      <li>
-    rlstructures.agent
-
-      <ul>
-        <li><a href="api/rlstructures.html#module-rlstructures.agent">module</a>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.batcher.RL_Batcher.reset">(rlstructures.rl_batchers.batcher.RL_Batcher method)</a>
 </li>
       </ul></li>
-      <li>
-    rlstructures.batchers.episodebatchers
-
-      <ul>
-        <li><a href="api/rlstructures.batchers.html#module-rlstructures.batchers.episodebatchers">module</a>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent">RL_Agent (class in rlstructures.rl_batchers.agent)</a>
 </li>
-      </ul></li>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent_CheckDevice">RL_Agent_CheckDevice (class in rlstructures.rl_batchers.agent)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    rlstructures.batchers.trajectorybatchers
-
-      <ul>
-        <li><a href="api/rlstructures.batchers.html#module-rlstructures.batchers.trajectorybatchers">module</a>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.batcher.RL_Batcher">RL_Batcher (class in rlstructures.rl_batchers.batcher)</a>
 </li>
-      </ul></li>
       <li>
-    rlstructures.dicttensor
+    rlstructures.core
 
       <ul>
-        <li><a href="api/rlstructures.html#module-rlstructures.dicttensor">module</a>
+        <li><a href="api/rlstructures.html#module-rlstructures.core">module</a>
 </li>
       </ul></li>
       <li>
@@ -493,10 +487,17 @@
 </li>
       </ul></li>
       <li>
-    rlstructures.temporaldicttensor
+    rlstructures.rl_batchers.agent
 
       <ul>
-        <li><a href="api/rlstructures.html#module-rlstructures.temporaldicttensor">module</a>
+        <li><a href="api/rlstructures.html#module-rlstructures.rl_batchers.agent">module</a>
+</li>
+      </ul></li>
+      <li>
+    rlstructures.rl_batchers.batcher
+
+      <ul>
+        <li><a href="api/rlstructures.html#module-rlstructures.rl_batchers.batcher">module</a>
 </li>
       </ul></li>
   </ul></td>
@@ -505,26 +506,34 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.set">set() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.Trajectories.sample">sample() (rlstructures.core.Trajectories method)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.shorten">shorten() (rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent.seed">seed() (rlstructures.rl_batchers.agent.RL_Agent method)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.slice">slice() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.set">set() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.slice">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.set">(rlstructures.core.TemporalDictTensor method)</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/conf/index.html#conf.source_suffix">source_suffix (in module conf)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.shorten">shorten() (rlstructures.core.TemporalDictTensor method)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.specs">specs() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.slice">slice() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.specs">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.slice">(rlstructures.core.TemporalDictTensor method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/conf/index.html#conf.source_suffix">source_suffix (in module conf)</a>
+</li>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.specs">specs() (rlstructures.core.DictTensor method)</a>
+
+      <ul>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.specs">(rlstructures.core.TemporalDictTensor method)</a>
+</li>
+      </ul></li>
       <li><a href="api/rlstructures.env_wrappers.html#rlstructures.env_wrappers.gymenv.GymEnv.specs_input">specs_input() (rlstructures.env_wrappers.gymenv.GymEnv method)</a>
 
       <ul>
@@ -547,23 +556,27 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/conf/index.html#conf.templates_path">templates_path (in module conf)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.temporal_index">temporal_index() (rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.temporal_index">temporal_index() (rlstructures.core.TemporalDictTensor method)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.temporal_multi_index">temporal_multi_index() (rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.temporal_multi_index">temporal_multi_index() (rlstructures.core.TemporalDictTensor method)</a>
 </li>
-      <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.temporal_slice">temporal_slice() (rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.temporal_slice">temporal_slice() (rlstructures.core.TemporalDictTensor method)</a>
+</li>
+      <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor">TemporalDictTensor (class in rlstructures.core)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor">TemporalDictTensor (class in rlstructures.temporaldicttensor)</a>
-</li>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.to">to() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.to">to() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.to">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.to">(rlstructures.core.TemporalDictTensor method)</a>
+</li>
+        <li><a href="api/rlstructures.html#rlstructures.core.Trajectories.to">(rlstructures.core.Trajectories method)</a>
 </li>
       </ul></li>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.truncate_key">truncate_key() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.Trajectories">Trajectories (class in rlstructures.core)</a>
+</li>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.truncate_key">truncate_key() (rlstructures.core.DictTensor method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -571,20 +584,20 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/rlstructures.html#rlstructures.dicttensor.DictTensor.unfold">unfold() (rlstructures.dicttensor.DictTensor method)</a>
+      <li><a href="api/rlstructures.html#rlstructures.core.DictTensor.unfold">unfold() (rlstructures.core.DictTensor method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.html#rlstructures.temporaldicttensor.TemporalDictTensor.unfold">(rlstructures.temporaldicttensor.TemporalDictTensor method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.core.TemporalDictTensor.unfold">(rlstructures.core.TemporalDictTensor method)</a>
 </li>
       </ul></li>
-      <li><a href="api/rlstructures.html#rlstructures.agent.Agent.update">update() (rlstructures.agent.Agent method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent.update">update() (rlstructures.rl_batchers.agent.RL_Agent method)</a>
 
       <ul>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MonoThreadEpisodeBatcher.update">(rlstructures.batchers.episodebatchers.MonoThreadEpisodeBatcher method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.agent.RL_Agent_CheckDevice.update">(rlstructures.rl_batchers.agent.RL_Agent_CheckDevice method)</a>
 </li>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher.update">(rlstructures.batchers.episodebatchers.MultiThreadEpisodeBatcher method)</a>
-</li>
-        <li><a href="api/rlstructures.batchers.html#rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher.update">(rlstructures.batchers.trajectorybatchers.MultiThreadTrajectoryBatcher method)</a>
+        <li><a href="api/rlstructures.html#rlstructures.rl_batchers.batcher.RL_Batcher.update">(rlstructures.rl_batchers.batcher.RL_Batcher method)</a>
 </li>
       </ul></li>
   </ul></td>
