@@ -71,6 +71,8 @@ def s_acquire_slot(
             to_write = (
                 observation.prepend_key("observation/")
                 + agent_output.prepend_key("action/")
+                + agent_state.prepend_key("agent_state/")
+                + new_agent_state.prepend_key("_agent_state/")
                 + nobservation.prepend_key("_observation/")
             )
 
@@ -154,8 +156,18 @@ class S_Buffer:
             "action/" + k: specs_agent_output[k] for k in specs_agent_output
         }
 
+        mspecs_agent_state = {
+            "agent_state/" + k: specs_agent_state[k] for k in specs_agent_state
+        }
+
+        nspecs_agent_state = {
+            "_agent_state/" + k: specs_agent_state[k] for k in specs_agent_state
+        }
+
         specs = {
             **specs_agent_output,
+            **mspecs_agent_state,
+            **nspecs_agent_state,
             **specs_environment,
             **nspecs_env,
         }
