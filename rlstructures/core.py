@@ -233,10 +233,18 @@ class DictTensor:
             value (torch.Tensor): the tensor to add, with a correct batch
                 dimension size
         """
-        assert value.size()[0] == self.n_elems()
+        assert self.empty() or value.size()[0] == self.n_elems()
         assert isinstance(value, torch.Tensor)
         assert self.empty() or value.device == self.device()
         self.variables[key] = value
+
+    def unset(self,key: str):
+        """ remove one tensor from the dictensot
+
+        Args:
+            key (str): the key to remove
+        """
+        del(self.variables[key])
 
     def prepend_key(self, _str: str) -> DictTensor:
         """
