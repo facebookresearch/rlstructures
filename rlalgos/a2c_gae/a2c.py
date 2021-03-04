@@ -201,6 +201,8 @@ class A2C:
 
     def get_loss(self, trajectories):
         trajectories = trajectories.to(self.config["learner_device"])
+        print(trajectories.trajectories["agent_state/agent_step"][0])
+        print(trajectories.trajectories["_agent_state/agent_step"][0])
         replayed = replay_agent(
             self.agent, trajectories, replay_method_name="call_replay"
         )

@@ -133,7 +133,7 @@ class PPO:
 
                 # Computation of final loss
                 ld = self.config["coef_critic"] * dt["critic_loss"]
-                lr = self.config["coef_ppo"] * dt["a2c_loss"]
+                lr = self.config["coef_ppo"] * dt["ppo_loss"]
                 le = self.config["coef_entropy"] * dt["entropy_loss"]
 
                 floss = ld - le - lr
@@ -191,7 +191,8 @@ class PPO:
         # The reward is a t+1 in each iteration (since it is btained after the aaction), so we use the '_reward' field in the trajectory
         # The 'reward' field corresopnds to the reward at time t
         reward = trajectories["_observation/reward"]
-
+        actions_probabilities = trajectories["action/action_probabilities"]
+        actions=trajectories["action/action"]
         # We get the mask that tells which transition is in a trajectory (1) or not (0)
         mask = trajectories.mask()
 
@@ -200,7 +201,7 @@ class PPO:
         max_length = trajectories.lengths.max().item()
 
         # Now, we want to compute the action probabilities over the trajectories such that we will be able to do 'backward'
-        action_probabilities = replayed["action_probabilities"]
+        n_action_probabilities = replayed["action_probabilities"]
         # We compute the temporal difference
         gae = self.get_gae(
             trajectories["_observation/done"],
@@ -215,21 +216,32 @@ class PPO:
         critic_loss = td ** 2
         avg_critic_loss = critic_loss.mean()
 
-        action_distribution = torch.distributions.Categorical(action_probabilities)
-        log_proba = action_distribution.log_prob(trajectories["action/action"])
-        a2c_loss = log_proba * td.detach()
-        avg_a2c_loss = a2c_loss.mean()
+        n_action_distribution = torch.distributions.Categorical(n_action_probabilities)
+        log_a = torch.distributions.Categorical(actions_probabilities).log_prob(actions)
+        log_na = n_action_distribution.log_prob(actions)
+        ratios = torch.exp(log_na - log_a)
+        surr1 = ratios * gae
+        surr2 = (
+            torch.clamp(
+                ratios, 1 - self.config["eps_clip"], 1 - self.config["eps_clip"]
+            )
+            * gae
+        )
 
-        entropy = action_distribution.entropy()
-        avg_entropy = entropy.mean()
+        ppo_loss = torch.min(surr1, surr2)
+        avg_ppo_loss = ppo_loss.mean()
 
-        return DictTensor(
+        entropy_loss = n_action_distribution.entropy()
+        avg_entropy_loss = entropy_loss.mean()
+
+        dt = DictTensor(
             {
+                "entropy_loss": avg_entropy_loss,
+                "ppo_loss": avg_ppo_loss,
                 "critic_loss": avg_critic_loss,
-                "a2c_loss": avg_a2c_loss,
-                "entropy_loss": avg_entropy,
             }
         )
+        return dt
 
     def get_gae(self, done, reward, critic, _critic, discount_factor=1, _lambda=0):
         r = reward

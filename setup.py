@@ -5,7 +5,7 @@ with open("requirements.txt") as f:
 
 setup(
     name="rlstructures",
-    version="1.0",
+    version="0.2",
     python_requires=">=3.7",
     packages=find_packages(),
     install_requires=reqs,
