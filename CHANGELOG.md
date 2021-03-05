@@ -13,4 +13,4 @@
 * [FIX] correct rlstructures version in setup.py
 * [FIX] correct PPO implementation (not correctly updated from v0.1 -. v0.2)
 * [FIX] correct assert in DictTensor.set to allow to use the function when the DictTensor is empty
-* [FEATURES] add DictTensor.unset
+* [FEATURES] add DictTensor.unset amd DictTensor.unset_key

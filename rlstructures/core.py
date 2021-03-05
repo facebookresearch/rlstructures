@@ -246,6 +246,13 @@ class DictTensor:
         """
         del(self.variables[key])
 
+    def unset_key(self, _str:str):
+        """remove all tensors whose key starts with _str
+        """
+        to_remove=[k for k in self.variables if k.startswith(_str)]
+        for k in to_remove:
+            self.unset(k)
+
     def prepend_key(self, _str: str) -> DictTensor:
         """
         Return a new DictTensor where _str has been concatenated to all the keys
