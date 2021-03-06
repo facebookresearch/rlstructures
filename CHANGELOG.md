@@ -9,8 +9,10 @@
 
 # (March 2021)
 
-* [FEATURES] agent_state/... and _agent/state/... are not available through trajectories.trajectories after a batcher.get
+* [FEATURES] agent_state/... and _agent/state/... are now available through trajectories.trajectories after a batcher.get (if specified at batcher construction through store_agent_state argument)
 * [FIX] correct rlstructures version in setup.py
 * [FIX] correct PPO implementation (not correctly updated from v0.1 -. v0.2)
 * [FIX] correct assert in DictTensor.set to allow to use the function when the DictTensor is empty
 * [FEATURES] add DictTensor.unset amd DictTensor.unset_key
+* [FIX] Remove unused specs functions in GymEnv and GymEnvInf
+* [DOCUMENTATION] Update RL_Batcher documentation

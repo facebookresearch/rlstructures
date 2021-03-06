@@ -158,13 +158,6 @@ class GymEnv(VecEnv):
     def close(self):
         [g.close() for g in self.gym_envs]
 
-    def specs_input(self):
-        return {
-            "action": {
-                "size": torch.tensor([]).size(),
-                "dtype": torch.zeros(1).long().dtype,
-            }
-        }
 
 
 class GymEnvInf(VecEnv):
@@ -306,11 +299,3 @@ class GymEnvInf(VecEnv):
 
     def close(self):
         [g.close() for g in self.gym_envs]
-
-    def specs_input(self):
-        return {
-            "action": {
-                "size": torch.tensor([]).size(),
-                "dtype": torch.zeros(1).long().dtype,
-            }
-        }

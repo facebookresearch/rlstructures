@@ -14,66 +14,8 @@ import numpy as np
 import time
 
 class RL_Batcher:
-    def reset(self, agent_info=DictTensor({}), env_info=DictTensor({})):
-        assert agent_info.empty() or agent_info.device()==torch.device("cpu"),"agent_info must be on CPU"
-        assert env_info.empty() or env_info.device()==torch.device("cpu"),"env_info must be on CPU"
-
-        n_workers = len(self.workers)
-        pos = 0
-        for k in range(n_workers):
-            n = self.n_envs
-            wi = agent_info.slice(pos, pos + n)
-            ei = env_info.slice(pos, pos + n)
-            self.workers[k].reset(agent_info=wi, env_info=ei)
-            pos += n
-        assert agent_info.empty() or agent_info.n_elems() == pos
-        assert env_info.empty() or env_info.n_elems() == pos
-
-    def execute(self, agent_info=None):
-        assert agent_info is None or agent_info.empty() or agent_info.device()==torch.device("cpu"),"agent_info must be on CPU"
-        n_workers = len(self.workers)
-        pos = 0
-        for k in range(n_workers):
-            n = self.n_envs
-            wi = None
-            if not agent_info is None:
-                wi = agent_info.slice(pos, pos + n)
-            self.workers[k].acquire_slot(wi)
-            pos += n
-
-    def get(self, blocking=True):
-        if not blocking:
-            for w in range(len(self.workers)):
-                if not self.workers[w].finished():
-                    return None, None
-
-        buffer_slot_ids = []
-        n_still_running = 0
-        for w in range(len(self.workers)):
-            bs, n = self.workers[w].get()
-            buffer_slot_ids += bs
-            n_still_running += n
-        if len(buffer_slot_ids) == 0:
-            assert False, "Don't call batcher.get when all environnments are finished"
-
-        slots, info = self.buffer.get_single_slots(buffer_slot_ids, erase=True)
-        assert not slots.lengths.eq(0).any()
-        return Trajectories(info, slots), n_still_running
-
-    def update(self, info):
-        for w in self.workers:
-            w.update_worker(info)
-
-    def close(self):
-        for w in self.workers:
-            w.close()
-        for w in self.workers:
-            del w
-        self.buffer.close()
-
-    def n_elems(self):
-        return self._n_episodes
-
+    """ A multi-process batcher that samples trajectories
+    """
     def __init__(
         self,
         n_timesteps,
@@ -86,7 +28,8 @@ class RL_Batcher:
         agent_info,
         env_info,
         agent_seeds=None,
-        device=torch.device("cpu")
+        device=torch.device("cpu"),
+        store_agent_state=False
     ):
         """ Create a multi-processes batcher
 
@@ -102,7 +45,9 @@ class RL_Batcher:
             env_info ([type]): DictTensor in the same format than the env_info that will be used when calling the batcher (with n_elems()==1)
             agent_seeds ([type], optional): list of n_processes agent seeds (passed to agents through the RL_Agent.seed function. or None if no seeds
             device: the device of the batcher (default is "cpu")
+            store_agent_state: if yes, the trajectories will contain agent_state and "_agent_state"
         """
+        self.store_agent_state=store_agent_state
         assert agent_seeds is None or len(agent_seeds)==n_processes,"agent_seeds must be None or a list of n_processes seeds"
         # Buffer creation:
         agent = create_agent(**agent_args)
@@ -149,7 +94,8 @@ class RL_Batcher:
             specs_environment=specs_environment,
             specs_agent_info=specs_agent_info,
             specs_env_info=specs_env_info,
-            device=device
+            device=device,
+            store_agent_state=store_agent_state
         )
 
         self.workers = []
@@ -170,5 +116,93 @@ class RL_Batcher:
                 create_env,
                 e_args,
                 self.buffer,
+                store_agent_state
             )
             self.workers.append(worker)
+
+    def reset(self, agent_info=DictTensor({}), env_info=DictTensor({})):
+        """ Reset the environments using the env_info variable, reset the agent to initial states using agent_info
+
+
+        Args:
+            agent_info ([type], optional): [description]. An empty of n_elems() DictTensor corresponding to information to send to the agents
+            env_info ([type], optional): [description]. An empty of n_elems() DictTensor corresponding to information to send to the environments
+        """
+        assert agent_info.empty() or agent_info.device()==torch.device("cpu"),"agent_info must be on CPU"
+        assert env_info.empty() or env_info.device()==torch.device("cpu"),"env_info must be on CPU"
+
+        n_workers = len(self.workers)
+        pos = 0
+        for k in range(n_workers):
+            n = self.n_envs
+            wi = agent_info.slice(pos, pos + n)
+            ei = env_info.slice(pos, pos + n)
+            self.workers[k].reset(agent_info=wi, env_info=ei)
+            pos += n
+        assert agent_info.empty() or agent_info.n_elems() == pos
+        assert env_info.empty() or env_info.n_elems() == pos
+
+    def execute(self, agent_info=None):
+        """ Launch the acquisition of the trajectories. If specified, the agent can use a different agent_info for these trajectories
+
+        Args:
+            agent_info ([type], optional): [description]. Defaults to None.
+        """
+        assert agent_info is None or agent_info.empty() or agent_info.device()==torch.device("cpu"),"agent_info must be on CPU"
+        n_workers = len(self.workers)
+        pos = 0
+        for k in range(n_workers):
+            n = self.n_envs
+            wi = None
+            if not agent_info is None:
+                wi = agent_info.slice(pos, pos + n)
+            self.workers[k].acquire_slot(wi)
+            pos += n
+
+    def get(self, blocking=True):
+        """ Return the acquired trajectories
+
+        Args:
+            blocking (bool, optional): [description]. Defaults to True.
+
+        Returns:
+            [type]: [description]
+        """
+        if not blocking:
+            for w in range(len(self.workers)):
+                if not self.workers[w].finished():
+                    return None, None
+
+        buffer_slot_ids = []
+        n_still_running = 0
+        for w in range(len(self.workers)):
+            bs, n = self.workers[w].get()
+            buffer_slot_ids += bs
+            n_still_running += n
+        if len(buffer_slot_ids) == 0:
+            assert False, "Don't call batcher.get when all environnments are finished"
+
+        slots, info = self.buffer.get_single_slots(buffer_slot_ids, erase=True)
+        assert not slots.lengths.eq(0).any()
+        return Trajectories(info, slots), n_still_running
+
+    def update(self, info):
+        """ Update the agents with the specified information
+
+        Args:
+            info ([type]): [description]
+        """
+        for w in self.workers:
+            w.update_worker(info)
+
+    def close(self):
+        """Terminate the batcher by closing the process and share data structures
+        """
+        for w in self.workers:
+            w.close()
+        for w in self.workers:
+            del w
+        self.buffer.close()
+
+    def n_elems(self):
+        return self._n_episodes

@@ -24,6 +24,7 @@ def s_acquire_slot(
     agent_info,
     env_info,
     env_running,
+    store_agent_state
 ):
     with torch.no_grad():
         device=buffer.device()
@@ -71,10 +72,10 @@ def s_acquire_slot(
             to_write = (
                 observation.prepend_key("observation/")
                 + agent_output.prepend_key("action/")
-                + agent_state.prepend_key("agent_state/")
-                + new_agent_state.prepend_key("_agent_state/")
                 + nobservation.prepend_key("_observation/")
             )
+            if store_agent_state:
+                to_write=to_write+ agent_state.prepend_key("agent_state/")+ new_agent_state.prepend_key("_agent_state/")
 
             id_slots = [
                 env_to_slot[env_running[i].item()] for i in range(env_running.size()[0])
@@ -129,6 +130,7 @@ class S_Buffer:
         specs_agent_info=None,
         specs_env_info=None,
         device=torch.device("cpu"),
+        store_agent_state=None
     ):
         """
         Init a new buffer
@@ -163,11 +165,13 @@ class S_Buffer:
         nspecs_agent_state = {
             "_agent_state/" + k: specs_agent_state[k] for k in specs_agent_state
         }
+        mnspecs_agent_state={**mspecs_agent_state,**nspecs_agent_state}
+        if not store_agent_state:
+            mnspecs_agent_state={}
 
         specs = {
             **specs_agent_output,
-            **mspecs_agent_state,
-            **nspecs_agent_state,
+            **mnspecs_agent_state,
             **specs_environment,
             **nspecs_env,
         }
@@ -343,6 +347,7 @@ def s_worker_process(
     agent_seed,
     in_queue,
     out_queue,
+    store_agent_state
 ):
     env = create_env(**env_parameters)
     n_envs = env.n_envs()
@@ -406,6 +411,7 @@ def s_worker_process(
                     agent_info,
                     env_info,
                     env_running,
+                    store_agent_state
                 )
                 slots = [env_to_slot[k] for k in env_to_slot]
                 out_queue.put((slots, len(env_running)))
@@ -418,7 +424,7 @@ def s_worker_process(
 
 class S_ProcessWorker:
     def __init__(
-        self, worker_id, create_agent, agent_args, agent_seed, create_env, env_args, buffer
+        self, worker_id, create_agent, agent_args, agent_seed, create_env, env_args, buffer, store_agent_state
     ):
         self.worker_id = worker_id
         ctx = mp.get_context("spawn")
@@ -438,6 +444,7 @@ class S_ProcessWorker:
                 agent_seed,
                 self.inq,
                 self.outq,
+                store_agent_state
             ),
         )
         self.process = p

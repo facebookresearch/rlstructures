@@ -93,6 +93,7 @@ class DictTensor:
         :return: the correspondiong tensor
         :rtype: torch.Tensor
         """
+        assert key in self.variables,"Key "+key+" not in the DictTensor"
         return self.variables[key]
 
     def get(self, keys: Iterable[str], clone=False) -> DictTensor:
