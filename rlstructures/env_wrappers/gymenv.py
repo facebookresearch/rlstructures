@@ -77,7 +77,7 @@ class GymEnv(VecEnv):
             last_action = torch.zeros(N, dtype=torch.int64)
         else:
             a = self.gym_envs[0].action_space.sample()
-            a = torch.tensor(a).unsqueeze(0).repeat(N, 1)
+            a = torch.tensor(a).unsqueeze(0).repeat(*(N, ) + tuple(1 for i in a.shape))
             last_action = a
 
         done = torch.zeros(N).bool()
