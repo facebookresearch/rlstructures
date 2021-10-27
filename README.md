@@ -1,5 +1,10 @@
 # IMPORTANT NOTE
 
+**October 2021 - SALINA Library**
+
+The principles beyond RLStructures have been extended in the new [SaLinA library](https://github.com/facebookresearch/salina) that can be seen as a simplification step over rlstructures. 
+
+
 **February 2021 - version 0.2 : Due to recent feedback, the API has been modified improved**
 
 * The new API is not compatible with the old one
